@@ -90,17 +90,20 @@ The spectroscopic data used during the production of this thesis were taken from
 The original selection function of the main GALAH survey is separated into two magnitude limited filed selections - bright (10<V<12) and normal (12<V<14) fields whose target selection is colour independent. Used V magnitude is inferred from magnitudes measured by the Two Micron All-Sky Survey (2MASS) \citep{2006AJ....131.1163S} whose photometric bands are shifted into infra-red spectral region. Because of that, some, especially peculiar and variable stars, might have erroneous estimation of V magnitude leading to an underexposure or excessive spectral crosstalk. Because of expected crowding problems (projected diameter of used optical fiber on the sky is equal to $2$\arcsec) observed stars are located at higher Galactic latitudes ($|b|$~>~$10^\circ$) where density of stars is lower. Additional surveys sometimes break those rules by selecting fainter/dimmer stars, going closer to the Galactic plane, employ colour cuts, or favor interesting preselected stars such as K2 \citep{2014PASP..126..398H} targets, TESS \citep{2015JATIS...1a4003R} targets and cluster members. Therefore some care is needed when trying to infer global stellar or galactic properties based on such inhomogeneous selection criteria.
 
 \subsection{Spectral reduction and parameters determination}
-Stellar atmospheric parameters and individual elemental abundances derived from normalized spectra, acquired by different surveys, are analysed with the same procedure that slowly evolved and improved during the course of the GALAH survey.
+The first step after recording spectra in the form of a 2D image is their extraction to 1D spectrum. The procedure, extensively documented by \citet{2017MNRAS.464.1259K}, consist of the following steps: raw image cosmetic corrections, spectral tracing, optical aberrations correction, scattered light and apertures coss-talk removal, wavelength calibration, sky subtraction, and telluric absorption removal. After reduction, spectra are normalised and shifted into their rest frame by cross-correlating them with a set of 15 AMBRE model spectra \citep{2012A&A...544A.126D}. Stellar atmospheric parameters and individual elemental abundances derived from normalised spectra, acquired by different surveys, are analysed with the same procedure that slowly evolved and improved during the course of the GALAH survey. The three most important milestones in an ongoing process are:
 
 \begin{itemize}
-	\item DR1
-	\item DR2
-	\item DR3
+	\item The initial stellar parameters (\Teff, \Logg, and \Feh), accompanying the first GALAH data release (\textbf{GALAH DR1}), were derived as a global fit (all arms at the same time) of the observed spectra to a grid of $16,783$ AMBRE spectra \citep{2012A&A...544A.126D}, which were convolved down to the average resolution of individual CCD. The aim of this procedure was to provide indicative stellar parameters, which could be used as a first initial guess to help speed up a more complex stellar parameters and abundance pipeline.
+	
+	\item The parameters (with extension to \vsin, \vmic, and \aks) and up to 23 elemental abundances, released as part of the \textbf{GALAH DR2} \citep{buder2018}, were produced using a multi-step data driven approach. The complete analysis depended on a set of $10,605$ spectra that were selected in a such way to span a large portion of the parameter and did not contain any peculiar star, especially binary and emission line spectra. Selected spectra were analysed using a physics-driven spectrum synthesis code Spectra Made Easy (\SM) \citep{1996A&AS..118..595V, 2017A&A...597A..16P} that performs spectrum synthesis for 1D stellar atmospheres models. In the case of DR2, it consist of MARCS theoretical 1D hydrostatic models \citep{2008A&A...486..951G} under the assumption of local thermodynamic equilibrium (LTE) for majority of elements. Only several key elements (Li, O, Na, Mg, Al, Si, and Fe) were analysed using non-LTE line formation.
+	
+	To propagate the parameter and abundance results of the training set to the whole survey, \TC\ \citep{2015ApJ...808...16N} generative data-driven approach was used. It adopts a simple quadratic model which uses stellar parameters to describes observed flux of a given spectrum. Independent model is build for every spectrum wavelength pixels. To train \TC\ model all spectra in the training set were interpolated to a common wavelength grid. After the training is performed, model was inverted to produce parameters and abundances for every observed spectrum by fitting it to internal generative spectrum produced by \TC. Further details of the described process are given in \citet{buder2018}.
+	
+	\item Not relaying only on the GALAH spectral information, but including \G\ parallax, colour, and absolute magnitude, additional constrains and priors can be used to infer stellar parameters. Adaption of \SM\ software thoroughly described in (???????) used those additional information to produce \textbf{GALAH DR3} data set. Unlike in DR2, no data-driven methodology was used to produce stellar parameters and abundances as \SM\ was run for every individual spectrum.
+	
+	The dataset includes ........
+	
 \end{itemize}
-
-
-adaptation of Spectra Made Easy (SME) \citep{1996A&AS..118..595V, 2017A&A...597A..16P} software that is described in-depth by Buder et al. (in preparation) as part of the latest data release (DR3) of the GALAH spectra and derived parameters.
-
 
 \section{Asiago}
 \label{sec:asiago_data}
