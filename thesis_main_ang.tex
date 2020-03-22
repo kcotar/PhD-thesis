@@ -278,7 +278,7 @@ Kratek izvleček v angleškem jeziku, do 300 besed.\\[10mm]
 \renewcommand\bibname{Bibliography}
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{apsrev4-2-fmf-eng}
-\bibliography{Bibliografija-eng}
+\bibliography{Bibliografija-eng, bibliography_chemtag, bibliography_emis}
 
 
 %-------------------------------------------------------------------------------------
@@ -300,9 +300,9 @@ Kratek izvleček v angleškem jeziku, do 300 besed.\\[10mm]
 \chapter*{Razširjeni povzetek v slovenskem jeziku}
 \markboth{Razširjeni povzetek v slovenskem jeziku}{}
 
-\foreignlanguage{slovene}{  % slovenski delilni vzorci
-Razširjeni povzetek v slovenskem jeziku naj bo dolg vsaj 10 strani. 
-Vključuje naj tudi slike, tabele in enačbe, ki so nujne za razumevanje besedila povzetka.
+\foreignlanguage{slovene}{
+	% slovenski delilni vzorci
+	\input{08-slo_povzetek}
 }
 
 %---------------------------------------------------------------------------------
@@ -316,17 +316,21 @@ Vključuje naj tudi slike, tabele in enačbe, ki so nujne za razumevanje besedil
 %       SEZNAM OBJAV (CE OBSTAJAJO)
 %-----------------------------------------------------------------------------
 
-%\cleardoublepage\phantomsection
-%\addcontentsline{toc}{chapter}{List of publications related to this doctoral thesis}
-%\chapter*{List of publications related to this doctoral thesis}
-%\begin{enumerate}
-%\item
-%Ivan Kuščer,
-%\textit{Multiple small-angle scattering of light},
-%Prog. Nucl. Energy
-%\textbf{34},
-%355 (1999).
-%\end{enumerate}
+\cleardoublepage\phantomsection
+\addcontentsline{toc}{chapter}{List of publications related to this doctoral thesis}
+\chapter*{List of publications related to this doctoral thesis}
 
+Scientific papers that were published by the author of this doctoral thesis:
+\begin{enumerate}
+\item{\textbf{K. Čotar}, T. Zwitter, G. Traven, J. Kos, M. Asplund, J. Bland-Hawthorn, S. Buder, V. D’Orazi, G. M. de Silva, J. Lin, S. L. Martell, S. Sharma, J. D. Simpson, D. B. Zucker, J. Horner, G. F. Lewis, T. Nordlander, Y.-S. Ting, R. A. Wittenmyer and Galah Collaboration, The GALAH survey: unresolved triple Sun-like stars discovered by the Gaia mission, Monthly notices of the Royal Astronomical Society, 487, 2474 (2019).}
+\item{\textbf{K. Čotar}, T. Zwitter, J. Kos, U. Munari, S. L. Martell, M. Asplund, J. Bland-Hawthorn, S. Buder, G. M. de Silva, K. C. Freeman, S. Sharma, B. Anguiano, D. Carollo, J. Horner, G. F. Lewis, D. M. Nataf, T. Nordlander, D. Stello, Y.-S. Ting, C. Tinney, G. Traven, R. A. Wittenmyer and Galah Collaboration, The	GALAH survey: a catalogue of carbon-enhanced stars and CEMP candidates, Monthly notices of the Royal Astronomical Society, 483, 3196 (2019).}
+\end{enumerate}
+
+\ \\ 
+\noindent
+Scientific papers that were co-authored by the author of this doctoral thesis and were heavily used during the production of this thesis and above listed papers:
+\begin{enumerate}
+	\item{S. Buder, M. Asplund, L. Duong, J. Kos, K. Lind, M. K. Ness, S. Sharma, J. Bland-Hawthorn, A. R. Casey, G. M. De Silva, V. D’Orazi, K. C. Freeman, G. F. Lewis, J. Lin, S. L. Martell, K. J. Schlesinger, J. D. Simpson, D. B. Zucker, T. Zwitter, A. M. Amarsi, B. Anguiano, D. Carollo, L. Casagrande, \textbf{K. Čotar}, P. L. Cottrell, G. Da Costa, X. D. Gao, M. R. Hayden, J. Horner, M. J. Ireland, P. R. Kafle, U. Munari, D. M. Nataf, T. Nordlander, D. Stello, Y.-S. Ting, G. Traven, F. Watson, R. A. Wittenmyer, R. F. G. Wyse, D. Yong, J. C. Zinn and M. Žerjal, The GALAH Survey: second data release, Monthly notices of the Royal Astronomical Society, 478, 4513 (2018).}
+\end{enumerate}
 
 \end{document}
