@@ -1,4 +1,282 @@
-This chapter has been adapted from the published paper titled \textit{The GALAH survey: unresolved triple Sun-like stars discovered by the \G\ mission} \citep{2019MNRAS.487.2474C} that was prepared and written by the author of this Doctoral thesis. The used computer code was published on GitHub platform  \footnote{\url{https://github.com/kcotar/GALAH-survey-Solar-like-triple-stars}} and results of the analysis as a catalogue on VizieR service  \footnote{\url{http://vizier.u-strasbg.fr/viz-bin/VizieR?-source=J/MNRAS/487/2474}}.
+This chapter has been partially adapted from the published paper titled \textit{The GALAH survey: unresolved triple Sun-like stars discovered by the \G\ mission} \citep{2019MNRAS.487.2474C} that was prepared and written by the author of this Doctoral thesis. The used computer code was published on GitHub platform  \footnote{\url{https://github.com/kcotar/GALAH-survey-Solar-like-triple-stars}} and results of the analysis as a catalogue on VizieR service  \footnote{\url{http://vizier.u-strasbg.fr/viz-bin/VizieR?-source=J/MNRAS/487/2474}}.
+
+% ----------------------------------
+% intro to solar twins and their spectra
+% ----------------------------------
+
+\section{Introduction}
+The Sun, begin the closest and most analyzed star is widely used as a reference for the calibration of many fundamental stellar astronomical parameters \cite{2010A&A...522A..98M, 2012MNRAS.426..484D}. This implies a desire to find and catalogues as many stars similar to Sun as possible. They can be used for intra-calibration of observations done with the same setup or inter-calibration between multiple surveys that share observations of the same objects. Stars resembling the Sun in all physical parameters such as luminosity, mass, radius, rotation period, and chemical composition should also have an identical spectrum like our Sun. The definition of such stars, also known as solar twins, was first introduced by \citet{1981A&A....94....1C}, but it is still far from being finalized as it follows evolution of astronomical instrumentation, observational techniques \cite{2017AN....338..442A}, and quality of determined stellar parameters and chemical abundances.
+
+Before the release of accurate parallaxes, nowadays measured by the \G\ satellite, one of the approaches to determine distances of twin stars or its hosting stellar cluster was based on the assumption that solar twins should have the same intrinsic luminosity as the Sun. Therefore its apparent brightness on the sky is directly related to its distance \cite{2015MNRAS.453.1428J, 2016A&A...595A..59M, 2017MNRAS.472.2517J}.
+
+Another widely debated topic is the chemical composition of the Sun and its evolution in time. \citet{2009A&A...508L..17R, 2015A&A...579A..52N} addressed the question if the composition of the Sun is peculiar when compared to other solar twins. Works like these benefit from using spectra with high signal to noise ratio and very high spectral resolution that are especially needed when trying to disentangle if the observed solar chemical composition is a consequence of the planetary system formation \cite{2014A&A...572A..48R} or intrinsic galactic chemical composition during formation of the Sun \cite{2015A&A...579A..52N, 2016A&A...593A..65N, 2020A&A...633L...9J}. However, even the best solar twin candidates (currently tough to be the star 18 Sco \cite{2014ApJ...791...14M}), when observed with the highest possible precision, still show minute differences in the abundance pattern which will make it even harder to disentangle the place where the Sun and its siblings were formed.
+
+% With the increasing number of large all sky surveys, searches for the closest solar twin have been performed on numerous on-going and archival data sets. 
+
+\section{Selection of the best solar-like spectra}
+\label{sec:05_selection}
+Our search for spectra that most resemble spectrum of the Sun uses data acquired by the GALAH survey and few other surveys that used the same telescope and spectrograph. The search is based on the direct comparison between a random acquired stellar spectrum and the reference solar spectrum, where both were observed with the same setup of the HERMES spectrograph.
+
+\subsection{Reference Solar spectrum}
+\label{sec:05_reference}
+Before finding the best solar-like spectra in our data set, the reference spectrum had to be constructed. For its construction, we identified $3708$ twilight flats with the SNR per resolution element in the green HERMES arm greater than 210. Selected spectra were first normalised using the $7^\text{th}$ degree Chebyshev polynomial with an asymmetric sigma clipping ($2\sigma$ low and $3\sigma$ high threshold) that was run for $11$ steps. Normalisation procedure was tailored explicitly for solar-like objects as it excluded wavelength ranges with wide absorption features and regions with no near continuum levels that were determined from the high-resolution spectrum of the Sun created by \citet{2005MSAIS...8..189K}. Especially problematic for the normalisation process is the blue arm that is packed with absorption lines, topped by the H$\beta$ line. Because of high SNR and presence of additional "wiggles" in observed twilight flats, we used a higher degree of polynomial function than in the case of a stellar spectrum normalisation (see Section \ref{sec:05_preprocessing}). Source of identified additional spectra features is not known and might be contributed by a reflection in optics when observing bright targets or by a residual background flux that was not properly removed by the GALAH reduction pipeline \cite{2017MNRAS.464.1259K}
+
+The radial velocity of normalised twilight spectra was determined by correlating an observed spectrum with the high-resolution solar spectrum \cite{2005MSAIS...8..189K}. The peak of the resulting correlation function was determined by fitting the Gaussian function to it. Before correlation, the high-resolution solar spectrum was convolved with a Gaussian kernel to match its resolving power with the HERMES spectrograph and to visually look as close as observed spectra as possible. 
+
+Normalised twilight spectra, shifted to the rest-frame, were then median stacked to generate the final reference solar spectrum. Before it could be used, it was analyzed for possible residual flux offsets that are impossible to remove by the reduction pipeline as we can not acquire background spectrum at the same time as a twilight spectrum. Any residual flux would render too shallow absorption lines in the median reference Solar spectrum. To equalize strengths of absorption lines in our reference Solar spectrum and the high-resolution one, a small linearly changing offset was subtracted from the normalised spectrum that was re-normalised after subtraction. 
+
+\subsection{Stellar spectra preprocessing}
+\label{sec:05_preprocessing}
+Preprocessing of observed stellar spectra began with combined and fluxed spectra that were prepared by the pipeline as an intermediate reduction result. Firstly they were normalised using $5^\text{th}$ degree Chebyshev polynomial and asymmetric sigma clipping ($2\sigma$ low and $3\sigma$ high threshold) that was run for $15$ steps. To determine the level of a continuum as accurately as possible, we masked spectral ranges without near continuum pixels (H$\alpha$ and H$\beta$) during the normalisation process. Normalised spectra were then shifted for the barycentric and radial velocity that was determined by the GALAH pipeline and linearly resampled to the same wavelength step as used by the generated reference solar spectrum. Performing both steps (radial velocity shift and resampling) at the same time retain a quality of the spectrum and reduces the number of resampling steps compared to if we would use already shifted and normalised spectra prepared by the pipeline.
+
+\begin{table}
+	\centering
+	\begin{tabular}{l | l c l | l }
+		Element & Lines & & Element & Lines\\ \hline
+		Al & 4 & & Na & 3\\ 
+		Ba & 2 & & Nd* & 5\\ 
+		C* & 1 & & Ni & 7\\ 
+		Ca & 5 & & O & 3 \\ 
+		Co* & 3 & & Rb* & 1\\ 
+		Cr & 9 & & Ru* & 1\\ 
+		Cu & 2 & & Sc & 10\\ 
+		Eu* & 2 & & Si & 4\\ 
+		Fe & 52 & & Sm* & 2\\ 
+		K* & 1 & & Sr* & 1\\ 
+		La* & 4 & & Ti & 20\\ 
+		Li* & 1 & & V & 17\\ 
+		Mg & 2 & & Y & 4\\ 
+		Mn & 4 & & Zn & 2\\ 
+		Mo* & 2 & & Zr* & 4 \\ 
+	\end{tabular}
+	\caption{Number of absorption lines for different chemical elements that were used to measure similarity between observed and reference spectrum. Elements marked with * are problematic for determination in solar twins because of their shallow or rarely noticeable absorption feature. Total number of absorption lines is 180.}
+	\label{tab:elements_list}
+\end{table}
+
+\subsection{Candidate selection}
+\label{sec:05_candidates}
+As the number of spectra in our set is quite large and some of them have completely different spectrum than the Sun (e.g. hot stars, metal poor giants) we perform initial selection of possible Solar twins purely on the basis of stellar physical parameters determined by \TC\ interpolation pipeline. For this we first had to determine possible offset of our parameters towards the well known stellar parameters for the Sun and benchmark Solar like stars. This can be done by comparing parameters of well studied stars that were also observed as part of The GALAH survey. Table \ref{tab:params} gives reference values of physical parameters for the Sun alongside median parameters of selected twilight flats and their standard deviations. 
+
+\begin{table}
+	\centering
+	\begin{tabular}{r | c | c | c}
+		Object & \Teff\ [K] & \Logg\ [dex] & \Feh\ [dex] \\ \hline
+		Sun & $5771$ & $4.44$ & $0.02$ \\ 
+		Flats & $5605 \pm 40$ & $4.21 \pm 0.06$ & $-0.14 \pm 0.03$ \\ \hline
+		18 Sco & $5810 \pm 80$ & $4.44 \pm 0.03$ & $0.03 \pm 0.01$ \\
+		& $5750 \pm 20 $ & $4.37 \pm 0.1$ & $ 0.05 \pm 0.02$ \\ \hline
+		$\beta$ Hyi & $5873 \pm 45$ & $3.98 \pm 0.02$ & $-0.04 \pm 0.01$ \\
+		& $5784 \pm 5$ & $3.93 \pm 0.01$ & $-0.11 \pm 0.01$ \\ \hline
+		$\mu$ Ara & $5902 \pm 66$ & $4.3 \pm 0.03$ & $0.35 \pm 0.01$ \\
+		& $5657 \pm 20$ & $4.15 \pm 0.01$ & $0.28 \pm 0.01$ \\ \hline
+	\end{tabular}
+	\caption{Stellar physical parameters for objects used to determine possible offsets between published values and values determined by \TC. \rb{Most of the values are flagged in 180325, 18 Sco is problematic because of wrong wavelength solutions. Therefore this table is a bit questionable.}}
+	\label{tab:params}
+\end{table}
+
+Table \ref{tab:params} also shows parameters for three benchmark stars with Solar like properties that were observed and reduced as any other object in our data set. Parameter values in the first line were taken from the published set of \G\ FGK benchmark stars (\cite{2014A&A...564A.133J, 2015A&A...582A..49H}) and the second line gives \TC\ parameters for the same object. From the comparison it is obvious that twilight flats have slightly more under-determined parameters as apposed to other stars used in the comparison. \TC\ trend, of stellar parameters being a bit too low, is observable for all stars and parameters given in the Table \ref{tab:params}. Taking this into consideration, we initially selected stars within broader range of \Teff$ \pm 250 $~K, \Logg$ \pm 0.4 $~dex and \Feh$ \pm 0.3 $~dex around median parameters for twilight flats. Applying parameter cuts to our set, we were left with \rb{92284} spectra that were analyzed further.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{sim_combine_b2.png}
+	\caption{Correlation between different similarity metrics for the objects considered in the rough spectral comparison step.}
+	\label{fig:sim_combine}
+\end{figure}
+
+\subsection{Spectral similarity}
+Similarity between observed spectra and generated reference Solar spectrum was calculated using multiple distance metrics, where identical spectra would be described by the similarity value of 0. Figure \ref{fig:sim_combine} shows that considered metrics are strongly linearly correlated with few outliers. Some degree of the correlation was expected as all of the shown metrics are based on differently weighted per pixel difference between two spectra. Few other similarity indices, like number of the flux values bellow/above the reference spectrum, were also computed but are not shown in the plot. For all the following comparisons we choose to use the Canberra similarity metric that is less sensitive to large outlying flux values caused by the cosmic particle hits than the Euclidean distance. Similarity value determined by the given function heavily depends on the SNR of the evaluated spectrum which effectively decreases its spectral similarity at lower SNR values. To analyze this dependency, the same similarity metric was computed between original reference Solar spectrum and noisy reference that was generated by adding noise with Gaussian distribution to the original spectrum to represent spectra with different SNR values. To determine distribution of similarities, test was repeated 1500 times for every noise level. Smooth dependence between SNR and similarity metric can be described by the following composite of linear and power law function
+\begin{equation}
+\label{equ:sim}
+sim(x) = A \Big(\frac{x-x_{off}}{x_0}\Big)^{-\alpha} + B (x-x_{off}) + C
+\end{equation}
+that was fitted to the resulting points shown in the Figure \ref{fig:similarity_snr}. Parameters $A$, $B$, $C$, $x_0$, $x_{off}$ and $\alpha$ in Equation \ref{equ:sim} are free and were fitted to the simulated similarity data that depend SNR value, here denoted by $x$.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{canberra_b2_flux0_05.png}
+	\caption{Function fitted to the data points describing dependence between spectra SNR and similarity of noisy Solar spectrum in comparison to the original noise free Solar spectrum.}
+	\label{fig:similarity_snr}
+\end{figure}
+
+Another test shown in the Figure \ref{fig:Solar_flux_added} and \ref{fig:similarity_snr_flux} was performed to show how does this SNR relation change if the reference spectrum with simulated noise also has slightly different depths of the absorption lines. Absorption lines deviating from the normalized flux of 1 had its flux levels increased in the steps of 5 \% from 0 to 20 \% of the original normalized flux and then compared to the original reference spectrum in order to assess how slightly different chemical composition affect similarity measure.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{canberra_all_b1.png}
+	\caption{Multiple fitted functions representing relation between SNR and spectral similarity of noisy spectrum for different levels of flux added to the absorption lines.}
+	\label{fig:similarity_snr_flux}
+\end{figure}
+
+For the described similarity computations we used the following wavelength ranges of the HERMES spectra: 4725~-~4895~\AA\ in the blue arm, 5665~-~5865~\AA\ in the green arm, 6485~-~6725~\AA\ in the red arm and 7700~-~7875~\AA\ in the near-infrared spectral arm. Selected ranges are valid for all observed spectra and do not pose any limitations on the number of usable spectra that might have undefined flux values at the range borders because of large radial velocities or construction specifics of the HERMES spectrograph. Similarity between spectra is not computed for the whole specified spectral range, but is limited to known and isolated, not blended spectral absorption lines, representing multiple different chemical elements. Their statistics is given in the Table \ref{tab:elements} and is the same as used by \TC\ abundance determination procedure described in \cite{buder2018}. Around the central wavelength of each absorption line, pixels in the mean range of $0.47$~\AA\ are considered for the comparison.
+
+\subsection{Search for Solar twin spectra}
+To evaluate the similarity between selected subsets of the observed spectra and our created reference Solar spectrum we computed the same distance metric as described before for all comparisons. As initial number of candidate objects determined by the physical parameters was large, further comparison and selection was performed in two steps that greatly wary in the processing complexity.
+
+% groba primerjava
+\subsubsection{Rough spectral comparison}
+In the first step, a fast and robust comparison method based on the similarity values was used to select only the most probable spectra and discard all other that do not match our reference. As the SNR value can greatly wary between spectral arms, especially true for the blue arm, similarity was independently calculated and modeled for every arm. Figure \ref{fig:similarity_b2} shows distribution of similarities determined for candidate objects as a function of their SNR values. Overplotted are simulated relations with different percentages of flux offsets. Objects plotted bellow the lowest curve exhibit similarity better than the theoretical which most likely indicates underestimated SNR value. The selection of probable Solar twin objects in the first step consists of object with similarity measurement better than the theoretical curve representing 10 \% flux offset, which must be true for all analyzed arms in order for the object to be considered Solar twin candidate. Consider every spectral arm individually, we effectively removed objects with the reduction problems in any of them. Applying the similarity cut on maximum difference in the flux levels we select \rb{371} of the most probable Solar twin candidates that were evaluated more thoroughly in the next step.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{canberra_b2_g-all.png}
+	\caption{Distribution of the similarities between observed and reference spectrum in one of the HERMES spectrograph arms. Green curves represent theoretical relations of similarity for spectra with slightly different metalicities. Dost situated near the lowest green curve would suggest that the spectrum is identical to the Solar at given spectral noise level.}
+	\label{fig:similarity_b2}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{selection_step1.png}
+	\caption{Visual comparison between a set of probable Solar twins spectra and the Solar reference spectrum in black. Grayed out regions represent wavelength ranges used in the similarity computation. Chemical element responsible for the observed line is also indicated above the spectra for every absorption line.}
+	\label{fig:selection_step1}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{solar_twins_like_Teff_cannon.png}
+	\includegraphics[width=\columnwidth]{solar_twins_like_Logg_cannon.png}
+	\includegraphics[width=\columnwidth]{solar_twins_like_Fe_H_cannon.png}
+	\caption{Histogram of parameters \Teff, \Logg\ and \Feh\ for selected Solar twin candidates based on their spectral similarity towards the Solar reference spectrum. Red vertical line represents median value of the histogram and black line the Solar value of the same parameter.}
+	\label{fig:step1_params}
+\end{figure}
+
+% fina primerjava
+\subsubsection{Comparison with spectral noise modeling}
+The second comparison step involves modeling of the spectral noise through Gaussian process analysis, implemented in a software packed developed by \cite{hodlr}. Unlike assumed uncorrelated noised used for the generation of the theoretical similarity dependency curves in the first step, real observed spectral noise is correlated between consecutive wavelength pixels. The correlation can be described by a functions that depend only on the wavelength separation between observed pixel and its neighbors or number of steps between them in the case of a constant wavelength step between consecutive recorded fluxes.
+
+To model the observed spectral noise and possible minute dissimilarities in the shape of a normalized continuum levels of the compared spectra, we used two radial kernel functions. Matern 5/2 covariance function defined as
+\begin{equation}
+k_{52}(r^2) = (1 + \sqrt{5 r^2} + \frac{5 r^2}{3}) exp(-\sqrt{5 r^2})
+\end{equation}
+representing fast and short-range pixel to pixel noise variations and Exponential-squared covariance function defined as
+\begin{equation}
+k_{exp}(r^2) = exp(-\frac{r^2}{2})
+\end{equation}
+representing slowly changing differences in continuum levels. Both kernels were linearly added together to a relation used to describe the spectral noise and normalization discrepancies:
+\begin{equation}
+k(A_1, r_1, A_2, r_2) = A_1 k_{52}(r_1) + A_2 k_{exp}(r_2).
+\label{equ:gp_noise}
+\end{equation}
+Free parameters $A_1$ and $A_2$ represent amplitudes of both kernels, $r_1$ and $r_2$ are kernel characteristic widths determining width of individual kernel and its impact on a neighboring pixels, effectively determining a degree of correlation between noise at neighboring pixels. Higher correlation between neighboring flux measurements is reflected in kernels with wider characteristics widths.
+
+After combining the kernels, a Gaussian process is used to draw functions with correlated values (denoted as $GP_{noise}$ from here on) complying with the specified properties of the amplitude and kernel width. The generated function is of the same pixel length as investigated spectrum. 
+
+During precise investigation of the results in the first comparison step we noticed a minute, less than 1\%, differences in continuum levels (observed at the wavelengths without any significant absorption features) between the normalized observed spectrum and reference Solar spectrum. The relation is shown in Figure \ref{fig:cont_level_befor}. As it is clearly correlated with the degree of nose in the spectra, it seems be caused by the asymmetric sigma clipping employed during the normalization process. To correct for this effect, observed normalized spectrum was divided by an additional free normalization parameter $A_{norm}$ that was fitted alongside other free parameters. Normalization correction applied to the spectrum is minute and determined $A_{norm}$ deviates from $1.0$ only for a few thousandths. 
+
+Employed fitting procedure tries to minimize the flux difference $\Delta flux$ between both spectra that are used in the comparison procedure and is defined as:
+\begin{equation}
+\Delta flux = (flux_{observed}/A_{norm}) - (flux_{Solar} + GP_{noise}).
+\label{equ:flux_noise}
+\end{equation}
+Variable $flux_{observed}$ represents one of the ranges of the HERMES spectra and $flux_{Solar}$ its spectral equivalent observed for the Sun. A posterior distribution of such a fitting procedure is shown in the Figure \ref{fig:gp_corne_plot}. As the conditions differ from spectrum to spectrum, the free parameters defined in equations \ref{equ:gp_noise} and \ref{equ:flux_noise} are be defined dependently for every spectrum and its arm.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{170724005101385_corner_b1.png}
+	\caption{Distribution of posteriors considered by the MCMC walkers during the fitting procedure where we are determining free parameters of the model describing the observed spectral noise.}
+	\label{fig:gp_corne_plot}
+\end{figure}
+
+Free parameters were fitted with the implementation of a Bayesian MCMC scheme maintained by \cite{2013PASP..125..306F}. Initial parameter for the amplitude of the spectral noise is set to a spectral variance computed from a difference between observed and reference spectrum. As it was found out that all other parameters do not vary greatly between spectra, they are set to a predetermined fixed value that is arm depended. Initial value of the normalization parameter is set to $1$ and is let to vary for less than $2$ \% in order to prevent over-fitting. Fit is initiated with 30 walkers, whose initial parameters are perturbed in a ball around the original values, so that every walker starts with different initial condition. Distribution of initial parameters in a ball is uniform in order to achieve good coverage of the parameter space that is explored by the MCMC walkers. Every walker is run for 125 steps to get enough samples for construction of posterior distribution shown in the Figure \ref{fig:gp_corne_plot}. The final parameter values are selected as a median value of the posterior distribution. The whole fitting procedure takes about an hour per spectrum on a Xeon cluster node with 48 cores.
+
+After parameter fitting was done, we used determined functions to draw new noisy spectra from the predictive conditional distribution defined by the selected kernels of the Gaussian processes. Observed normalized spectrum and its per pixel uncertainties are used to condition the newly drawn spectra. We draw 1000 different spectra with the same noise and spectral properties as the observed spectrum. From those 1000 samples we computed a median spectrum that should be a close equivalent to the observed spectrum under ideal observing conditions without any noise present in the spectrum. Spectral similarity towards the reference Solar spectrum is computed for the medium spectrum produced by the Gaussian processes. Here we focus on two types of spectral similarities. The first one is combined similarity between all chemical elements and spectral arms. The second is computed on the element by element basis, enabling us to check for deviations in specific chemical element that behaves differently as observed in the Solar spectrum. A condensed spectrum, where only considered absorption lines and its difference towards reference spectrum are shown, is presented in the Figure \ref{fig:gp_compare_plot}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{lithium_sim_hist.png}
+	\caption{Distribution of lithium similarities as determined in the final step of the spectral comparison. Green shaded area represent object with almost exact lithium absorption as observed in Solar spectrum. In the red shaded area we find objects with strong lithium enhancement in their spectrum.}
+	\label{fig:lithium_sim_hist}
+\end{figure}
+
+\subsubsection{Final selection}
+To select the best Solar twins between our observations we considered spectral similarity that was computed for all evaluated chemical elements combined and for every individual element. This distinction is needed as we are evaluating elements with quite different number of absorption lines (see Table \ref{tab:elements} for number of lines) which causes that the total similarity is driven by the absorption lines of Fe, Ti and V, blurring the traces of other elements with only few evaluated absorption lines.
+
+In order to select stars with the age similar to the Sun, special attention was given to the lithium similarity that shows the greatest deviation. From different surveys and comprehensive study performed by \cite{2007A&A...468..663T} it has been demonstrated that the lithium abundance can show deviations in the order of $2$ dex for Solar type stars. Following this we classified all Solar twin candidates into 3 distinct groups depending on their deviation from the Solar spectrum at the position of analyzed lithium 6707 \AA\ line. The classes are show in the similarity distribution presented in the Figure \ref{fig:lithium_sim_hist}, where we defined similarity region that does not show deviation from the Solar spectrum and region with strong lithium enhancement. In between them their is a mixed region where slight lithium enhancement can be present in the spectra. After determining the similarity thresholds, spectra in every region were visually inspected to confirm the correctness of the defined similarity regions.
+
+Out of the 371 Solar twin candidates we selected the best matching candidates based on the following criteria that are also visualized in the Figure \ref{fig:similarities_gp_final}. For a star to be selected as the best matching candidate, its overall similarity towards Solar spectrum must be among the $25$ \% best matching candidates and have at least $10$ best matching chemical elements (same $25$ \% rule applies). For the elemental comparison we considered chemical elements with profound chemical enrichment in the Solar spectrum that are not marked by * in the Table \ref{tab:elements}. This selection also excludes lithium similarity that stands as independent check. By applying given selection criteria we are left with subset of 15 stars with most Solar like spectra. By additional consideration of lithium criteria presented in Figure \ref{fig:lithium_sim_hist} the selection narrows down to 8 stars with comparable lithium depletion as seen in the Sun.
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{spectrum_comp.png}
+	\caption{A plot in the upper panel shows condensed HERMES spectrum of spectral lines considered during spectral comparison. Blue curves represent few of the spectra that were drawn by the Gaussian processes. Under them a Solar spectrum is presented with black curve. Bottom panel indicates difference between considered spectra. Green curve represents flux difference between reference Solar spectrum and observed spectrum. The same difference, but towards the median of all spectra drawn by the Gaussian processes is given in by the red curve.}
+	\label{fig:gp_compare_plot}
+\end{figure*}
+
+\section{Comparison with the literature}
+\label{sec:compare}
+
+\subsection{18 Sco}
+The best known Solar twin to date and one of the \G\ benchmark stars was also observed as part of the GALAH survey. It was observed at four different epoch, giving us excellent possibility to evaluate our pipeline for the detection of solar twins in the survey. All four observations have identified problems with the wavelength solution in one of the spectral arms. As this is the indirect prerequisite for the successful detection, all of them are eliminated in the first comparison step as unlikely candidates for Solar twin.
+\rb{Skoda da je tako, kaj bi s tem? Po seznamih sem nasel da imamo 3 ali 4 opazovanja 18 Sco.}
+
+\subsection{ELODIE archive}
+\cite{2016A&A...587A.131M}
+18 Sco je edini skupni objekt. Cisto prevec svetle tarce za GALAH.
+
+\subsection{Ramirez study}
+\cite{2009A&A...508L..17R}
+18 Sco je edini skupni objekt. Cisto prevec svetle tarce za GALAH.
+
+\subsection{Datson study}
+\cite{2015A&A...574A.124D}
+18 Sco je edini skupni objekt. Cisto prevec svetle tarce za GALAH.
+
+\subsection{Santos study}
+\cite{2016A&A...592A.156D} Cisto prevec svetle tarce za GALAH.
+
+\subsection{M67 solar twins}
+\cite{2008A&A...489..677P} imamo 2 ujemajoca objekta iz main run in nekaj vec (tudi ponovitve) iz commissioninga ko se je delalo kopice. Prva 2 ne zgledata nic podobna soncevemu spektru. Tudi ostali so vecinoma zelo dalec od njega, Li je vsepovsod. Primer slika \ref{fig:twins_67}.
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{twins_m67.png}
+	\caption{HERMES spektri za solar twins v m67. \rb{Gre vn v koncni verziji, samo za primer.}}
+	\label{fig:twins_67}
+\end{figure}
+
+\section{Ponovljena opazovanja}
+Med najboljsimi zbranimi sta bili dve zvedzi opazovani 2-krat. Obe sta bili za 2. korak analize zbrani le v enem primru in nobena nima velikih variacij v rv. 
+
+Za prvo zgleda da je bila ponovitev vrzena zaradi redukcije. Polovica crt v rdecem kanalu je vidno mnogo prevec plitkih.
+
+Za drugi primer gre pa za ponovitev v istem dnevu, najverjeneje zaradi razmer in slabega snr, vsaj sodec po parametrih in spektru.
+
+\rb{Mislim da to sploh nima smisel vkljucevat.}
+
+\section{Follow-up observation}
+In order to evaluate our selection of the best candidates we acquired high resolution Echelle spectrum for one and the only star TYC 502-985-1 that was observable from the Asiago observatory located in the northern hemisphere. Acquired spectrum that spans much wider wavelength range than the HERMES spectrum is presented in the Figure \ref{fig:asiago_spectrum}. Final spectrum consists of three 30 min exposures that were individually wavelength calibrated and had its background flux deducted. Individual  calibrated spectra were then summed together and normalized order by order using 13$^{th}$ degree Chebyshev polynomial function. Normalized Echelle orders were at the end combined into one spectrum covering wavelengths from $\sim$3900 \AA\ to $\sim$7300 \AA. Comparison in the Figure \ref{fig:asiago_spectrum} shows remarkable spectral similarity between high resolution Solar spectrum and the spectrum of observed star. The only perceptible differences between them are caused by the telluric absorption and normalization procedure   where no continuum pixels are present in wider wavelength range.
+
+\section{Results}
+\label{sec:res}
+Following the spectral analysis and comparison described in the previous sections we identified 371 possible Solar twin candidates, out of which we selected 15 best candidates based on the in-depth element by element similarity analysis. In this section we present properties of the stars identified during the direct spectral comparison.
+
+\subsection{Atmospheric parameters}
+Stellar parameters of the Sun and its chemical abundances have been studied thoroughly over the years and can be with certainty used as a reference in our comparison towards detected set of stars. Following their stellar parameter distribution in Figure \ref{fig:step1_params} and abundance distribution in Figure \ref{fig:abund_candidates} we can investigate possible offsets in parameters for Solar like objects determined by \TC\ interpolation procedure. Both figures present only parameter values that are deemed to be reliable - selected by using recommended flags \textit{flag\_cannon}~$==0$ and \textit{flag\_X\_abund\_cannon}~$==0$, where \textit{X} represent measured chemical abundance.
+
+Spectroscopic stellar parameters have been found to be underestimated when compared to Solar values. We show that the median of the \Teff\ distribution for possible Solar twins is too cold for $58$~K, stars are too metal poor for $0.03$~dex and their surface gravity \Logg\ is too weak for $0.1$~dex. Similar offset were for Solar like objects derived by the works of \cite{2010A&A...512A..54C, 2010A&A...522A..98M, 2012MNRAS.426..484D}.
+
+As \TC\ provides abundances corrected for the Solar chemical abundance, every histogram presented in the Figure \ref{fig:abund_candidates} should be centered around the value of $0.0$~dex. We see that this is true for the majority of the elements except, for the Ba and V that deviate from that for $\sim0.1$~dex. High deviations for the elements C, La, Li an Zr can easily be explained as their equivalent widths are extremely small and bellow the detection limit of the \TC\ algorithm. Therefore histograms show only values of highly enhanced members and the computed median of the distribution 
+
+\subsection{Spatial distribution}
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{l_b.png}
+	\caption{Distribution of Solar twins presented in the Galactic coordinates. Red dots indicates position of the best candidates for Solar twins among the analyzed HERMES spectra. Observed stellar fields, used in our analysis are shaded in gray.}
+	\label{fig:l_b_twins}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{mag_parallax_gaia.png}
+	\caption{Following the statement that our twin candidates all have very similar absolute magnitude, we produced this plot showing connection between determined \G\ parallax and apparent G magnitude. Theoretical relation for the Sun with absolute magnitude G = $4.68$ (computed from relations given by \protect\cite{2018arXiv180409368E}) is shown with the green curve.}
+	\label{fig:mag_parallax}
+\end{figure}
+
+As observable in the Figure \ref{fig:l_b_twins} detections are evenly spread across the sky and among observed fields, without any strong grouping in any of the observable directions.
+
+Combing them with the measurements derived from the observations performed by the \G\ satellite, we can analyze their position in the Galaxy. Matching Solar twin candidates with the \G\ DR2 sources (\cite{2018arXiv180409365G}) gives us 365 positive matches. One of the sources was subsequently removed because of its large parallax error and small parallax value, positioning it much further away than any other star. From the remaining data we can deduce that all of our candidates are located within the radius of $900$~pc away from the Sun and most probably belong to the Galactic thin disk population. With few exceptions they are all located within $400$~pc away from the Galactic plane.
+
+% ----------------------------------
+% binaries, triples and multiples
+% ----------------------------------
 
 \section{Abstract}
 The latest {\it Gaia} data release enables us to accurately identify stars that are more luminous than would be expected on the basis of their spectral type and distance. During an investigation of the 329 best Solar twin candidates uncovered among the spectra acquired by the GALAH survey, we identified 64 such over-luminous stars. In order to investigate their exact composition, we developed a data-driven methodology that can generate a synthetic photometric signature and spectrum of a single star. By combining multiple such synthetic stars into an unresolved binary or triple system and comparing the results to the actual photometric and spectroscopic observations, we uncovered 6 definitive triple stellar system candidates and an additional 14 potential candidates whose combined spectrum mimics the Solar spectrum. Considering the volume correction factor for a magnitude limited survey, the fraction of probable unresolved triple stars with long orbital periods is $\sim$2~\%. Possible orbital configurations of the candidates were investigated using the selection and observational limits. To validate the discovered multiplicity fraction, the same procedure was used to evaluate the multiplicity fraction of other stellar types. 
