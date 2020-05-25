@@ -129,61 +129,55 @@ The spectral comparison described in Section \ref{sec:spec_comp_twins} was indep
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{selection_step1.png}
-	\caption{Visual comparison between a set of the most probable solar twins spectra and the solar reference spectrum shown in black. Grayed out regions represent wavelength ranges used in the similarity computation descriobe in Section \ref{sec:spec_comp_twins}. Chemical element responsible for the observed line is also indicated above the spectra for every absorption line.}
+	\caption{Visual comparison between a set of the most probable solar twins spectra and the solar reference spectrum shown in black. Grayed out regions represent wavelength ranges used in the similarity computation described in Section \ref{sec:spec_comp_twins}. Chemical element responsible for the observed line is also indicated above the spectra for every absorption line.}
 	\label{fig:selection_step1_twins}
 \end{figure}
 
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=\columnwidth]{solar_twins_like_Teff_cannon.png}
+%	\includegraphics[width=\columnwidth]{solar_twins_like_Logg_cannon.png}
+%	\includegraphics[width=\columnwidth]{solar_twins_like_Fe_H_cannon.png}
+%	\caption{Histogram of parameters \Teff, \Logg\ and \Feh\ for selected Solar twin candidates based on their spectral similarity towards the Solar reference spectrum. Red vertical line represents median value of the histogram and black line the Solar value of the same parameter.}
+%	\label{fig:step1_params}
+%\end{figure}
+
+\section{Chemical composition}
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{solar_twins_like_Teff_cannon.png}
-	\includegraphics[width=\columnwidth]{solar_twins_like_Logg_cannon.png}
-	\includegraphics[width=\columnwidth]{solar_twins_like_Fe_H_cannon.png}
-	\caption{Histogram of parameters \Teff, \Logg\ and \Feh\ for selected Solar twin candidates based on their spectral similarity towards the Solar reference spectrum. Red vertical line represents median value of the histogram and black line the Solar value of the same parameter.}
-	\label{fig:step1_params}
+	\includegraphics[width=\textwidth]{abund_all_selection.png}
+	\label{fig:abund_candidates}
+	\caption{\rb{TODO ali pa tudi ne, mogoce plot s starostmi} Normalized distribution of unflaged abundance values determined by \TC\ procedure for the complete set of Solar twin candidates. Median value and one sigma deviation are marked by the red vertical lines in the plot. Values on the left represent number of used abundance values for the construction of histogram and its median deviation from zero abundance value that should represent Solar abundance after \TC\ corrects for the abundance value measured in the HERMES Solar spectra as explained by \protect\cite{buder2018}.}
 \end{figure}
+
 
 \section{Follow-up observation}
-In order to evaluate our selection of the best candidates we acquired high resolution Echelle spectrum for one and the only star TYC 502-985-1 that was observable from the Asiago observatory located in the northern hemisphere. Acquired spectrum that spans much wider wavelength range than the HERMES spectrum is presented in the Figure \ref{fig:asiago_spectrum}. Final spectrum consists of three 30 min exposures that were individually wavelength calibrated and had its background flux deducted. Individual  calibrated spectra were then summed together and normalized order by order using 13$^{th}$ degree Chebyshev polynomial function. Normalized Echelle orders were at the end combined into one spectrum covering wavelengths from $\sim$3900 \AA\ to $\sim$7300 \AA. Comparison in the Figure \ref{fig:asiago_spectrum} shows remarkable spectral similarity between high resolution Solar spectrum and the spectrum of observed star. The only perceptible differences between them are caused by the telluric absorption and normalization procedure   where no continuum pixels are present in wider wavelength range.
-
-\section{Results}
-\label{sec:res}
-Following the spectral analysis and comparison described in the previous sections we identified 371 possible Solar twin candidates, out of which we selected 15 best candidates based on the in-depth element by element similarity analysis. In this section we present properties of the stars identified during the direct spectral comparison.
-
-\subsection{Atmospheric parameters}
-Stellar parameters of the Sun and its chemical abundances have been studied thoroughly over the years and can be with certainty used as a reference in our comparison towards detected set of stars. Following their stellar parameter distribution in Figure \ref{fig:step1_params} and abundance distribution in Figure \ref{fig:abund_candidates} we can investigate possible offsets in parameters for Solar like objects determined by \TC\ interpolation procedure. Both figures present only parameter values that are deemed to be reliable - selected by using recommended flags \textit{flag\_cannon}~$==0$ and \textit{flag\_X\_abund\_cannon}~$==0$, where \textit{X} represent measured chemical abundance.
-
-Spectroscopic stellar parameters have been found to be underestimated when compared to Solar values. We show that the median of the \Teff\ distribution for possible Solar twins is too cold for $58$~K, stars are too metal poor for $0.03$~dex and their surface gravity \Logg\ is too weak for $0.1$~dex. Similar offset were for Solar like objects derived by the works of \cite{2010A&A...512A..54C, 2010A&A...522A..98M, 2012MNRAS.426..484D}.
-
-As \TC\ provides abundances corrected for the Solar chemical abundance, every histogram presented in the Figure \ref{fig:abund_candidates} should be centered around the value of $0.0$~dex. We see that this is true for the majority of the elements except, for the Ba and V that deviate from that for $\sim0.1$~dex. High deviations for the elements C, La, Li an Zr can easily be explained as their equivalent widths are extremely small and bellow the detection limit of the \TC\ algorithm. Therefore histograms show only values of highly enhanced members and the computed median of the distribution 
-
-\subsection{Spatial distribution}
-\begin{figure}
-	\centering
-	\includegraphics[width=\columnwidth]{l_b.png}
-	\caption{Distribution of Solar twins presented in the Galactic coordinates. Red dots indicates position of the best candidates for Solar twins among the analyzed HERMES spectra. Observed stellar fields, used in our analysis are shaded in gray.}
-	\label{fig:l_b_twins}
-\end{figure}
+In order to evaluate our selection of the best candidates, we acquired multiple high-resolution Echelle spectra. Here we present the spectrum of a star TYC 502-985-1 that was one of our best candidates and is observable from the Asiago observatory located in the northern hemisphere. The acquired spectrum that spans a much wider wavelength range than the HERMES spectrum is presented in Figure \ref{fig:asiago_spectrum_twin}. The final spectrum consists of three $30$~min long exposures that were individually wavelength calibrated and had its background flux deducted. Individual calibrated spectra were then summed together and normalised order by order using 13$^{th}$ degree Chebyshev polynomial function. Normalised Echelle orders were at the end combined into one continuous spectrum covering wavelengths from $\sim$3900 to $\sim$7300 \AA. Comparison in Figure \ref{fig:asiago_spectrum_twin} shows remarkable spectral similarity between the degraded (to a common resolving power) high-resolution solar spectrum \cite{2005MSAIS...8..189K} and the spectrum of observed star. The only perceptible differences between them are caused by the telluric absorption and normalisation procedure, especially where no continuum pixels are present in a wider wavelength range.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{mag_parallax_gaia.png}
-	\caption{Following the statement that our twin candidates all have very similar absolute magnitude, we produced this plot showing connection between determined \G\ parallax and apparent G magnitude. Theoretical relation for the Sun with absolute magnitude G = $4.68$ (computed from relations given by \protect\cite{2018arXiv180409368E}) is shown with the green curve.}
-	\label{fig:mag_parallax}
+	\includegraphics[width=\textwidth]{asiago_ref_comp.pdf}
+	\label{fig:asiago_spectrum_twin}
+	\caption{Follow up observation of the star TYC 502-985-1. Our observed and normalised spectrum is shown with the red curve and high-resolution solar spectrum convolved to the same resolving power in black. Labels on the left side give wavelength ranges of the individual subplot. To generate this plot, shown subsets of both spectra were renormalized with a linear function and the same sigma clipping levels.}
 \end{figure}
-
-As observable in the Figure \ref{fig:l_b_twins} detections are evenly spread across the sky and among observed fields, without any strong grouping in any of the observable directions.
-
-Combing them with the measurements derived from the observations performed by the \G\ satellite, we can analyze their position in the Galaxy. Matching Solar twin candidates with the \G\ DR2 sources (\cite{2018arXiv180409365G}) gives us 365 positive matches. One of the sources was subsequently removed because of its large parallax error and small parallax value, positioning it much further away than any other star. From the remaining data we can deduce that all of our candidates are located within the radius of $900$~pc away from the Sun and most probably belong to the Galactic thin disk population. With few exceptions they are all located within $400$~pc away from the Galactic plane.
 
 % ----------------------------------
 % binaries, triples and multiples
 % ----------------------------------
 
-\section{Abstract}
-The latest {\it Gaia} data release enables us to accurately identify stars that are more luminous than would be expected on the basis of their spectral type and distance. During an investigation of the 329 best Solar twin candidates uncovered among the spectra acquired by the GALAH survey, we identified 64 such over-luminous stars. In order to investigate their exact composition, we developed a data-driven methodology that can generate a synthetic photometric signature and spectrum of a single star. By combining multiple such synthetic stars into an unresolved binary or triple system and comparing the results to the actual photometric and spectroscopic observations, we uncovered 6 definitive triple stellar system candidates and an additional 14 potential candidates whose combined spectrum mimics the Solar spectrum. Considering the volume correction factor for a magnitude limited survey, the fraction of probable unresolved triple stars with long orbital periods is $\sim$2~\%. Possible orbital configurations of the candidates were investigated using the selection and observational limits. To validate the discovered multiplicity fraction, the same procedure was used to evaluate the multiplicity fraction of other stellar types. 
+\section{Absolute magnitudes of solar twin candidates}
+The latest {\it Gaia} data release enables us to accurately determine absolute magnitudes for the majority of stars in the sky. Given the fact that all our determined solar-like stars have similar spectra, we expected their absolute magnitudes to be almost the same. When we plotted their apparent magnitudes against their measured parallaxes, shown in Figure \ref{fig:par_gmean}, it became evident that this assumption does not hold for all stars in our set. A fraction of them appeared to be overluminous and could be unresolved stellar multiple systems with two or more near-identical stars. As the multiplicity is not uncommon among solar-type stars (see Section \ref{sec:multiplicity_intro_twins}), we developed a data-driven model in Section \ref{sec:models_all} that was used to model observed spectrum and absolute magnitudes of our solar twin candidates.
 
-\section{Introduction}
-The investigation of Solar-type stars in the Solar neighbourhood has revealed that around half of them are found in binary or more complex stellar systems \citep{2010ApJS..190....1R, 2013ARA&A..51..269D, 2017ApJS..230...15M}. Of all multiple systems, about 13~\% are part of higher-order hierarchical systems \citep{2010ApJS..190....1R, 2014AJ....147...87T}. Beyond the Solar neighbourhood, the angular separation between members of such multiple star systems becomes too small for their components to be spatially resolvable in the sky. As a result, all stellar components contribute to the light observed by spectroscopic, photometric, and astrometric surveys. It has been suggested that the population of binaries in the field could be even higher than in the Solar neighbourhood \citep{2000A&A...361..770Q}, therefore a combination of multiple complementary approaches must be used to detect and analyse multiple stellar systems with different properties \citep{2017ApJS..230...15M}.
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\textwidth]{mag_parallax_gaia_ebv_c3_07.png}
+	\caption{Parallax versus measured apparent \G\ G magnitude for our solar twin candidates. Stars marked with black crosses have a significant normalised astrometric uncertainties (RUWE~>~$1.4$) which may lead to wrongly determined distance and consequently their absolute magnitude. The dashed line represents an absolute theoretical magnitude of the Sun G~=~$4.68$ as it would be observed at different parallaxes. The solar absolute magnitude was computed from the relations given by \citet{2018arXiv180409368E}. Similarly, the relations for a binary and a triple system composed of multiple solar twins are plotted with the dash-dotted and dotted line.}
+	\label{fig:par_gmean}
+\end{figure}
+
+\section{Solar-type stars and their multiplicity}
+\label{sec:multiplicity_intro_twins}
+The investigation of solar-type stars in the solar neighbourhood has revealed that around half of them are found in binary or more complex stellar systems \citep{2010ApJS..190....1R, 2013ARA&A..51..269D, 2017ApJS..230...15M}. Of all multiple systems, about 13~\% are part of higher-order hierarchical systems \citep{2010ApJS..190....1R, 2014AJ....147...87T}. Beyond the solar neighbourhood, the angular separation between members of such multiple systems becomes too small for their components to be spatially resolvable in the sky. Spectroscopic, photometric, and astrometric surveys observe those sources as single light points. It has been suggested that the population of binaries in the field could be even higher than in the solar neighbourhood \citep{2000A&A...361..770Q}. Therefore a combination of multiple complementary approaches must be used to detect and analyse multiple stellar systems with different properties \citep{2017ApJS..230...15M}.
 
 If the orbital period of such a system is relatively short, with high orbital velocities, it can be spectroscopically identified as a multiple system in two ways. When the components are of comparable luminosities, the effect of multiple absorption lines can be observed in the system's spectrum. Such an object is also known as a double-lined binary (SB2) system \citep{2004A&A...424..727P, 2010AJ....140..184M, 2017PASP..129h4201F, 2017A&A...608A..95M}. By contrast, a single-lined binary (SB1) system does not show the same effect, as the secondary component is too faint to significantly contribute to the observables. Short period SB1 systems can be identified from the periodic radial velocity variations if multi-epoch spectroscopy is available \citep{1991A&A...248..485D, 2004A&A...418..989N, 2011AJ....141..200M, 2016AJ....151...85T, 2018ApJ...854..147B}. Other extrema are very wide binaries \citep{1988ApJ...335L..47G, 1990AJ....100.1968C, 1995ApJ...441..200G, 2009ApJ...703.1511K, 2011ApJS..192....2S, 2017MNRAS.472..675A, 2018MNRAS.480.4302C}, and co-moving pairs \citep{2017AJ....153..257O, 2019AJ....157...78J} that can only be identified by their spatial proximity and common velocity vector.
 
@@ -228,13 +222,6 @@ The selection of the most probable Solar twin candidates observed in the scope o
 	distance_{Canberra}(f_{\odot}, f_{obs}) = \sum_{\lambda}^{\ } \frac{|f_{\odot,\lambda} - f_{obs,\lambda}|}{|f_{\odot,\lambda}| + |f_{obs,\lambda}|},
 \end{equation}
 where $f_{\odot}$ is the reference Solar spectrum and $f_{obs}$ observed spectrum. This avoided the need for prior knowledge about the physical parameters of the considered stars. Observed spectra were compared with reference twilight Solar spectrum that was acquired by the same spectrograph. The comparison was done in two steps. First, the observed spectra were compared arm by arm, where only 7~\% of the best matching candidates were selected for every HERMES arm. The selection does not consist of only one hard threshold on spectral similarity, but it varies as a power law of spectral SNR. Larger discrepancies between spectra are therefore allowed for spectra with low SNR. The final selection consisted of a set of stars whose spectra were adequately similar to the Solar spectrum in every arm. Further processing consisted of modelling the spectral noise and the comparison of individual chemical abundances. For details about spectral comparison and Solar twin determination see \v{C}otar et al. (in preparation). The parameter distribution for the selected set of objects is presented in Figure \ref{fig:twins_stats}. As the computation of \Logg\ uses prior knowledge about the absolute magnitude of a star, lower \Logg\ values are attributed to objects that exhibit excess luminosity. 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\columnwidth]{mag_parallax_gaia_ebv_c3_07.png}
-	\caption{Parallax versus measured apparent \G\ G magnitude for our Solar twin candidates. Stars marked with black crosses have large normalised astrometric uncertainties (RUWE~>~$1.4$) which may lead to wrongly determined distance and consequently multiplicity results. The dashed line represents a theoretical absolute magnitude of the Sun as it would be observed at different parallaxes. Similarly, the relation for a binary and a triple system composed of multiple Solar twins are plotted with the dash-dotted and dotted line.}
-	\label{fig:par_gmean}
-\end{figure}
 
 \subsection{Candidate multiple systems}
 \label{sec:multi_cand}
