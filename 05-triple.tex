@@ -1,10 +1,13 @@
 This chapter has been partially adapted from the published paper titled \textit{The GALAH survey: unresolved triple Sun-like stars discovered by the \G\ mission} \citep{2019MNRAS.487.2474C} that was prepared and written by the author of this Doctoral thesis. The used computer code was published on GitHub platform  \footnote{\url{https://github.com/kcotar/GALAH-survey-Solar-like-triple-stars}} and results of the analysis as a catalogue on VizieR service  \footnote{\url{http://vizier.u-strasbg.fr/viz-bin/VizieR?-source=J/MNRAS/487/2474}}.
 
+So far we dealt with spectral peculiarities that are directly observable from the acquired spectra. In the case of multiple stellar systems, that might not be always true. As all of stars in a given system contribute to light received by the observer, the object must be treated as multiple to properly determine physical properties and abundances of an individual component. But to get the identification that object must be treated as multiple a single spectrum might not be enough as it does not reveal dynamics of the components. In this chapter, we show a possible way to identify and characterize multiple objects using data-driven machine learning approaches. We first focused on solar twin stars whose importance is given in Section \ref{sec:intro_solar} and their selection among the \Gh\ spectra described in Section \ref{sec:05_selection}. Their homogeneity of chemical composition (important for chemical tagging) is given Section \ref{sec:05_chem_compos}. 
+ 
 % ----------------------------------
 % intro to solar twins and their spectra
 % ----------------------------------
 
 \section{Introduction}
+\label{sec:intro_solar}
 The Sun, begin the closest and most analyzed star is widely used as a reference for the calibration of many fundamental stellar astronomical parameters \cite{2010A&A...522A..98M, 2012MNRAS.426..484D}. This implies a desire to find and catalogues as many stars similar to Sun as possible. They can be used for intra-calibration of observations done with the same setup or inter-calibration between multiple surveys that share observations of the same objects. Stars resembling the Sun in all physical parameters such as luminosity, mass, radius, rotation period, and chemical composition should also have an identical spectrum like our Sun. The definition of such stars, also known as solar twins, was first introduced by \citet{1981A&A....94....1C}, but it is still far from being finalized as it follows evolution of astronomical instrumentation, observational techniques \cite{2017AN....338..442A}, and quality of determined stellar parameters and chemical abundances.
 
 Before the release of accurate parallaxes, nowadays measured by the \G\ satellite, one of the approaches to determine distances of twin stars or its hosting stellar cluster was based on the assumption that solar twins should have the same intrinsic luminosity as the Sun. Therefore its apparent brightness on the sky is directly related to its distance \cite{2015MNRAS.453.1428J, 2016A&A...595A..59M, 2017MNRAS.472.2517J}.
@@ -56,19 +59,19 @@ As the number of spectra in our set is quite large (more than $600,000$) and som
 	\end{tabular}
 \end{table}
 
-Table \ref{tab:sim_combine_twins} also shows parameters for three benchmark stars with Solar like properties that were observed and reduced as any other object in our data set. Parameter values in the first line were taken from the published set of \G\ FGK benchmark stars (\cite{2014A&A...564A.133J, 2015A&A...582A..49H}) and the second line gives \TC\ parameters for the same object. From the comparison it is obvious that twilight flats have slightly more under-determined parameters as apposed to other stars used in the comparison. \TC\ trend, of stellar parameters being a bit too low, is observable for all stars and parameters given in the Table \ref{tab:params}. Taking this into consideration, we initially selected stars a within broader range of \Teff$ \pm 250 $~K, \Logg$ \pm 0.4 $~dex and \Feh$ \pm 0.3 $~dex around median parameters of twilight flats. Applying parameter cuts to our data set, we were left with 92284 spectra that were analyzed further.
+Table \ref{tab:sim_combine_twins} also shows parameters for three benchmark stars with Solar like properties that were observed and reduced as any other object in our data set. Parameter values in the first line were taken from the published set of \G\ FGK benchmark stars (\cite{2014A&A...564A.133J, 2015A&A...582A..49H}) and the second line gives \TC\ parameters for the same object. From the comparison it is obvious that twilight flats have slightly more under-determined parameters as apposed to other stars used in the comparison. \TC\ trend, of stellar parameters being a bit too low, is observable for all stars and parameters given in the Table \ref{tab:params_twins}. Taking this into consideration, we initially selected stars a within broader range of \Teff$ \pm 250 $~K, \Logg$ \pm 0.4 $~dex and \Feh$ \pm 0.3 $~dex around median parameters of twilight flats. Applying parameter cuts to our data set, we were left with $92,284$ spectra that were analyzed further.
 
 \subsection{Spectral similarity}
 \label{sec:spec_comp_twins}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.75\textwidth]{sim_combine_b2.png}
+	\includegraphics[width=0.6\textwidth]{sim_combine_b2.png}
 	\caption{Correlation between different similarity metrics for the objects considered in the rough spectral comparison step.}
 	\label{fig:sim_combine_twins}
 \end{figure}
 
-The similarity between observed spectra and generated reference solar spectrum was calculated using multiple distance metrics, where identical spectra are described by the similarity value of 0. Figure \ref{fig:sim_combine} shows that all considered metrics are strongly linearly correlated with few outliers. Some degree of the correlation was expected as all of the shown metrics are based on differently weighted per pixel difference between two spectra. For all the following comparisons we choose to use the Canberra distance metric \citep{Lance1967MixedDataCP} that is less sensitive to large, unnatural outlying flux values than the Euclidean distance and is defined as 
+The similarity between observed spectra and generated reference solar spectrum was calculated using multiple distance metrics, where identical spectra are described by the similarity value of 0. Figure \ref{fig:sim_combine_twins} shows that all considered metrics are strongly linearly correlated with few outliers. Some degree of the correlation was expected as all of the shown metrics are based on differently weighted per pixel difference between two spectra. For all the following comparisons we choose to use the Canberra distance metric \citep{Lance1967MixedDataCP} that is less sensitive to large, unnatural outlying flux values than the Euclidean distance and is defined as 
 \begin{equation}
 	\label{equ:equ_canberra}
 	distance_{Canberra}(f_{\odot}, f_{obs}) = \sum_{\lambda}^{\ } \frac{|f_{\odot,\lambda} - f_{obs,\lambda}|}{|f_{\odot,\lambda}| + |f_{obs,\lambda}|},
@@ -82,7 +85,7 @@ that was fitted to the resulting points shown in the Figure \ref{fig:similarity_
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.75\textwidth]{canberra_b2_flux0_05.png}
+	\includegraphics[width=0.6\textwidth]{canberra_b2_flux0_05.png}
 	\caption{Equation \ref{equ:sim_twins} fitted to the simulated data points describing dependence between spectral SNR and Canberra distance metric of noisy solar spectrum in comparison towards the original noise free spectrum of the Sun.}
 	\label{fig:similarity_snr_twins}
 \end{figure}
@@ -119,7 +122,7 @@ We used the above-described similarity distance (Equation \ref{equ:equ_canberra}
 \subsubsection{Best candidates}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.75\textwidth]{canberra_b3_07_envelope.png}
+	\includegraphics[width=0.6\textwidth]{canberra_b3_07_envelope.png}
 	\caption{Equation \ref{equ:sim_twins} was fitted to thresholding values, denoted with red downwards arrows, that delineated 7\% of the most similar spectra in every narrow SNR bin. The resulting fit on the thresholding values is represented by the blue dashed line. Shown plot is made for the red spectral arm.}
 	\label{fig:envelope_fit_twins}
 \end{figure}
@@ -133,16 +136,8 @@ The spectral comparison described in Section \ref{sec:spec_comp_twins} was indep
 	\label{fig:selection_step1_twins}
 \end{figure}
 
-%\begin{figure}
-%	\centering
-%	\includegraphics[width=\columnwidth]{solar_twins_like_Teff_cannon.png}
-%	\includegraphics[width=\columnwidth]{solar_twins_like_Logg_cannon.png}
-%	\includegraphics[width=\columnwidth]{solar_twins_like_Fe_H_cannon.png}
-%	\caption{Histogram of parameters \Teff, \Logg\ and \Feh\ for selected Solar twin candidates based on their spectral similarity towards the Solar reference spectrum. Red vertical line represents median value of the histogram and black line the Solar value of the same parameter.}
-%	\label{fig:step1_params}
-%\end{figure}
-
 \section{Chemical composition}
+\label{sec:05_chem_compos}
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{abund_all_selection.png}
@@ -170,7 +165,7 @@ The latest {\it Gaia} data release enables us to accurately determine absolute m
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.75\textwidth]{mag_parallax_gaia_ebv_c3_07.png}
+	\includegraphics[width=0.6\textwidth]{mag_parallax_gaia_ebv_c3_07.png}
 	\caption{Parallax versus measured apparent \G\ G magnitude for our solar twin candidates. Stars marked with black crosses have a significant normalised astrometric uncertainties (RUWE~>~$1.4$) which may lead to wrongly determined distance and consequently their absolute magnitude. The dashed line represents an absolute theoretical magnitude of the Sun G~=~$4.68$ as it would be observed at different parallaxes. The solar absolute magnitude was computed from the relations given by \citet{2018arXiv180409368E}. Similarly, the relations for a binary and a triple system composed of multiple solar twins are plotted with the dash-dotted and dotted line.}
 	\label{fig:par_gmean}
 \end{figure}
@@ -190,7 +185,7 @@ In the scope of the GALactic Archaeology with HERMES (GALAH) survey, most stars 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{multimagplotebvc307.png}
+	\includegraphics[width=0.8\textwidth]{multimagplotebvc307.png}
 	\caption{Violin density plots showing the distribution of extinction-corrected absolute magnitudes in multiple photometric systems. Separate distributions are given for stars that we considered as single and multiple in our analysis. Star symbols indicate absolute magnitude of the Sun \citep{2018ApJS..236...47W}. The bottom panel shows a difference between the median magnitudes of both distributions.}
 	\label{fig:viol_photometry}
 \end{figure}
@@ -209,7 +204,7 @@ For a broader wavelength coverage, additional photometric data were taken from t
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{solar_twins_like_07_ebv_c3.png}
+	\includegraphics[width=0.6\textwidth]{solar_twins_like_07_ebv_c3.png}
 	\caption{Distribution of physical parameters for discovered Solar twin candidates. Values above the plots represent difference between median of the distribution (solid vertical line) and actual Solar values (dashed vertical line).}
 	\label{fig:twins_stats}
 \end{figure}
@@ -235,7 +230,7 @@ Confirmation that this extra flux could be contributed by the unseen companion a
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{mag_hr_gaia_bin-multi_evol_mh000_nores_ebv_c3_07.png}
+	\includegraphics[width=0.6\textwidth]{mag_hr_gaia_bin-multi_evol_mh000_nores_ebv_c3_07.png}
 	\caption{\G\ extinction corrected absolute G magnitude and colour index computed from G$_{BP}$, and G$_{RP}$ bands. Stars marked with black crosses have large normalised astrometric uncertainty (RUWE~>~$1.4$). The green dashed line represents a threshold that was used as a delimiter between objects treated as multiple and single stars. Overlaid evolutionary tracks, constructed from the PARSEC isochrones \citep{2017ApJ...835...77M}, represent an evolution of stars with Solar-like initial mass M$_{ini}$ and metallicity \Mh~=~0 for stellar ages between $0.1$ and $12$~Gyr.}
 	\label{fig:gabs_colour}
 \end{figure}
@@ -261,7 +256,7 @@ Using the valid \TC\ stellar parameters, the inferred and corrected absolute mag
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{kiel_cannon_contour_iDR3.png}
+	\includegraphics[width=0.6\textwidth]{kiel_cannon_contour_iDR3.png}
 	\caption{Complete observational set of valid stellar parameters shown as a varied density of grey dots. Contours around the diagram illustrate a coverage of parameter space in different \Feh\ bins. Overlaid orange dashed curve represents a relation on the main sequence from where single stars considered in the fit are drawn. Additionally, black dashed linear line represents arbitrarily defined limit between giant and dwarf stars that were used in the process of training a spectroscopic single star model.}
 	\label{fig:kiel_cannon}
 \end{figure}
@@ -303,12 +298,12 @@ where $M$ and $\sigma$ represent extinction corrected absolute magnitudes, and t
 
 To determine the best possible combination of \Teff\ values, we initiate the fit with $1200$ uniformly distributed random combinations of initial temperature values that span the parameter space shown in Figure \ref{fig:kiel_cannon}. The number of initial combinations is intentionally high in order to sufficiently explore the temperature space. Excessive or repeated variations of initial parameters are rearranged by a prior limitation that the temperatures of components must be decreasing, therefore \Teffn{1}~>=~\Teffn{2}~>=~\Teffn{3} in the case of a triple system (example of used initial walker parameters is shown in Figure \ref{fig:teff_initial_walkers}). The initial conditions are run for 200 steps. The number of steps was selected in such a way to ensure a convergence of all considered cases (example of the walkers convergence is shown in Figure \ref{fig:walkers_logprob}). The distribution of priors for such a run is shown as a corner plot in Figure \ref{fig:posterior_dist}. After that, only the best 150 walkers are kept, their values perturbed by 2~\%, and run for another 200 steps to determine the posterior distribution of the parameters varied during the MCMC fit. This two-step run is needed to speed up the process and discard solutions with lower $\ln p_{P}$. During the initial tests, we found that the investigated parameter space can have multiple local minima which attract walkers, especially in the case of a triple system.
 
-\begin{figure*}
+\begin{figure}
 	\centering
-	\includegraphics[width=0.9\textwidth]{150408004101169_p1884_corner_3star_00.png}
+	\includegraphics[width=\textwidth]{150408004101169_p1884_corner_3star_00.png}
 	\caption{Distribution of considered posteriors during the initial MCMC photometric fit for one of the objects that was at the end classified as a triple candidate. As the plots show the first step in the fitting procedure that explores the complete parameter space, the distributions are not expected to be smooth because of possible multiple local minima. Values indicated on the scatter plots represent medians for the 10~\% of the best fitting solutions.}
 	\label{fig:posterior_dist}
-\end{figure*}
+\end{figure}
 
 After the completion of all MCMC steps, the considered parameter combinations are ordered by their log-likelihood in descending order. Of those, only 10~\% of the best fitting combinations are used to compute final \Teffn{[1-3]}\ values. They are computed as the median of the selected best combinations. 
 
@@ -396,7 +391,7 @@ As the photometric and spectroscopic fits do not always agree on the best config
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{mag_hr_gaia_bin-multi_iso_45Gyr_res_ebv_c3_07.png}
+	\includegraphics[width=0.6\textwidth]{mag_hr_gaia_bin-multi_iso_45Gyr_res_ebv_c3_07.png}
 	\caption{Showing the same data points as Figure \ref{fig:gabs_colour} with indicated definite triple (green dots), possible triple (red dots), binary (blue dots), and possible binary stellar systems (orange dots). All other classes are shown with black dots. Overplotted are PARSEC isochrones \citep{2017ApJ...835...77M} for stars with the age of $4.5$~Gyr and different metallicities.}
 	\label{fig:gabs_binmulti}
 \end{figure}
@@ -406,7 +401,7 @@ The classification produced using these rules is shown as colour coded \G\ colou
 
 \subsection{Quality flags}
 \label{sec:quaflags}
-In additional to our final classification, we also provide an additional quality checks that might help to identify cases for which our method might return questionable determination of a stellar configuration. Every of those checks, listed in Table \ref{tab:q_flag}, is represented by one bit of a parameter \texttt{flag} in the final published table (Table \ref{tab:out_table}). The first bit gives us an indication of whether the object could have an uncertain astrometric solution, whereas the second and the third bits indicate if the final fitted solution has a worse match with the observations than the parameters produced by the \TC\ pipeline. To evaluate this, we used the original stellar parameters reported for the object to construct their photometric and spectroscopic synthetic model that was compared to the observations by computing their $\chi^2$ similarity (\texttt{m\_sim\_p} and \texttt{m\_sim\_f} in Table \ref{tab:out_table}). The resulting fitted spectrum or photometric signature is marked as deviating if its similarity towards observations is worse than for the reported one star parameters. This might not be the best indication of possible mismatch as it is common that \TC\ parameters of the analysed multiple candidates deviate from the main sequence in Kiel diagram (Figure \ref{fig:kiel_cannon}) and therefore fall into less populated parameter space, where they can skew the single star models (Sections \ref{sec:s_model} and \ref{sec:p_model}).
+In additional to our final classification, we also provide an additional quality checks that might help to identify cases for which our method might return questionable determination of a stellar configuration. Every of those checks, listed in Table \ref{tab:q_flag}, is represented by one bit of a parameter \texttt{flag} in the final published table (Table \ref{tab:out_table_triple}). The first bit gives us an indication of whether the object could have an uncertain astrometric solution, whereas the second and the third bits indicate if the final fitted solution has a worse match with the observations than the parameters produced by the \TC\ pipeline. To evaluate this, we used the original stellar parameters reported for the object to construct their photometric and spectroscopic synthetic model that was compared to the observations by computing their $\chi^2$ similarity (\texttt{m\_sim\_p} and \texttt{m\_sim\_f} in Table \ref{tab:out_table_triple}). The resulting fitted spectrum or photometric signature is marked as deviating if its similarity towards observations is worse than for the reported one star parameters. This might not be the best indication of possible mismatch as it is common that \TC\ parameters of the analysed multiple candidates deviate from the main sequence in Kiel diagram (Figure \ref{fig:kiel_cannon}) and therefore fall into less populated parameter space, where they can skew the single star models (Sections \ref{sec:s_model} and \ref{sec:p_model}).
 
 \begin{table}
 	\centering
@@ -426,7 +421,7 @@ In additional to our final classification, we also provide an additional quality
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{triple_stars_params_multi.png}
+	\includegraphics[width=0.6\textwidth]{triple_stars_params_multi.png}
 	\caption{Parameters of triple stellar systems discovered and characterized by our analysis. Histograms represent distribution of all fitted results for 6 objects that were classified as triple stellar systems and observationally mimic Solar spectrum. Median values of the distributions are given above individual histogram and indicated with dashed vertical line.}
 	\label{fig:triple_params}
 \end{figure}
@@ -471,7 +466,7 @@ With the initial assumption about the configuration of the triple systems and ma
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{dist_pc.png}
+	\includegraphics[width=0.6\textwidth]{dist_pc.png}
 	\caption{Histogram showing distribution of radial distances for the analysed set of stars. Distances were inferred by the Bayesian approach that takes into account the distribution of stars in the Galaxy \citep{2018AJ....156...58B}.}
 	\label{fig:gaia_dist}
 \end{figure}
@@ -524,7 +519,7 @@ The distribution of velocity separations ($\Delta v = v_2 - v_1$) for synthetic 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{MC_rv_from_sep_outer.png}
+	\includegraphics[width=0.6\textwidth]{MC_rv_from_sep_outer.png}
 	\caption{Distribution of computed radial velocity separations between a primary and secondary component of the simulated binary systems defined by the orbital parameters given in Table \ref{tab:mc_gaia}. Red vertical lines show 1, 2, and 3 $\sigma$ probabilities of the given distribution.}
 	\label{fig:mc_rv_sep}
 \end{figure}
@@ -537,7 +532,7 @@ Accounting for the GALAH resolving power and spectral sampling, we can estimate 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{hist_Vsini_cannon_ebv_c3_07.png}
+	\includegraphics[width=0.6\textwidth]{hist_Vsini_cannon_ebv_c3_07.png}
 	\caption{Distribution of determined \vsin\ for analysed single and multiple candidates. Median values of the distributions are marked with dashed vertical lines.}
 	\label{fig:vsini_hist}
 \end{figure}
@@ -565,7 +560,7 @@ Considering the minimal ratio between outer and inner binary period, we can dedu
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{MC_rv_from_sep_inner.png}
+	\includegraphics[width=0.6\textwidth]{MC_rv_from_sep_inner.png}
 	\caption{Same as Figure \ref{fig:mc_rv_sep}, but for an inner binary of a simulated triple stellar system.}
 	\label{fig:mc_rv_sep_inner}
 \end{figure}
@@ -578,7 +573,7 @@ With the data synergies, we could produce only three observational time-series t
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{guess_all_rv_diff.png}
+	\includegraphics[width=0.6\textwidth]{guess_all_rv_diff.png}
 	\caption{RV difference between GALAH and other large spectroscopic surveys. The name of an individual survey or observatory is given in the upper-left corner of every panel. Blue histograms represent velocity difference for all investigated multiple candidates and orange histograms for discovered triple systems only.}
 	\label{fig:rv_survey}
 \end{figure}
@@ -601,7 +596,7 @@ The result of this comparison is presented in Figure \ref{fig:rv_similarity}, wh
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{sinlg_multi_sim_b3_50_50.png}
+	\includegraphics[width=0.6\textwidth]{sinlg_multi_sim_b3_50_50.png}
 	\caption{Histograms of Canberra similarities towards Solar spectrum for multiple stellar candidates (orange histogram) and single star candidates (green histogram) in the red HERMES arm. Vertical dashed lines represent the same similarity measure, but for a binary system comprising of two equally bright Suns, whose components are at different radial velocities. The separation between components is increasing in 2~\kms\ steps, where the leftmost vertical line represents the case where both stars are moving with the same projected velocity. The selected maximal velocity at which the composite spectrum would still be considered a Solar twin is marked with the thicker red vertical line. Distribution of histograms also shows that spectra of multiple system candidates are as (dis)similar as spectra of single stars.}
 	\label{fig:rv_similarity}
 \end{figure}
@@ -615,7 +610,7 @@ Another application of such an analysis is to identify signs that could point to
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{three_stars_fit_sim_res.png}
+	\includegraphics[width=0.6\textwidth]{three_stars_fit_sim_res.png}
 	\caption{The accuracy of our analysis when the fitting procedure is applied to a synthetic triple system. Upper panel shows the distribution of \Teff\ prediction errors for a secondary star depending on the difference between selected temperatures of a primary and a secondary star. The lower panel shows the same relation but for a tertiary star in comparison to a secondary. As a reference, the prediction error of a primary star is shown on the left side of both panels. Labels \Teffn{1}, \Teffn{2}, and \Teffn{3} indicate decreasing effective temperatures of stars in a simulated system.}
 	\label{fig:triple_sym_res}
 \end{figure}
@@ -625,7 +620,7 @@ In the current stage of Galactic evolution, binary stars with a Solar-like \Teff
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{teff_triple_dist.png}
+	\includegraphics[width=0.6\textwidth]{teff_triple_dist.png}
 	\caption{The upper panel shows the percentage of objects at different positions on the Kiel diagram shown in Figure \ref{fig:kiel_cannon} that show excessive luminosity and are spectroscopically similar to main sequence stars. Similarly, the lower panel shows upper and lower boundary on a percentage of triple system candidates at the same positions. For a definitive candidate, both fits must agree on a triple configuration. The strong dashed vertical line repents a point on Kiel diagram where the main sequence visually starts merging with the red-giant branch, the point where a region above the main sequence becomes polluted with more evolved stars.}
 	\label{fig:triple_hr}
 \end{figure}
@@ -660,12 +655,12 @@ The main drawback of the analysis was found to be its separate treatment of phot
 \section{Table description and summary}
 \label{sec:outres}
 
-In the Table \ref{tab:out_table} we provide a list of metadata available for every object detected using the methodology described in this paper. The complete table of detected objects and its metadata is available in electronic form at the CDS. An excerpt of the table, containing a subset of columns, for definitive and probable triple candidates is given in Table \ref{tab:out_triple}.
+In the Table \ref{tab:out_table_triple} we provide a list of metadata available for every object detected using the methodology described in this paper. The complete table of detected objects and its metadata is available in electronic form at the CDS. An excerpt of the table, containing a subset of columns, for definitive and probable triple candidates is given in Table \ref{tab:out_triple}.
 
 \begin{table}
 	\centering
 	\caption{List and description of the fields in the published catalogue of analysed objects.}
-	\label{tab:out_table}
+	\label{tab:out_table_triple}
 	\begin{tabular}{l c l}
 		\hline
 		Field & Unit & Description \\ 
@@ -744,35 +739,35 @@ In order to increase the readability and transparency of the text, additional an
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{150408004101169_p1884_init_3.png}
+	\includegraphics[width=0.6\textwidth]{150408004101169_p1884_init_3.png}
 	\caption{Initial distribution of walker parameters considered in the photometric fit. To ensure unique solutions with increasing \Teff, combinations above the linear line were not considered in the fit.}
 	\label{fig:teff_initial_walkers}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{150408004101169_p1884_lnprob_3star_0.png}
+	\includegraphics[width=0.6\textwidth]{150408004101169_p1884_lnprob_3star_0.png}
 	\caption{Convergence of walkers in the initial photometric fit. The plot shows a log-probability of the posteriors shown in the Figure \ref{fig:posterior_dist}. Walkers converge to the same value of log-probability after ~50 steps. Every walker is plotted with different colour.}
 	\label{fig:walkers_logprob}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{sinlg_multi_sim_b3_66_6_33_3.png}
+	\includegraphics[width=0.6\textwidth]{sinlg_multi_sim_b3_66_6_33_3.png}
 	\caption{Same as Figure \ref{fig:rv_similarity} but for the case of a triple system where only one component out of three has a radial velocity shift in comparison to other two.}
 	\label{fig:rv_similarity_2}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{two_stars_fit_sim_res.png}
+	\includegraphics[width=0.6\textwidth]{two_stars_fit_sim_res.png}
 	\caption{Similar to a plot in Figure \ref{fig:triple_sym_res}, but representing a case when we try to describe a synthetic binary system with \Teffn{3}~=~$0$ using a triple star model.}
 	\label{fig:binary_sym_res}
 \end{figure}
 
-\begin{figure*}
+\begin{figure}
 	\centering
-	\includegraphics[width=0.98\textwidth]{evaluated_all_tsne.png}
+	\includegraphics[width=\textwidth]{evaluated_all_tsne.png}
 	\caption{Visual representation of similarities between spectra using dimensionality reduction analysis. Clumps in this 2D projection represent morphologically similar spectra, whose features separate them from the rest of the data set. Blue-dashed polygons indicate over-densities, where SB2 spectra are located \citep[projection and regions are taken from Figure 13 in][]{buder2018}. Each grey dot represent one spectrum of GALAH survey. Green coloured dots represent objects considered in this paper, of which objects marked with red were analysed for higher order multiplicity. Yellowish dots represent objects whose \G\ magnitudes fall inside the range of determined triple star candidates.}
 	\label{fig:tsne_marked}
-\end{figure*}
+\end{figure}

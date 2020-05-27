@@ -23,6 +23,7 @@
 \usepackage{graphicx}	% Including figure files
 \usepackage{amsmath}	% Advanced maths commands
 \usepackage{amssymb}	% Extra maths symbols
+\usepackage{rotating}  % obrnjena tabela
 
 %--------------------------------------------------------------------------------------
 %      DEFINICIJA AKRONIMOV
@@ -79,6 +80,8 @@
 \def\svec#1{\mbox{{\scriptsize \boldmath$#1$}}}
 
 \newcommand{\G}{{\it Gaia}}
+\newcommand{\Gs}{{\it Gaia} DR2}
+\newcommand{\Gh}{GALAH}
 \newcommand{\Teffn}[1]{$T_\mathrm{eff#1}$}
 \newcommand{\Feh}{$\mathrm{[Fe/H]}$}
 \newcommand{\Mh}{$\mathrm{[M/H]}$}
@@ -100,6 +103,7 @@
 \newcommand{\Meh}{$\mathrm{[M/H]}$}
 \newcommand{\Cfe}{$\mathrm{[C/Fe]}$}
 \newcommand{\CO}{$\mathrm{[C/O]}$}
+\newcommand{\GP}{\textit{galpy}}
 \newcommand{\e}[1]{\textbf{#1}}
 
 \begin{document}
@@ -274,7 +278,7 @@ Kratek izvleček v angleškem jeziku, do 300 besed.\\[10mm]
 \label{chap:twins}
 \input{05-triple}
 
-\chapter{Conclusions}
+\chapter{Conclusions and future prospects}
 \label{chap:conclusion}
 \input{07-conclusion}
 
@@ -287,7 +291,8 @@ Kratek izvleček v angleškem jeziku, do 300 besed.\\[10mm]
 \renewcommand\bibname{Bibliography}
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{apsrev4-2-fmf-eng}
-\bibliography{Bibliografija-eng, bibliography_chemtag, bibliography_emis, bibliography_clusters, bibliography_twins}
+% PAZI: brez presledkov med bib datotetakmi, potem pa bo delalo !!!!!!!!!!!!!!!!!
+\bibliography{Bibliografija-eng,bibliography_chemtag,bibliography_emis,bibliography_clusters,bibliography_twins}
 
 
 %-------------------------------------------------------------------------------------

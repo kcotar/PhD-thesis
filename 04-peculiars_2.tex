@@ -1,11 +1,11 @@
-This chapter has been adapted from the published paper titled \textit{} \citep{} that was prepared and written by the author of this Doctoral thesis. The used computer code was published on GitHub platform \footnote{\url{}} and results of the analysis as a catalogue on VizieR service \footnote{\url{}}.
+This chapter has been adapted from the published paper titled \textit{The GALAH survey: Characterization of emission-line stars with spectral modelling using autoencoders} \citep{} that was prepared and written by the author of this Doctoral thesis. The used computer code was published on GitHub platform \footnote{\url{https://github.com/kcotar/GALAH-suervey-Emission-lines-and-autoencoders}} and results of the analysis as a catalogue on VizieR service \footnote{\url{TBD}}.
 
-We present a neural network autoencoder structure that is able to extract essential latent spectral features from observed spectra and then reconstruct a spectrum from those features. Because of the training with a set of unpeculiar spectra, the network is able to reproduce a spectrum of high signal-to-noise ratio that does not show any spectral peculiarities even if they are present in an observed spectrum. Spectra generated in this manner were used to identify various emission features among spectra acquired by multiple surveys using the HERMES spectrograph at the Anglo-Australian telescope. Emission features were identified by a direct comparison of the observed and generated spectra. Using the described comparison procedure, we discovered $10,364$ candidate spectra with a varying degree of H$\alpha$/H$\beta$ emission component produced by different physical mechanisms. A fraction of those spectra belongs to the repeated observation that shows temporal variability in their emission profile. Among emission spectra, we find objects that feature contributions of a nearby rarefied gas (identified through the emission of [NII] and [SII] lines) that was identified in $4004$ spectra, which were not all identified as having H$\alpha$ emission. Positions of identified emission-line objects coincide with multiple known regions that harbour young stars. Similarly, detected nebular emission spectra coincide with visually-prominent nebular clouds observable in the red all-sky photographic composites.
-
+Among all machine learning approaches, neural network structures are receiving the highest interest in all fields of big data analysis in recent years. Astronomy is no exception in this regard. In previous Chapter \ref{chap:peculiars_chem} we saw that peculiar stars are commonly detected by comparing observed spectra with reference spectra of stars that do not show any peculiarities in them. In this chapter, we explored the autoencoder structure to provide us with the reference spectra for the comparison. Whenever we are interested in the precise elemental abundances (as used in Chapter \ref{chap:clusters}), the first step in their determination of stellar physical parameters that could be based on the strongest hydrogen Balmer lines in stellar spectra. As any deviations in their shape might endanger the analysis, we tried to identify all stars whose spectrum shows emission-lines in the Balmer region. The chapter begins with Section \ref{sec:intro_emis} that gives a detailed description of the problem and presents multiple scenarios of why and how emission-lines can be used and identified. In Section \ref{sec:det_chart} we explain our analysis pipeline whose main components are the generation of reference spectra (Section \ref{sec:ref_modeling}) and identification of multiple emission features (Sections \ref{sec:hahbemis} and \ref{sec:nebularemis}). The temporal variability of detected emissions is analysed in Section \ref{sec:temporal}. The results are summarised and discussed in Section \ref{sec:discussion_emis}.
 
 \section{Introduction}
+\label{sec:intro_emis}
 The identification of peculiar stars, whose spectra contain emission lines, is of interest to a wide field of stellar research. Spectral complexity of such stars brings insight into the ongoing physical processes on and around the star. Emission features in stellar spectra might adversely impact the quality of stellar parameters and abundances determined by automatic data analysis pipelines that are configured to produce the best results for most common stellar types. Examples of how these features might compromise spectroscopic measurements when we assume that a star is not peculiar include the determination of effective temperature \citep{2011A&A...531A..83C, 2018A&A...615A.139A, 2019A&A...624A..10G}, computation of stellar mass \citep{2016ApJ...823..114N, 2016A&A...594A.120B}, and the effects of self broadening on line wing formation \citep{2000A&A...363.1091B, 2008A&A...480..581A}. Highly accurate measurement of the hydrogen absorption profiles are needed in those cases. Any deviations in the line shapes from model predictions would produce misleading results. We would therefore like to know if the investigated line is modified by additional, unmodelled physical process or spectral reduction process.
-\textit{}
+
 Stars with evident emission lines populate a wide variety of regions on the HR diagram. Because of possible overlaps between different stellar types, detailed photometric (especially in the infrared region where warm circumstellar dust disc can be identified) and spectroscopic observations are needed for an accurate physical explanation of the observed features. An examples of such work is presented in \citet{2019MNRAS.488.5536M}, who performed detailed a multi-band photometric study of an emission-line star, originally discovered on objective prism plates. The detailed photometric time-series study described in that work, together with observations of the star's infrared excess, led to the star VES~263 being identified as a massive pre-main-sequence star and not a semi-regular AGB cool giant as classified previously. In a similar way, \citet{2020arXiv200207852L} performed an analysis of the stellar object V* CN Cha, which had previously been identified as an emission star. By studying a long photometric time-series of the star, they concluded that the object was most likely a symbiotic binary star system whose emission was lined to a long-duration, low-luminosity nova phase.
 
 Numerous different physical processes that can contribute to the complex shapes of the H$\alpha$ emission profile are given by \citet{1996A&AS..120..229R, 2011AJ....141..150J, 2014ApJ...795...82S, 2018AJ....156...97I}, who compare observations with expected physical models. Following the classification scheme introduced by \citet{2007ASSL..342.....K}, emission-line stars are predominately observed in close binaries, earliest-type, latest-type, and pre-main sequence stars. For systems in which mass accretion is occurring, the examination of emission lines can allow the mass accretion rate onto the central star to be estimated \citep{2003ApJ...582.1109W, 2004A&A...424..603N}. The procedure involves measuring simple indices (such as the equivalent width and broadening velocity) of the emission lines in the stars's spectrum.
@@ -17,49 +17,19 @@ If a star is engulfed in a hot rarefied interstellar medium or stellar envelope,
 Focusing on spectroscopic data, procedures for the detection of emission lines can roughly be separated into two categories. Simpler procedures searching for obvious emitters above the global continuum \citep[][]{2015A&A...581A..52T, 2016ASPC..505...66N, 2016RAA....16..138H, 2016ASPC..505...66N} and more complex procedures, where the observed spectrum is compared to an expected stellar spectrum of a normal star \citep[][]{2013ApJ...776..127Z}. The reference spectra in the latter case can be generated using exact physics-based stellar modelling or data-driven approaches. Of these, the data-driven approaches can be separated into supervised and unsupervised generative models, where, for the later, it is not required to provide an estimate of the stellar parameters for a given spectrum in advance. To predict a reliable model using supervised models, we must determine the correct stellar labels of an emission star in advance. This can pose a serious limitation if the strongest lines in the acquired spectrum can be populated by an emission feature, which happens for \G\ and RAVE spectra \citep{2013ApJ...776..127Z}. In light of the future publication of Gaia RVS spectra as part of Gaia DR3 for hundreds of million of stars, it is thus important to develop tools to identify emission-line stars, as we aim to do in this study via GALAH spectra.
 % kak odstavek: poudariš da boš tukaj delal to for in zakaj so autoencoderji kul, recimo
 
-The paper is structured in the following order. We begin with the description of the used spectroscopic data in Section \ref{sec:data_galah}. In Section \ref{sec:det_chart} we explain our analysis pipeline whose main components are the generation of reference spectra (Section \ref{sec:ref_modeling}) and identification of multiple emission features (Sections \ref{sec:hahbemis} and \ref{sec:nebularemis}). The temporal variability of detected emissions is analysed in Section \ref{sec:temporal}. The results are discussed and summarised and discussed in Section \ref{sec:discussion}.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Data}
-\label{sec:data_galah}
-The spectroscopic data used in this study was taken from the main GALactic Archaeology with HERMES (GALAH) survey \citep{2015MNRAS.449.2604D}, the K2-HERMES survey \citep{2018AJ....155...84W}, the TESS-HERMES survey \citep{2018MNRAS.473.2004S}, and the dedicated HERMES open clusters survey (De Silva et al. in preparation) and the HERMES Orion star forming region (Kos et al. in preparation) survey. All of the spectra were acquired by the High Efficiency and Resolution Multi-Element Spectrograph \citep[HERMES,][]{2010SPIE.7735E..09B, 2015JATIS...1c5002S}, a multi-fibre spectrograph mounted on the $3.9$-metre Anglo-Australian Telescope (AAT) at the Siding Spring Observatory, Australia. The spectrograph has a resolving power of R $\sim 28,000$ across four wavelength ranges (4713~--~4903~\AA, 5648~--~5873~\AA, 6478~--~6737~\AA, and 7585~--~7887~\AA), also referred to as blue, green, red, and infrared spectral arms. Of the four, we use only the first (blue) and the third (red) in our study, as they cover the wavelength regions where interesting Balmer and forbidden emission lines can be seen and detected.
-
-The combined dataset consist of $669,845$ successfully reduced stellar spectra, of which a small fraction are repeated observations. All acquired spectra were homogeneously reduced to one dimensional spectra, continuum normalised, and shifted to the stellar reference frame \citep[a detailed description of the algorithm used can be found in][]{2017MNRAS.464.1259K}. All surveys combined include more spectra than the main GALAH survey alone, but at the same time break the simple rule, adhered to in that main survey, of a simple magnitude limited selection function (Sharma et al. in preparation) that is desired for population studies and comparison with synthetic galactic models. The exact selection function is not important in our case as we are not performing any population studies, but are only trying to find as many emission-line objects as possible.
-
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{ann_network_structure_a.png}
+	\includegraphics[width=0.6\textwidth]{ann_network_structure_a.png}
 	\caption{Visual representation of an encoder part of the used autoencoder structure for the red spectral arm. After the input spectra are encoded, they are passed through the same inverted architecture to produce modeled low-noise spectra. The value in the right most column indicates a number of input and output connections to neighboring layers. The number of nodes in a layer is equal to the output value. The input spectrum length is given as the number of wavelength bins in a spectrum.}
 	\label{fig:autoann}
 \end{figure}
-
-
-The stellar atmospheric parameters and individual abundances derived from our normalised spectra were analysed with the same adaptation of the Spectroscopy Made Easy \citep[\SME,][]{1996A&AS..118..595V, 2017A&A...597A..16P} software that is described in-depth by Buder et al. (in preparation) as part of the latest GALAH data release (DR3) that includes fully reduced spectra and derived parameters.
-
-Our algorithm for the detection of emission-line spectra, described in detail below, uses the normalised GALAH spectra that were already corrected for telluric absorptions and had sky spectral emission contributions removed. The correct sky removal (described in more detail in Section \ref{sec:skyemis}) is essential as one of the telluric lines falls inside the range of the H$\alpha$ line. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Detection and characterization}
 \label{sec:det_chart}
 The first attempts to discover H$\alpha$/H$\beta$ emission spectra in GALAH survey observations were performed by \citet{2017ApJS..228...24T}, who use the unsupervised dimensionality reduction technique t-SNE \citep{2013arXiv1301.3342V} to group morphologically similar spectra. As the amplitude and shape of the observed emission can vary substantially depending on the astrophysical source, \citet{2017ApJS..228...24T} presumably detected only a portion of the strongest emitters. One of the reasons for this is the manual classification of data clumps determined by the clustering algorithm. In the case of weak emissions in an investigated clump (performed manually by the operator), an expressed emission feature must be strong enough to be visually perceived when looking at a spectrum. To broaden the range of detectability to include spectra with marginal levels of emission as well, a more sophisticated and partially supervised procedure must be employed.
 
 To expand the search, our methodology uses additional prior knowledge about the expected wavelength locations of interesting emission spectral lines. The prior wavelengths are used to narrow down the interesting wavelength regions during the comparison between the spectrum of a possibly peculiar star and an expected (reference) spectrum of a star with similar physical parameters and composition.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\columnwidth]{ann_network_loss_ccd13.pdf}
-	\caption{Prediction accuracy of the blue and red arm autoencoders at different training epochs. The prediction error is computed as a sum of all absolute differences between the input and output data set (see Equation \ref{equ_mae}). Shown are training (solid line) and validation curves (dashed line) which do not show any strong model over-fitting on the training set. The curves indicate that both autoencoders learned in a similar way because the same optimiser was used. The blue arm model has a bit higher loss and shows slower learning because of a greater spectral complexity and lower signal to noise ratio in that wavelength region.}
-	\label{fig:trainann}
-\end{figure}
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{sample_spectra_spectra_ccd3.pdf}
-	\caption{Showing a diversity of spectra that must be processed by our reference spectrum generation scheme. Panels show spectra of the following normal and peculiar stars: cool, hot fast-rotating, spectroscopic binary, and H$\alpha$/H$\beta$ emission star. All examples show that the autoencoder network did reproduce the observed shapes of the normal spectra (first two) and not the peculiar spectra (last two) as desired from the reference spectrum generator. The original spectra are shown in black and reconstructed in blue.}
-	\label{fig:refann}
-\end{figure*}
 
 \subsection{Spectral modelling using autoencoders}
 \label{sec:ref_modeling}
@@ -81,13 +51,6 @@ is used for all nodes of the network, with the exception of the final output lay
 
 If the network learns a physics-based generative model of a stellar spectrum, information contained in the extracted features should be related to real physical parameters, such as \Teff, \Logg, \Feh, and \vsin, or their mathematical combinations. 
 
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{encoded_features_scatter_teff_logg_ccd3.png}
-	\caption{Correlation between extracted latent features and physical parameters. Scatter plots between different features are colored by the GALAH physical parameters of original spectra. Points in the lower triangle are colored by their \Teff\ and in upper triangle by their \Logg. Associated colour mappings are given below the figure (for the lower triangle) and on its right side (for the upper triangle). Presented are results for the red arm autoencoder.}
-	\label{fig:latent_ccd3_1}
-\end{figure*}
-
 To train our autoencoder, we created a set of presumably normal spectra (with no emission features), resampled to a common wavelength grid ($\delta \lambda$ equal to $0.04$ and $0.06$~\AA\ for the blue and red arm) whose coverage is slightly wider than the range of an individual HERMES arm to account for variations in wavelength span because of radial velocity. Observations that did not completely fill the selected range were padded with continuum value of 1. To be classified as normal, spectra must suffice the following selection rules: signal to noise ratio (SNR) in the green arm must be greater than $30$, a spectrum must not contain any known reduction issues \citep[\texttt{red\_flag}~=~0 in][]{2017MNRAS.464.1259K} and have valid spectral parameters \citep[\texttt{flag\_sp}~<~16 in Buder et al. in preparation][]{}. Although choosing \texttt{flag\_sp}~=~0 returns the spectra with the most trustworthy parameters, we choose to use this higher cutoff in \texttt{flag\_sp} to filter out only the strangest spectra and not to produce a set of spectra with well defined parameters. Spectra with 0~<~\texttt{flag\_sp}~<~16 include objects with bad astrometric solution, unreliable broadening, and low SNR that are still useful for our training process. From \citet{2017ApJS..228...24T, 2018MNRAS.478.4513B} and \citet{2019MNRAS.483.3196C}, we know that some GALAH spectra display peculiar chemical composition or consist of multiple stellar components, therefore we removed all identified classes with the exception of stars classified as hot or cold that are actually treated as normal spectra in our case. Even such a rigorous filtering approach can miss some strange spectra.
 
 After we applied these quality cuts, we were left with $482,900$ spectra, of which last $10\%$ were used as an independent validation set during the training process. Before the training, normalised spectra were inverted ($1$~$-$~normalised flux), which sets the continuum level to a value of $0$. The inversion improved the model stability and decreased the required number of training epochs.
@@ -101,11 +64,32 @@ loss_\mathrm{MAE} = \frac{1}{N n_\lambda} \sum_{n=1}^{N}\sum_{i=1}^{n_\lambda}\l
 \end{equation}
 where N represent the number of all spectra, $n_\lambda$ the number of wavelength bins in each spectrum,  $f_{\mathrm{ae}, n, i}$ the flux value of a decoded spectrum at one of the training epochs, and $f_{\mathrm{obs}, n, i}$ the flux value of a normalised observed spectrum. Such a loss function gives lower weight to gross outliers in comparison to the mean squared error (MSE). At the same time, outputs are closer to a median spectrum of spectra with a similar appearance and less affected by remaining peculiar spectra in the training set. 
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{ann_network_loss_ccd13.pdf}
+	\caption{Prediction accuracy of the blue and red arm autoencoders at different training epochs. The prediction error is computed as a sum of all absolute differences between the input and output data set (see Equation \ref{equ_mae}). Shown are training (solid line) and validation curves (dashed line) which do not show any strong model over-fitting on the training set. The curves indicate that both autoencoders learned in a similar way because the same optimiser was used. The blue arm model has a bit higher loss and shows slower learning because of a greater spectral complexity and lower signal to noise ratio in that wavelength region.}
+	\label{fig:trainann}
+\end{figure}
+
 After examining the decoded outputs at different epochs in comparison with known normal and peculiar spectra, we decided to use the model produced after $150$ training epochs. After that, overall improvements of the model are minor, which increases the model opportunity to over-fit on a low number of peculiar spectra. After closer inspection of the last epoch, we found indications of over-fitting on known emission stars, which further confirms the validity of choosing less longer trained model (with greater prediction loss) and rejects the need for a longer model training.
 
 To decrease the complexity of a dense neural network and reduce the required training time, two independent autoencoders were trained, separately for the blue and red HERMES spectral arms.
 
-After the training and model selection were completed, all available $669,845$ spectra were run through the same autoencoder to produce their high SNR reference spectra. An example of four such spectra is shown in Figure \ref{fig:refann}.
+After the training and model selection were completed, all available $669,845$ spectra were run through the same autoencoder to produce their high SNR reference spectra. An example of four such spectra is shown in Figures \ref{fig:refann} and \ref{fig:refann2}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{sample_spectra_spectra_ccd3.pdf}
+	\caption{Showing a diversity of spectra that must be processed by our reference spectrum generation scheme. Panels show spectra of the following normal and peculiar stars: cool, hot fast-rotating, spectroscopic binary, and H$\alpha$/H$\beta$ emission star. All examples show that the autoencoder network did reproduce the observed shapes of the normal spectra (first two) and not the peculiar spectra (last two) as desired from the reference spectrum generator. The original spectra are shown in black and reconstructed in blue.}
+	\label{fig:refann}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{sample_spectra_spectra_ccd1.pdf}
+	\caption{Same plots and objects as in Figure \ref{fig:refann} but for the blue spectral arm.}
+	\label{fig:refann2}
+\end{figure}
 
 \subsection{Latent features}
 To test the idea of extracted scalar latent features being connected to physical parameters, and to inspect how an autoencoder structure actually orders spectra, we colour coded values of latent features by unflagged physical parameters of input the GALAH spectra. Latent feature scatter plots, colour coded by a different combination of stellar parameters, are presented in Figures \ref{fig:latent_ccd3_1} (with \Teff\ and \Logg\ for the red arm) as well as \ref{fig:latent_ccd1_1} (with \Teff\ and \Logg\ for the blue arm) and \ref{fig:latent_ccd1_2} (with \Teff\ and \Feh\ for the blue arm).
@@ -114,11 +98,24 @@ As expected, all plots show colour gradients induced by the changing value of in
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{paper_180131002701292_1.pdf}
-	\caption{Panels show two different wavelength regions of $f_\mathrm{diff}$ for the same star. The top panel is focused on the H$\alpha$ and [NII] nebular lines, while the second panel focuses on [SII] lines. Rest wavelengths of both nebular doublets are given by the green dash-dotted vertical lines. Their fitted locations, affected by a gas cloud movement, are given by the red dashed vertical lines. The EW(H$\alpha$) integration range is bounded by the central black dashed vertical lines on the top panel.}
-	\label{fig:emissfit}
+	\includegraphics[width=\textwidth]{encoded_features_scatter_teff_logg_ccd3.png}
+	\caption{Correlation between extracted latent features and physical parameters. Scatter plots between different features are colored by the GALAH physical parameters of original spectra. Points in the lower triangle are colored by their \Teff\ and in upper triangle by their \Logg. Associated colour mappings are given below the figure (for the lower triangle) and on its right side (for the upper triangle). Presented are results for the red arm autoencoder.}
+	\label{fig:latent_ccd3_1}
 \end{figure}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{encoded_features_scatter_teff_logg_ccd1.png}
+	\caption{Same plots as shown in Figure \ref{fig:latent_ccd3_1}, but for the latent features of the blue HERMES band, coloured by parameter \Teff\ on lower triangle and by \Logg\ on the upper triangle.}
+	\label{fig:latent_ccd1_1}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{encoded_features_scatter_teff_fe_h_ccd1.png}
+	\caption{Same plots as shown in Figure \ref{fig:latent_ccd3_1}, but for the latent features of the blue HERMES band, coloured by parameter \Teff\ on lower triangle and by \Feh\ on the upper triangle.}
+	\label{fig:latent_ccd1_2}
+\end{figure}
 
 \subsection{H$\alpha$ and H$\beta$ emission characterization}
 \label{sec:hahbemis}
@@ -134,11 +131,18 @@ f_\mathrm{div} = \frac{f_\mathrm{obs}}{f_\mathrm{ref}}.
 \end{equation}
 The resulting ratio can be viewed as a proxy for a renormalisation curve that would bring $f_\mathrm{obs}$ to the same continuum level as $f_\mathrm{ref}$, but would at the same time cancel out any spectral differences between them. To avoid the later, we fited $f_\mathrm{div}$ with a $3^{rd}$ degree polynomial with a symmetrical $2$-sigma clipping, run for five iterations. We used the polynomial fit to renormalise $f_\mathrm{obs}$.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{paper_180131002701292_1.pdf}
+	\caption{Panels show two different wavelength regions of $f_\mathrm{diff}$ for the same star. The top panel is focused on the H$\alpha$ and [NII] nebular lines, while the second panel focuses on [SII] lines. Rest wavelengths of both nebular doublets are given by the green dash-dotted vertical lines. Their fitted locations, affected by a gas cloud movement, are given by the red dashed vertical lines. The EW(H$\alpha$) integration range is bounded by the central black dashed vertical lines on the top panel.}
+	\label{fig:emissfit}
+\end{figure}
+
 To get the first identification of an emission features, we calculate the equivalent width (EW) of the spectral difference in a $\pm3.5$ \AA\ range around the investigated Balmer H$\alpha$ and H$\beta$ lines. The selected range (shown in Figure \ref{fig:emissfit}) is wide enough to encompass emission profile of all spectra, with the exception of a few ones, which have very broad and structured profiles. We kept the width narrow to reduce the effect of spectral noise and nearby sky emission lines (see Section \ref{sec:skyemis}). The correlation between measurements of both equivalent widths is shown in Figure \ref{fig:hab_EW} from which it is evident that the H$\beta$ emission feature is not as strong as the H$\alpha$ feature, but comparable to it.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{H_emission_EW_dist_all.png}
+	\includegraphics[width=0.6\textwidth]{H_emission_EW_dist_all.png}
 	\caption{Correlation between equivalent widths of the H$\alpha$ and H$\beta$ emission components for our set of detected stars (defined as having \texttt{Ha\_EW}~>~$0.25$~\AA) as black points. The remaining set of objects is shown with gray dots. All flagged objects and possible spectroscopic binaries are taken out for this plot. The green dashed linear line represent the one-to-one relation and the orange dash-dotted line identicates cases where the equivalent width of the H$\beta$ is half of the H$\alpha$ line.}
 	\label{fig:hab_EW}
 \end{figure}
@@ -154,7 +158,7 @@ where $|EW_x|$ represents the equivalent width of the absolute difference $|f_\m
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{H_emission_asymmetry.png}
+	\includegraphics[width=0.6\textwidth]{H_emission_asymmetry.png}
 	\caption{Asymmetry index of objects with prominent emission lines in the integration range around investigated Hydrogen Balmer lines. Objects with index inside the green dashed circle are considered to have a symmetric emission contribution, which can be attributed to a chromospheric activity. Central circular region has a radius of asymmetric index $0.25$.}
 	\label{fig:hab_asym}
 \end{figure}
@@ -162,7 +166,7 @@ where $|EW_x|$ represents the equivalent width of the absolute difference $|f_\m
 % Like with figures 6 and 7, do we have expectations for how the data should look in figures 8 and 9? 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{sii_nii_ew_corr.png}
+	\includegraphics[width=0.6\textwidth]{sii_nii_ew_corr.png}
 	\caption{Correlation between the strengths of the nebular contributions from both elements. Shown are only cases with a small difference in the determined radial velocities as shown in Figure \ref{fig:sii_nii_rv}.}
 	\label{fig:sii_nii_ew}
 \end{figure}
@@ -173,7 +177,7 @@ Due to the multiple possible origins of H emission lines \citep{2007ASSL..342...
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{sii_nii_rv.png}
+	\includegraphics[width=0.6\textwidth]{sii_nii_rv.png}
 	\caption{Correlation between radial velocity of both assessed nebular contributions that are observable in the red arm of the HERMES spectrum. Shown are only cases with at least three detected forbidden lines. The grey dots were further discarded as their absolute difference between velocities is more than $15$~\kms. The limiting thresholds are visualized by dashed linear lines. Plotted velocities are measured in the stellar rest frame and therefore grouped towards zero velocity, meaning they are moving together with the star.}
 	\label{fig:sii_nii_rv}
 \end{figure}
@@ -186,7 +190,7 @@ As we are working with fully reduced normalised spectra, with inclusion of sky b
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{paper_170509002201287_2.pdf}
+	\includegraphics[width=0.6\textwidth]{paper_170509002201287_2.pdf}
 	\caption{Sky emission lines are most evident after spectra subtraction in $f_\mathrm{diff}$. Green vertical dashed lines represent expected locations of emission lines in the rest frame of an observed star. The middle sky line in this plot falls inside the actual H$\alpha$ emission feature and changes its shape from single- to double-peaked and consequently modifies the measured equivalent width. Upper and lower thresholds for detection are given by the bold horizontal dashed lines. The number of detected under- and over-corrected sky lines in this order is given above the plot.}
 	\label{fig:skyemiss}
 \end{figure}
@@ -203,51 +207,13 @@ When a sufficient number ($\ge$~$4$) of strong residual sky lines with a normali
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\columnwidth]{paper_140812003801021_3.pdf}
+	\includegraphics[width=0.6\textwidth]{paper_140812003801021_3.pdf}
 	\caption{Detection of a spectroscopic binary candidate by cross-correlating observed spectrum with its reference spectrum. Three Gaussian functions that are fitted to the resulting CCF (black solid curve) are depicted by their means (dashed vertical lines) and their best fitting sum in red. Presented are CCFs for the red arm in the top panel and for the blue arm in the bottom panel. Number of detected peaks for both arms is given above the figure.}
 	\label{fig:sb2ccf}
 \end{figure}
 
-\begin{table}
-	\caption{Quality binary flags produced during different steps of our detection and analysis pipeline. Lower value of the flag represents lower significance to the quality of detection and classification. The final reported \texttt{flag} value in Table \ref{tab:results} is a sum of all raised binary quality flags.}
-	\label{tab:flags}
-	\begin{tabular}{r l}
-		\hline
-		Flag & Description \\
-		\hline
-		128 & Reference spectrum for the H$\alpha$ range does not exist.\\
-		64 & Reference spectrum for the H$\beta$ range does not exist.\\
-		32 & Large difference between reference and observed\\ 
-		& spectrum in the red arm of a spectrum. Median\\
-		& squared error (MSE) between them was $\ge 0.002$\\
-		16 & Large difference between reference and observed\\
-		& spectrum in the blue arm of a spectrum.\\
-		& MSE was $\ge 0.008$.\\
-		8 & The spectrum most likely contains duplicated\\
-		& spectral absorption lines of a resolved SB2 binary\\
-		& Binarity was detected in both arms.\\
-		4 & Possible strong contamination by sky emission\\
-		& features. 4 or more residual sky lines were detected.\\
-		& Could be a result of under- or over-correction.\\
-		2 & Wavelength solution (or determined radial velocity)\\
-		& might be wrong in the red arm of the spectrum.\\
-		& Determined from cross-correlation peak between\\
-		& observed and reference spectra.\\
-		1 & Wavelength solution (or determined radial velocity)\\
-		& might be wrong in the blue arm of the spectrum.\\
-		\hline
-	\end{tabular}
-\end{table}
-
 \subsection{Determination of spectral binarity}
 During the inspection of our initial results, we noticed that the spectra of spectroscopically resolved binary stars (SB2) produce a mismatch between observed and reference spectra whose $f_\mathrm{diff}$ have a profile similar to the P Cygni or inverted P Cygni profile \citep{1979ApJS...39..481C} that is often observed in emission-line objects. To detect SB2 candidates, we performed cross-correlation between the reference and the observed spectra, disregarding the wavelength range of $\pm10$\AA\ around the centre of the Balmer lines to avoid broadening of the cross-correlation function (CCF) peak. Cross-correlation was performed independently for both (the blue and red) HERMES spectral arms. The resulting CCF, shown as the black curve in Figure \ref{fig:sb2ccf}, was fitted by three Gaussian functions, centred at three strongest peaks, to describe its shape. The location, amplitude and width of those peaks were assessed to determine the number of stellar components in the spectrum. When fitting three peaks, there is a possibility of finding triple stars and distinguishing them from binaries. Every spectral arm with more than one prominent peak was marked as potential SB2 detection in the final results (see Table \ref{tab:results}), where binarity indication is given independently for both arms. Nevertheless, the results of the blue arm (column \texttt{SB2\_c1}) are more trustworthy because of the higher number of absorption lines in the red arm (column \texttt{SB2\_c3}). For even greater completeness of detected SB2 candidates, a list of analyzed binaries, compiled by \cite{2020arXiv200500014T} can be used. They combined unsupervised spectral dimensionality reduction algorithm t-SNE and semi-supervised CCF analysis \citep{2017A&A...608A..95M} to compile their list of SB2 binaries. After their analysis, they discarded spectra that were falsely identified as SB2 by their detection procedures.
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{repetas_spectra_spectra_ccd3.pdf}
-	\caption{A sample of objects with repeated observations, where at least one of the normalised spectra (top row) contains strong H$\alpha$ emission detected by comparison towards reference spectrum (bottom row). The first two objects (or columns) show shifting location of an additional emission component peak, and the last two varying degree of its strength. The last example is most likely a result of a miss-reduction as not only H$\alpha$, but also other absorption lines show reduced strength. The existence of this problem is confirmed by other objects in the same field as majority of them show the same tendency of having weaker absorption lines across the spectrum.}
-	\label{fig:temporal_variab}
-\end{figure*}
 
 An unexpected result of this binarity search was the realization that some reduced spectra show duplicated lines only in the red arm or even stranger, only in a smaller subsection of it. After a thorough investigation, we uncovered that this effect is caused by improper treatment of fibre cross-talk while extracting spectra from the original 2D image \citep{2017MNRAS.464.1259K}. A partial culprit of this is also a poorer focus in the red arm. Therefore if only flag \texttt{SB2\_c3} is set, and not \texttt{SB2\_c1}, this can be used as an indication of the above reduction effect.
 
@@ -257,52 +223,9 @@ Additionally, the highest peak of our CCF function is used to determine the corr
 \label{sec:results}
 The emission indices and other computed parameters are collected in Table \ref{tab:results}. The complete table is available in electronic form at the CDS. An excerpt of the published results, containing a subset of 30 rows and 11 most interesting columns for the strongest unflagged emitters is given in Table \ref{tab:results_values}.
 
-As we do not perform any quality cuts on our results, a suggested set of limiting parameter thresholds and quality flags is provided in Section \ref{sec:flagging}. Their use depends on user specific requirements and the analysed science case.
-
-\subsection{Flagging, quality control and results selection}
-\label{sec:flagging}
-The above described pipeline runs blindly on every successfully reduced spectrum \citep[\texttt{guess\_flag} = 0, for details see][]{2017MNRAS.464.1259K}, and could therefore produce wrong or misleading results for some spectra. To have the ability to filter out such possible occurrences, we created a set of warning flags for different pipeline steps that are listed and described in detail in Table \ref{tab:flags}. An interested user can base their selection of results according to the desired confidence level and a physical question of interest. The cleanest set of $10,364$ H$\alpha$ emission stars can be produced by selecting unflagged stars that do not show any signs of possible binarity, defined such that parameter \texttt{emiss} in the published Table \ref{tab:results} is set to one (the equivalent of true). To be included among the cleanest set of detections, we considered only spectra whose \texttt{Ha\_EW}~>~$0.25$~\AA. Below this limit, we are less confident in marking an object as having an emission feature because visual inspection showed that this strength could be mimicked by spectral noise, the uncertainty of the reference spectrum, or induced by the reduction pipeline. This selection criteria at the same time discards the weakest chromospheric components, which might be of great interest for specific studies. If the user is interested only in stronger emitters, the threshold should be raised to \texttt{Ha\_EW}~>~$0.5$~\AA\ or above.
-
-\begin{figure*}
+\begin{table}
 	\centering
-	\includegraphics[width=\textwidth]{reddening_d2000_n720_cont_wemisions.png}
-	\caption{Spatial distribution of stars with detected emission Balmer emission profiles. Grey areas represent regions that were observed and analysed in this paper. The green lines represent location of equal reddening in steps of $0.1$ magnitude at the distance of $2$~kpc. Reddening data were taken from results published by \citet{2017A&A...606A..65C}. For readability, no isoline is shown above the reddening of 1~magnitude. Constellation boundaries were taken from \citet{const_data}. Locations of their designations are defined by median values of constellation polygon vertices.}
-	\label{fig:spatialemission}
-\end{figure*}
-
-The published Table \ref{tab:results} also contains a flag that describes whether the spectrum is considered to contain an additional nebular contribution. Such spectra can be filtered out by choosing the parameter \texttt{nebular} to be equal to $1$. To compile this less restrictive list of $4004$ spectra, we selected entries with at least three prominent forbidden emission lines (\texttt{NII}~$+$~\texttt{SII}~$\ge$~$3$) and a small difference in their measured radial velocities ($|$\texttt{rv\_NII}~$-$~\texttt{rv\_SII}$|$~$\le$~$15$~\kms).
-
-\section{Temporal variability}
-\label{sec:temporal}
-The strategy of the GALAH survey is to observe as many objects as possible, and as a result, not many repeated observations were made. The repeated fields were mostly observed to assess the stability of the instrument. Time spans between observations are therefor on the orders of days or years. This limits the possibility of finding a variable object greatly, but still enables us to discover potential interesting objects and diagnose analysis issues.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\columnwidth]{mag_iphas_vphas_sep.png}
-	\caption{r - H$\alpha$ versus r - i color-color diagram using combined IPHAS and VPHAS photometry for detected emission stars. The dashed green line represents the unreddened main-sequence track tabulated by \citet{2014MNRAS.440.2036D}. An empirical threshold, shown by dash-dotted blue line, can be used to distinguish non-accreting and accreting objects above the line \citep{2018A&A...609A..10V}.}
-	\label{fig:iphas_vphas}
-\end{figure}
-
-To find possible emission stars with repeated observations, we selected stars with repeats, among which at least one spectrum was identified to harbour a stronger (\texttt{Ha\_EW}~>~$0.5$~\AA) unflagged emission feature. This selection produced $621$ stars, having between $2$ and $9$ observations. To be confident about the observed variability, we visually inspected the observed and the reference spectra of $208$ stars with at least three observations. A subset of these spectra are shown in Figure \ref{fig:temporal_variab}, where we present typical types of variability discovered by visual inspection. The types can roughly be described as shape transformation (e.g. change from single- to double-peak or P Cygni emission profile), peak location shift, intensity change, and possible reduction issue.
-
-In the sample of 208 stars, whose spectra were visually inspected, we found that $\sim20$\% of the inspected spectra display a stable H$\alpha$ profile. Noticeable profile shape transformation was observed in $\sim10$\% of the cases, and peak location change in $\sim5$\% of the cases. Some degree of emission intensity change was noticed for $\sim40$\% of the cases. Visually similar is reduction induced variability (see the rightmost panel in Figure \ref{fig:temporal_variab}), observed for $\sim25$\% of all inspected repeated observations. In the case of multiple observations of the same star, we can distinguish between the last two profile changes (intrinsic and reduction induced intensity change) by looking at the whole spectrum to inspect whether variability is also exhibited in other absorption lines as shown by the last example in Figure \ref{fig:temporal_variab}. That kind of reduction induced variability is limited to a few observed fields. 
-
-\section{Discussion and conclusions}
-\label{sec:discussion} 
-In this paper, we describe the development and application of a neural network autoencoder structure that is able to extract the most relevant latent features from the spectrum. Low feature dimensionality contains only the most basic spectral informations that are used to reconstruct a non-peculiar spectrum with the same physical parameters as the input spectrum.
-
-Our method of differential spectroscopy is one of the most widely used approaches to find peculiar spectral features that are not found in normal stars. As a part of this paper, we showed that a dense autoencoder neural network structure can be reliably used for generation of non-peculiar reference spectra if trained on a large set of normal spectra. With the additional exclusion of our detected emission-line stars, the training set could iteratively be further cleaned of peculiar stars before training the network. As all the information about the spectral look is contained in the real flux values, there is no need to add additional convolutional layers for the extraction of more complex spectral shapes. 
-
-By identifying significant residuals after subtracting the generated reference spectra from the observed spectra, we detected emission star candidates in the GALAH fields all over the sky. Figure \ref{fig:spatialemission} shows that we can identify few locations with a higher density of detected emission-line objects. The position of emission-line objects coincides with regions of young stars such as the Orion complex, Blanco 1, Pleiades, and other possibly random over-densities of interstellar gas and dust. Detected nebular emission in stellar spectra, shown in Figure \ref{fig:spatialnebular}, coincide with large visually-identified nebular clouds \citep[by comparing detected locations with the red all-sky photographic composite of The Second Digitized Sky Survey, described by][]{2000ASPC..216..145M} such as the Antares Emission nebulae, clouds around $\pi$ Sco and $\delta$ Sco, Barnard's loop, Carina Nebula, nebulae around $\lambda$ Ori, nebular veils in the constellations of Puppis, Pyxis and Antlia, and other less prominent features.
-
-By combining our detections with additional auxiliary data sets, we can start exploring more detailed physical explanations of the observed emissions and their structure. Among them are two specific photometric surveys, VPHAS \citep{2014MNRAS.440.2036D} and IPHAS \citep{2008MNRAS.384.1277W} which were designed to detect and study emission-line sources close to the Galactic plane. Because of their positional selection function, their combined photometric data are available only for $4431$ GALAH spectra. Of these, the spectroscopically confirmed emission stars are shown in Figure \ref{fig:iphas_vphas}, whose color-color diagram can be used to infer accreting objects.
-
-Our detected emission spectra have a broad range of emission components - these range from very strong to barely detectable chromospheric emission component whose identification can be mimicked or masked at multiple steps of the analysis and data preparation. To limit the number of false-positive classifications due to reduction and analysis limitations, we focused on stronger components (\texttt{Ha\_EW}~>~$0.25$~\AA) whose existence can be confirmed visually. Because that kind of process would be slow for the whole sample, we introduced quality flags that can be used to filter out unwanted or specific cases. Additionally, the stability of the spectra and emission features was investigated by repeated observations of the same objects. Among them, we observed different variability types, of which one could be attributed to the data reduction pipeline, limiting the confidence of finding weak emission profiles in the spectra.
-
-To reliably detect even the weakest chromospheric emissions, uncertainty of the used reference spectra must be well known as well. By showing that the proposed neural network structure can be used as intended, we are looking into possibilities to improve our methodology using variational autoencoder. Its advantage lies in the possibility of simultaneous determination of a reference spectrum and its uncertainty which would enable uncertainty estimation of the measured emission-line indices.
-
-\begin{table*}
-	\caption{List and description of the fields in the published catalogue of analysed objects.}
+	\caption{List and description of the fields in the published catalogue of analysed the GALAH spectra.}
 	\label{tab:results}
 	\begin{tabular}{l c l}
 		\hline
@@ -312,38 +235,41 @@ To reliably detect even the weakest chromospheric emissions, uncertainty of the 
 		\texttt{sobject\_id} & & GALAH internal per-spectrum unique id \\
 		\texttt{ra} & deg & Right ascension coordinate from 2MASS\\
 		\texttt{dec} & deg & Declination coordinate from 2MASS\\
-		\texttt{Ha\_EW} & \AA & Equivalent width of a difference between observed and template spectrum in the range \\
-		& & of $\pm3.5$~\AA\ around the H$\alpha$ line \\
+		\texttt{Ha\_EW} & \AA & Equivalent width of a difference between observed \\
+		& & and template spectrum in the range of $\pm3.5$~\AA\ \\
+		& & around the H$\alpha$ line \\
 		\texttt{Hb\_EW} & \AA & Same as the \texttt{Ha\_EW}, but for the H$\beta$ line \\
-		\texttt{Ha\_EW\_abs} & \AA & Equivalent width of an absolute difference between observed and template spectrum in \\
-		& & the range of $\pm3.5$~\AA\ around the H$\alpha$ line \\
+		\texttt{Ha\_EW\_abs} & \AA & Equivalent width of an absolute difference between \\
+		& & observed and template spectrum in the range of \\
+		& & $\pm3.5$~\AA\ around the H$\alpha$ line \\
 		\texttt{Hb\_EW\_abs} & \AA & Same as the \texttt{Ha\_EW\_abs}, but for the H$\beta$ line\\
-		\texttt{Ha\_W10} & \kms & Width (in \kms) of the H$\alpha$ emission feature at $10$\% of its peak flux amplitude \\
+		\texttt{Ha\_W10} & \kms & Width (in \kms) of the H$\alpha$ emission feature at \\
+		& & $10$\% of its peak flux amplitude \\
 		\texttt{Ha\_EW\_asym} & & Value of asymmetry index for the H$\alpha$ line \\
 		\texttt{Hb\_EW\_asym} & & Value of asymmetry index for the H$\beta$ line \\
 		\texttt{SB2\_c3} & & Was binarity detected in the red arm \\
 		\texttt{SB2\_c1} & & Was binarity detected in the blue arm \\
 		\texttt{NII} & & Number of detected [NII] peaks in the doublet \\
 		\texttt{SII} & & Number of detected [SII] peaks in the doublet \\
-		\texttt{NII\_EW} & \AA & Equivalent width of a fitted Gaussian profiles to the [NII] emission features \\
+		\texttt{NII\_EW} & \AA & Equivalent width of a fitted Gaussian profiles to the \\
+		& & [NII] emission features \\
 		\texttt{SII\_EW} & \AA & Same as the \texttt{NII\_EW}, but for the [SII] doublet \\
-		\texttt{rv\_NII} & \kms & Intrinsic radial velocity of the [NII] doublet, corrected for the barycentric and stellar velocity \\
+		\texttt{rv\_NII} & \kms & Intrinsic radial velocity of the [NII] doublet, \\
+		& & corrected for the barycentric and stellar velocity \\
 		\texttt{rv\_SII} & \kms & Same as \texttt{rv\_NII}, but for the [SII] doublet \\
-		\texttt{nebular} & & Is spectrum considered to have an additional nebular component \\
-		\texttt{emiss} & & Is spectrum considered to have an additional H$\alpha$ emission component \\
+		\texttt{nebular} & & Is spectrum considered to have an additional \\
+		& & nebular component \\
+		\texttt{emiss} & & Is spectrum considered to have an additional H$\alpha$ \\
+		& & emission component \\
 		\texttt{flag} & & Sum of all bitwise flags raised for a spectrum \\
 		\hline
 	\end{tabular}
-\end{table*}
+\end{table}
 
-\begin{figure*}
+As we do not perform any quality cuts on our results, a suggested set of limiting parameter thresholds and quality flags is provided in Section \ref{sec:flagging}. Their use depends on user specific requirements and the analysed science case.
+
+\begin{sidewaystable}
 	\centering
-	\includegraphics[width=\textwidth]{sample_spectra_spectra_ccd1.pdf}
-	\caption{Same plots and objects as in Figure \ref{fig:refann} but for the blue spectral arm.}
-	\label{fig:refann2}
-\end{figure*}
-
-\begin{table*}
 	\caption{Excerpt of 30 strongest unflagged emitters from the published table presented in detail by Table \ref{tab:results}. The rest of the table can be downloaded in electronic form CDS service and publishers' website.}
 	\label{tab:results_values}
 	\begin{tabular}{c | c | c | c | c | c | c | c | c | c | c}
@@ -370,39 +296,90 @@ To reliably detect even the weakest chromospheric emissions, uncertainty of the 
 		3222024374573501952 & 3.37 & 3.37 & 224.71 & -0.11 & 0 & 1 & 0.00 & -0.04 & 17.76 & 0 \\
 		3221019798902558720 & 3.37 & 3.37 & 142.94 & -0.07 & 0 & 0 & 0.03 & -64.74 & 48.73 & 0 \\
 		6235172592479759360 & 3.32 & 3.32 & 147.53 & 0.02 & 0 & 0 & 0.01 & -2.29 & 46.61 & 0 \\
-		3220688120051681792 & 3.27 & 3.27 & 131.65 & -0.11 & 0 & 0 & -0.01 & -11.03 & -126.68 & 0 \\
-		2920301135326368256 & 3.17 & 3.17 & 204.04 & -0.16 & 1 & 0 & 0.07 & -102.90 & 84.00 & 0 \\
-		6086395513764172800 & 3.11 & 3.11 & 130.44 & -0.16 & 0 & 0 & 0.04 & -55.69 & 27.51 & 0 \\
-		6014331906769737728 & 3.11 & 3.11 & 133.08 & -0.07 & 0 & 1 & -0.02 & 80.91 & 44.02 & 0 \\
-		3221921742035204608 & 3.09 & 3.10 & 114.30 & -0.02 & 0 & 0 & 0.02 & -46.60 & 11.19 & 0 \\
-		3181196759054802432 & 3.07 & 3.07 & 111.78 & -0.05 & 0 & 0 & -0.02 & 32.48 & 20.05 & 0 \\
-		6084509542084855808 & 3.03 & 3.03 & 191.97 & -0.03 & 0 & 0 & 0.00 & 25.25 & 92.65 & 0 \\
-		3217773074208416768 & 3.00 & 3.30 & 343.16 & -0.76 & 0 & 0 & -0.01 & -128.82 & 3.13 & 0 \\
-		6244153510833938432 & 3.00 & 3.00 & 117.06 & -0.08 & 0 & 0 & 0.01 & 41.17 & 35.66 & 0 \\
-		3220786839876234752 & 2.99 & 2.99 & 152.48 & -0.03 & 1 & 0 & 0.02 & -79.85 & -69.71 & 0 \\
 		\hline
 	\end{tabular}
-\end{table*}
+\end{sidewaystable}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Flagging, quality control and results selection}
+\label{sec:flagging}
+The above described pipeline runs blindly on every successfully reduced spectrum \citep[\texttt{guess\_flag} = 0, for details see][]{2017MNRAS.464.1259K}, and could therefore produce wrong or misleading results for some spectra. To have the ability to filter out such possible occurrences, we created a set of warning flags for different pipeline steps that are listed and described in detail in Table \ref{tab:flags}. An interested user can base their selection of results according to the desired confidence level and a physical question of interest. The cleanest set of $10,364$ H$\alpha$ emission stars can be produced by selecting unflagged stars that do not show any signs of possible binarity, defined such that parameter \texttt{emiss} in the published Table \ref{tab:results} is set to one (the equivalent of true). To be included among the cleanest set of detections, we considered only spectra whose \texttt{Ha\_EW}~>~$0.25$~\AA. Below this limit, we are less confident in marking an object as having an emission feature because visual inspection showed that this strength could be mimicked by spectral noise, the uncertainty of the reference spectrum, or induced by the reduction pipeline. This selection criteria at the same time discards the weakest chromospheric components, which might be of great interest for specific studies. If the user is interested only in stronger emitters, the threshold should be raised to \texttt{Ha\_EW}~>~$0.5$~\AA\ or above.
 
-\begin{figure*}
+\begin{table}
 	\centering
-	\includegraphics[width=\textwidth]{encoded_features_scatter_teff_logg_ccd1.png}
-	\caption{Same plots as shown in Figure \ref{fig:latent_ccd3_1}, but for the latent features of the blue HERMES band, coloured by parameter \Teff\ on lower triangle and by \Logg\ on the upper triangle.}
-	\label{fig:latent_ccd1_1}
-\end{figure*}
+	\caption{Quality binary flags produced during different steps of our detection and analysis pipeline. Lower value of the flag represents lower significance to the quality of detection and classification. The final reported \texttt{flag} value in Table \ref{tab:results} is a sum of all raised binary quality flags.}
+	\label{tab:flags}
+	\begin{tabular}{r l}
+		\hline
+		Flag & Description \\
+		\hline
+		128 & Reference spectrum for the H$\alpha$ range does not exist.\\
+		64 & Reference spectrum for the H$\beta$ range does not exist.\\
+		32 & Large difference between reference and observed spectrum in the red arm\\
+		   & of a spectrum. Median squared error (MSE) between them was $\ge 0.002$\\
+		16 & Large difference between reference and observed spectrum in the blue \\
+		   & arm of a spectrum. MSE was $\ge 0.008$.\\
+		8 & The spectrum most likely contains duplicated spectral absorption lines \\
+		  & of a resolved SB2 binary. Binarity was detected in both arms.\\
+		4 & Possible strong contamination by sky emission features. 4 or more \\
+		  & residual sky lines were detected. Could be a result of an \\
+		  & under- or over-correction.\\
+		2 & Wavelength solution (or determined radial velocity) might be wrong in \\
+		  & the red arm of the spectrum. Determined from cross-correlation peak \\
+		  & between observed and reference spectra.\\
+		1 & Wavelength solution (or determined radial velocity)\\
+		  & might be wrong in the blue arm of the spectrum.\\
+		\hline
+	\end{tabular}
+\end{table}
 
-\begin{figure*}
+The published Table \ref{tab:results} also contains a flag that describes whether the spectrum is considered to contain an additional nebular contribution. Such spectra can be filtered out by choosing the parameter \texttt{nebular} to be equal to $1$. To compile this less restrictive list of $4004$ spectra, we selected entries with at least three prominent forbidden emission lines (\texttt{NII}~$+$~\texttt{SII}~$\ge$~$3$) and a small difference in their measured radial velocities ($|$\texttt{rv\_NII}~$-$~\texttt{rv\_SII}$|$~$\le$~$15$~\kms).
+
+\section{Temporal variability}
+\label{sec:temporal}
+The strategy of the GALAH survey is to observe as many objects as possible, and as a result, not many repeated observations were made. The repeated fields were mostly observed to assess the stability of the instrument. Time spans between observations are therefor on the orders of days or years. This limits the possibility of finding a variable object greatly, but still enables us to discover potential interesting objects and diagnose analysis issues.
+
+To find possible emission stars with repeated observations, we selected stars with repeats, among which at least one spectrum was identified to harbour a stronger (\texttt{Ha\_EW}~>~$0.5$~\AA) unflagged emission feature. This selection produced $621$ stars, having between $2$ and $9$ observations. To be confident about the observed variability, we visually inspected the observed and the reference spectra of $208$ stars with at least three observations. A subset of these spectra are shown in Figure \ref{fig:temporal_variab}, where we present typical types of variability discovered by visual inspection. The types can roughly be described as shape transformation (e.g. change from single- to double-peak or P Cygni emission profile), peak location shift, intensity change, and possible reduction issue.
+
+In the sample of 208 stars, whose spectra were visually inspected, we found that $\sim20$\% of the inspected spectra display a stable H$\alpha$ profile. Noticeable profile shape transformation was observed in $\sim10$\% of the cases, and peak location change in $\sim5$\% of the cases. Some degree of emission intensity change was noticed for $\sim40$\% of the cases. Visually similar is reduction induced variability (see the rightmost panel in Figure \ref{fig:temporal_variab}), observed for $\sim25$\% of all inspected repeated observations. In the case of multiple observations of the same star, we can distinguish between the last two profile changes (intrinsic and reduction induced intensity change) by looking at the whole spectrum to inspect whether variability is also exhibited in other absorption lines as shown by the last example in Figure \ref{fig:temporal_variab}. That kind of reduction induced variability is limited to a few observed fields. 
+
+\begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{encoded_features_scatter_teff_fe_h_ccd1.png}
-	\caption{Same plots as shown in Figure \ref{fig:latent_ccd3_1}, but for the latent features of the blue HERMES band, coloured by parameter \Teff\ on lower triangle and by \Feh\ on the upper triangle.}
-	\label{fig:latent_ccd1_2}
-\end{figure*}
+	\includegraphics[width=\textwidth]{repetas_spectra_spectra_ccd3.pdf}
+	\caption{A sample of objects with repeated observations, where at least one of the normalised spectra (top row) contains strong H$\alpha$ emission detected by comparison towards reference spectrum (bottom row). The first two objects (or columns) show shifting location of an additional emission component peak, and the last two varying degree of its strength. The last example is most likely a result of a miss-reduction as not only H$\alpha$, but also other absorption lines show reduced strength. The existence of this problem is confirmed by other objects in the same field as majority of them show the same tendency of having weaker absorption lines across the spectrum.}
+	\label{fig:temporal_variab}
+\end{figure}
 
-\begin{figure*}
+\section{Discussion and conclusions}
+\label{sec:discussion_emis} 
+In this paper, we describe the development and application of a neural network autoencoder structure that is able to extract the most relevant latent features from the spectrum. Low feature dimensionality contains only the most basic spectral informations that are used to reconstruct a non-peculiar spectrum with the same physical parameters as the input spectrum.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{reddening_d2000_n720_cont_wemisions.png}
+	\caption{Spatial distribution of stars with detected emission Balmer emission profiles. Grey areas represent regions that were observed and analysed in this paper. The green lines represent location of equal reddening in steps of $0.1$ magnitude at the distance of $2$~kpc. Reddening data were taken from results published by \citet{2017A&A...606A..65C}. For readability, no isoline is shown above the reddening of 1~magnitude. Constellation boundaries were taken from \citet{const_data}. Locations of their designations are defined by median values of constellation polygon vertices.}
+	\label{fig:spatialemission}
+\end{figure}
+
+Our method of differential spectroscopy is one of the most widely used approaches to find peculiar spectral features that are not found in normal stars. As a part of this paper, we showed that a dense autoencoder neural network structure can be reliably used for generation of non-peculiar reference spectra if trained on a large set of normal spectra. With the additional exclusion of our detected emission-line stars, the training set could iteratively be further cleaned of peculiar stars before training the network. As all the information about the spectral look is contained in the real flux values, there is no need to add additional convolutional layers for the extraction of more complex spectral shapes. 
+
+By identifying significant residuals after subtracting the generated reference spectra from the observed spectra, we detected emission star candidates in the GALAH fields all over the sky. Figure \ref{fig:spatialemission} shows that we can identify few locations with a higher density of detected emission-line objects. The position of emission-line objects coincides with regions of young stars such as the Orion complex, Blanco 1, Pleiades, and other possibly random over-densities of interstellar gas and dust. Detected nebular emission in stellar spectra, shown in Figure \ref{fig:spatialnebular}, coincide with large visually-identified nebular clouds \citep[by comparing detected locations with the red all-sky photographic composite of The Second Digitized Sky Survey, described by][]{2000ASPC..216..145M} such as the Antares Emission nebulae, clouds around $\pi$ Sco and $\delta$ Sco, Barnard's loop, Carina Nebula, nebulae around $\lambda$ Ori, nebular veils in the constellations of Puppis, Pyxis and Antlia, and other less prominent features.
+
+\begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{reddening_d2000_n720_cont_wnebular.png}
 	\caption{Same as Figure \ref{fig:spatialnebular} but showing stars with at least three detected nebula emission lines, shown with black dots.}
 	\label{fig:spatialnebular}
-\end{figure*}
+\end{figure}
+
+By combining our detections with additional auxiliary data sets, we can start exploring more detailed physical explanations of the observed emissions and their structure. Among them are two specific photometric surveys, VPHAS \citep{2014MNRAS.440.2036D} and IPHAS \citep{2008MNRAS.384.1277W} which were designed to detect and study emission-line sources close to the Galactic plane. Because of their positional selection function, their combined photometric data are available only for $4431$ GALAH spectra. Of these, the spectroscopically confirmed emission stars are shown in Figure \ref{fig:iphas_vphas}, whose color-color diagram can be used to infer accreting objects.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{mag_iphas_vphas_sep.png}
+	\caption{r - H$\alpha$ versus r - i color-color diagram using combined IPHAS and VPHAS photometry for detected emission stars. The dashed green line represents the unreddened main-sequence track tabulated by \citet{2014MNRAS.440.2036D}. An empirical threshold, shown by dash-dotted blue line, can be used to distinguish non-accreting and accreting objects above the line \citep{2018A&A...609A..10V}.}
+	\label{fig:iphas_vphas}
+\end{figure}
+
+Our detected emission spectra have a broad range of emission components - these range from very strong to barely detectable chromospheric emission component whose identification can be mimicked or masked at multiple steps of the analysis and data preparation. To limit the number of false-positive classifications due to reduction and analysis limitations, we focused on stronger components (\texttt{Ha\_EW}~>~$0.25$~\AA) whose existence can be confirmed visually. Because that kind of process would be slow for the whole sample, we introduced quality flags that can be used to filter out unwanted or specific cases. Additionally, the stability of the spectra and emission features was investigated by repeated observations of the same objects. Among them, we observed different variability types, of which one could be attributed to the data reduction pipeline, limiting the confidence of finding weak emission profiles in the spectra.
+
+To reliably detect even the weakest chromospheric emissions, uncertainty of the used reference spectra must be well known as well. By showing that the proposed neural network structure can be used as intended, we are looking into possibilities to improve our methodology using variational autoencoder. Its advantage lies in the possibility of simultaneous determination of a reference spectrum and its uncertainty which would enable uncertainty estimation of the measured emission-line indices.
