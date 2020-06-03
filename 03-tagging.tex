@@ -10,7 +10,7 @@ Born from the same molecular cloud, open clusters are ideal test structures for 
 
 Majority of the described works relied on a complete 6D positional and kinematics information to discover clusters and their sub-structures. Advances in observational techniques and data analysis enables us to go beyond kinematics information and include a multidimensional chemical signature of stars -- a procedure known as chemical tagging \citep{2002ARA&A..40..487F, 2010ApJ...721..582B}. So far blind chemical tagging (without kinematics) of cluster and field stars has not yet been demonstrated with great success unless the observed structure has obviously different chemical composition \citep{2016ApJ...833..262H}. A trait that it is not common to open clusters formed at about the same time \citep{2019A&A...629A..34G}, but to galactic components formed at vastly different epochs \citep{2018A&A...619A.125A}.
 
-The latest research showed that many, even unexpected, observational and data reduction issues still have to be thoroughly investigated and resolved, especially if data from different surveys are to be combined \citep{2019ARA&A..57..571J}. Studies suggest that open clusters might not be as homogeneous as thought before \citep{2016ApJ...817...49B, 2018MNRAS.473.4612K} as abundances trends show traits of dependency with stellar evolution \citep{2015A&A...577A..47B, 2017ApJ...840...99D, 2018MNRAS.478..425B}. On top of that, main concerns of chemical tagging are spectra analysis induced abundance trends \citep{2016ApJ...817...49B, 2019arXiv191208539C, 2020arXiv200103179B} that depend on determining underlying stellar physical parameters (i.e. \Teff\ and \vsin) which usually are not changed or fitted during abundance determination procedure. Observed trends might also be results of inadequate stellar models or actual stellar processes. To cope with this complexity and uncertainties, complex Bayesian models are being developed \citep{2016ApJ...817...49B, 2019ApJ...887...73C} in order to uncover and cluster abundance patterns. With this in mind, many work and validation still have to be done until large surveys are fully ready for blind chemical tagging experiments. 
+The latest research showed that many, even unexpected, observational and data reduction issues still have to be thoroughly investigated and resolved, especially if data from different surveys are to be combined \citep{2019ARA&A..57..571J}. Studies suggest that open clusters might not be as homogeneous as thought before \citep{2016ApJ...817...49B, 2018MNRAS.473.4612K} as abundances trends show traits of dependency with stellar evolution \citep{2015A&A...577A..47B, 2017ApJ...840...99D, 2018MNRAS.478..425B, 2019A&A...627A.117L}. On top of that, main concerns of chemical tagging are spectra analysis induced abundance trends \citep{2016ApJ...817...49B, 2019arXiv191208539C, 2020arXiv200103179B} that depend on determining underlying stellar physical parameters (i.e. \Teff\ and \vsin) which usually are not changed or fitted during abundance determination procedure. Observed trends might also be results of inadequate stellar models or actual stellar processes. To cope with this complexity and uncertainties, complex Bayesian models are being developed \citep{2016ApJ...817...49B, 2019ApJ...887...73C} in order to uncover and cluster abundance patterns. With this in mind, many work and validation still have to be done until large surveys are fully ready for blind chemical tagging experiments. 
 
 \section{Additional data specifics}
 \label{sec:data_clusters}
@@ -33,18 +33,19 @@ The initial open cluster memberships were taken from \citet{2018A&A...618A..93C}
 \label{sec:orbit_tracing}
 After the selection of open cluster members, we proceeded with the analysis of stellar movements inside and outside the cluster. In order to get the most reliable motion information, only stars with a complete 6D kinematic information (proper motion + radial velocity + sky coordinate + parallax) were considered. No additional \G\ quality flagging was used to remove stars with potentially bad parameter estimates as we would, in the following steps, like to show that they could be discovered and eliminated based solely on their chemical composition.
 
-By knowing members of the observed clusters and their current position and complete motion vectors, we can trace the path of a volume constrained by the cluster stars backwards or forwards in time. This integration procedure was performed by individual integration of cluster stars in axisymmetric gravitational potential \citep[\textit{MWPotential2014} potential,][]{2015ApJS..216...29B} using \GP\ software library \citep[version 1.5.0.,][]{2015ApJS..216...29B}. Being interested in the past ejected members of a cluster, we integrated orbits of cluster stars for $120$~Myr (comparable to ages of the youngest open clusters in our set) into their past and saved their location after every step of $20$~kyr. As the integration process relies only on the present uncertain measurements of their velocities and distance, longer integration is not precise or reliable. This is observed by the fact that cluster volume gets larger during backwards integration instead of getting smaller. At every integration step, the cluster volume was described by a minimum convex hull defined by its outer-most members. Such a geometrical shape presents the smallest bounding volume with partially flat boundaries which encompasses all considered members.
+By knowing members of the observed clusters, their current position, and complete motion vectors, we can trace the path of a volume constrained by the cluster stars backwards or forwards in time. This integration procedure was performed by individual integration of cluster stars in axisymmetric gravitational potential (\textit{MWPotential2014} potential described by \citet{2015ApJS..216...29B}) using \GP\ software library version 1.5.0. \cite{2015ApJS..216...29B}. Being interested in the past ejected members of a cluster, we integrated orbits of cluster stars for $120$~Myr (comparable to ages of the youngest open clusters in our set) into their past and saved their location after every step of $20$~kyr. As the integration process relies only on the present uncertain measurements of their velocities and distance, longer integration is not precise or reliable. This is observed by the fact that the cluster volume gets larger during backwards integration instead of getting smaller as it would in the case of gravitationally bound stellar components. At every integration step, the cluster volume was described by a minimum convex hull defined by its outer-most members. They serve as vertex points of the constructed geometric body. Such a geometrical shape presents the smallest bounding volume with partially flat boundaries which encompasses all considered members.
 
-The next step of our analysis consisted of finding spatially nearby stars that could be traced back to having origin in a considered open cluster. To filter out field stars that travel into completely different direction than a cluster, we discarded all stars whose galactic velocity vector difference towards present cluster velocity vector was >$50$~\kms. \rb{a je to sploh smiselno? prihranek racunskega casa je nekje polovica} Orbits of remaining set of stars (usually more than half of queried stars) were integrated using the same configuration as cluster stars. A this point, we could investigate which orbit of field stars crosses clusters' volume at any given integration step.
+The next step of our analysis consisted of finding spatially nearby stars that could be traced back to having origin inside the considered open cluster. To filter-out field stars that travel into a completely different direction than the cluster, we discarded all stars whose galactic velocity vector difference towards present cluster velocity vector was >$50$~\kms. This threshold, therefore, defines the fastest possible speed at which stars could have been ejected. Orbits of the remaining set of stars (usually more than half of the queried stars) were integrated using the same configuration as cluster stars described above. At this point, we could investigate which orbit of the field stars crosses clusters' volume at any given integration step.
 
-To get a more descriptive crossing probability, we created $250$ incarnations of every field star. Initial kinematic properties of each incarnation were drawn from Gaussian distributions of parallax, radial velocity, and proper motion defined by their reported value and uncertainty. After analysing all $250$ orbits of each star, we described its cluster crossing probability by the longest stay inside the cluster volume and percentage of crossing events. For a crossing to be counted as confirmed, a star had to be located inside the cluster volume for at least $0.4$~Myr, time that is equivalent to $20$ integration steps. The final selection of probable ejected stars consist of stars, whose integration procedure revealed that they were crossing a cluster volume in at least $68$\% of incarnations and their longest stay there was at least $1$~Myr. Remaining volume crossing stars, that did not met the criteria, were not considered as field stars, but were discarded from further analysis as they might pollute chemical signature of a field population. Summary of investigated and discovered stars for every cluster is given in Table \ref{tab:cluster_stats}.
+To get a more descriptive crossing probability, we created $250$ incarnations of every field star. Initial kinematic properties of each incarnation were drawn from the Gaussian distributions of parallax, radial velocity, and proper motion defined by their reported values and uncertainties. After analysing all $250$ orbits of each star, we described its cluster crossing probability by the longest stay inside the cluster volume and percentage of crossing events. For a crossing to be counted as confirmed, a star had to be located inside the cluster volume for at least $0.4$~Myr, time that is equivalent to $20$ integration steps. The final selection of probable ejected stars consist of stars, whose integration procedure revealed that they were crossing a cluster volume in at least $68$\% of the incarnations and their longest stay there was at least $1$~Myr. Remaining volume crossing stars, that did not met the criteria, were not considered as field stars. They were discarded from further analysis as they might, in the case they were real past cluster members, additionally pollute chemical signature of a field population. Summary of investigated and discovered stars for every cluster is given in Table \ref{tab:cluster_stats}.
 
 \begin{table}
 	\centering
-	\caption{Cluster statistics. Only stars with a complete 6D positional and kinematic information were considered for this statistics and orbit integration analysis. Number in columns successively present number of all star with complete information, number of analysed stars that meet initial criteria of having velocity similar to a cluster, number of stars that do not cross cluster volume during integration, number of probable ejected stars, and number of cluster members that defined volume of a cluster.}
+	\caption{Clusters statistics. Only stars with a complete 6D positional and kinematic information were considered for this statistics and orbit integration analysis. Number in columns successively present number of all star with complete information, number of analysed stars that meet initial criteria of having the galactic velocity similar to a cluster ($\Delta$v~<~50~\kms), number of stars that do not cross cluster volume during integration, number of probably ejected stars, and number of cluster members that defined volume of a cluster.}
 	\begin{tabular}{l | c | c | c | c | c }
 		\hline
-		Cluster & All & Analysed & Field & Ejected & Members \\
+		Cluster & Queried from & Analysed & Field & Possibly & Known \\
+		 & \G\ DR2 & stars & stars & ejected & members \\
 		\hline
 		Berkeley 32  & 11322 & 2659 & 2047 & 125 & 23 \\ 
 		Blanco 1     & 5043 & 2734 & 2687 & 15 & 81 \\
@@ -67,14 +68,41 @@ To get a more descriptive crossing probability, we created $250$ incarnations of
 	\label{tab:cluster_stats}
 \end{table}
 
-
 \section{Chemical signature of clusters}
 \label{sec:chem_cluster}
-After defining potential members of different cluster components (field, ejected, and members), we can look into abundance signatures of an individual component. Of all 29 possible The \Gh\ chemical abundances, we initially excluded only Li because of its intrinsic variability that depends on stellar evolutionary stage. Scatters plots of all considered abundances and \Feh\ as a function of stellar effective \Teff\ for different clusters are shown in Figures \ref{fig:ct_cluster1}, \ref{fig:ct_cluster2}, \ref{fig:ct_cluster3}, and \ref{fig:ct_cluster4}. Not all plots for the same cluster have equal number of points as reporting of abundance values depends on estimation of their reliable detectability that is based on equivalent widths of element absorption lines \citep[thoroughly described in][]{buder2020}. The plots show only stars with unflagged \citep[\texttt{flag\_sp} = 0, described in][]{buder2020} stellar parameters. 
+After defining potential members of different cluster components (field, ejected, and members), we can look into the abundance signatures of an individual component and their overlap. Of all 29 possible the \Gh\ chemical abundances, we initially excluded only Li because of its intrinsic variability that depends on the stellar evolutionary stage. Scatters plots of all considered abundances and \Feh\ as a function of stellar effective \Teff\ for the best populated clusters are shown in Figures \ref{fig:ct_cluster1}, \ref{fig:ct_cluster2}, \ref{fig:ct_cluster3}, and \ref{fig:ct_cluster4}. Not all plots for the same cluster have the equal number of points as reporting of abundance values depends on the estimation of their reliable detectability that is based on equivalent widths of elemental absorption lines (thoroughly described in \citet{buder2020}). The plots show only stars with unflagged (\texttt{flag\_sp} = 0, other flag values are described in \citet[{buder2020}) stellar parameters, that are presumably of the highest quality.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{p_teff_abundances_NGC_2682_orbits_DR3_new_flag0.png}
+	\caption{NGC 2632 abundance scatter plots as a function of effective stellar temperature. The solid blue line represents the best fit on the cluster population. The 1$\sigma$ and 2$\sigma$ abundance deviations from the fit are given by dashed blue lines of decreasing intensity. Coloured dots represent filed (green), members (blue), and possibly ejected (orange) stars. Their number is given above every panel, following the elements' name. Purple dots preset known tails of slowly evaporating stars in some clusters. The last two panel present \Teff\ of stars at different ages, and dependence of \Feh\ on their \Teff. The black dots in those two panels indicate possibly ejected stars whose chemistry was matched to cluster stars.}
+	\label{fig:ct_cluster1}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{p_teff_abundances_Blanco_1_orbits_DR3_new_flag0.png}
+	\caption{Same plots as in Figure \ref{fig:ct_cluster1} but for open cluster Blanco 1.}
+	\label{fig:ct_cluster2}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{p_teff_abundances_NGC_2632_orbits_DR3_new_flag0.png}
+	\caption{Same plots as in Figure \ref{fig:ct_cluster1} but for open cluster NGC 2632.}
+	\label{fig:ct_cluster3}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{p_teff_abundances_Ruprecht_147_orbits_DR3_new_flag0.png}
+	\caption{Same plots as in Figure \ref{fig:ct_cluster1} but for open cluster Ruprecht 147.}
+	\label{fig:ct_cluster4}
+\end{figure}
 
 \begin{table}
 	\centering
-	\caption{Number of acquired the \Gh\ spectra among different cluster components that were considered during the chemical comparison. No parameter or abundance flagging was yet used at this point. Stars represented by this statistics are a subset of stars given in Table \ref{tab:cluster_stats}. Because of repeated observations, some clusters (especially NGC 2682 that was used as a calibration filed) can have a higher number of spectra than member stars.}
+	\caption{The number of acquired the \Gh\ spectra among different cluster components that were considered during the chemical comparison. No parameter or abundance flagging was yet used at this point. Stars represented by these statistics are a subset of stars given in Table \ref{tab:cluster_stats}. Because of a small percentage of repeated observations, few clusters (especially NGC 2682 that was used as the calibration and verification filed) can have a higher number of spectra than the number of member stars.}
 	\begin{tabular}{l | c | c | c }
 		\hline
 		Cluster & Field & Ejected & Members \\
@@ -103,16 +131,16 @@ After defining potential members of different cluster components (field, ejected
 \subsection{Abundance trends}
 \label{sec:abund_trends}
 %Ker vidimo in tudi drugi modeli kar mocne trende zastopanosti v odvisnosti od fizikalnih parametrov zvezd, je treba te nekako spraviti na isto raven. Najlazje diferencialno - naredimo fit na kopico in gledamo koliko ostali odstopajo od tega
-The first thing we noticed on the shown abundance scatter plots is their strong dependence with physical parameters, especially \Teff. As this is not the first or unique observation of those trends \citep{2010A&A...523A..71G, 2013ApJ...775...58B, 2016MNRAS.457.3934L, 2018A&A...619A.176B, 2019arXiv191208539C}, they are most likely partial products of insufficient/inaccurate stellar models or actual abundance patterns, and not induced solemnly by the employed \SME\ spectrum analysis pipeline \citep[][]{buder2020}.
+One of the first things we noticed on the shown abundance scatter plots is their strong dependence with physical parameters, especially \Teff. As this is not the first or unique observation of those trends \cite{2010A&A...523A..71G, 2013ApJ...775...58B, 2016MNRAS.457.3934L, 2018A&A...619A.176B, 2019arXiv191208539C}, they are most likely partial products of insufficient/inaccurate stellar models and/or actual abundance patterns, and not induced solemnly by the employed \SME\ spectrum analysis pipeline described that was used by \citet{buder2020} to determine stellar abundances.
 
-If we presume that observed trends are artificially induced and clusters should have homogeneous chemical composition that is independent of stellar type, a differential analysis can be used. Such analysis considers only comparisons among stars with a similar set of stellar parameters. To describe observed trends, we independently fitted a 3$^{rd}$ degree polynomial function using $2.5\sigma$ clipping algorithm in 2 steps to every abundance versus \Teff\ diagram. By subtracting fitted trends, we estimated degree of intra cluster scatter for every element. Because of limitations of measuring certain abundances, the fit was not performed if number of points was lower or equal to a used polynomial degree $+1$.
+If we presume that observed trends are artificially induced and considered cluster members should have a homogeneous chemical composition that is independent of stellar type, a differential chemical tagging analysis can be used \cite{2019arXiv191208539C}. Such analysis considers only comparisons among stars with a similar set of stellar parameters. To describe observed trends, we independently fitted a 3$^{rd}$ degree polynomial function using $2.5\sigma$ clipping algorithm in 2 steps to every abundance versus \Teff\ diagram. By subtracting fitted trends, we estimated degree of intracluster scatter for every element. Because of limitations of measuring certain abundances, the fit was not performed if the number of valid abundance measurements was lower or equal to a used polynomial degree $+1$.
 
-\rb{Nekam lahko morda pride se primerjava razprsenosti zastopanosti med posameznimi elementi in posameznimi kopicami.}
+%Nekam lahko morda pride se primerjava razprsenosti zastopanosti med posameznimi elementi in posameznimi kopicami.
 
 \subsection{Chemical membership}
 \label{sec:chem_ej_tag}
 %Pogledamo trende in fite, ter koliko moznih izvzenih zvezd se poraja in sklada s temi kemicnimi trendi. Morda nek threshold koliko je dobrih oziroma skladnih s samo kopico, saj ima tudi ta le kar nekaj razpona v izmerjenih/izracunanih vrednostih parametrov.
-Having an analytical description of an individual abundance behavior for every cluster, we can estimate how many and how accurately do the identified ejected stars match with cluster abundance patterns and trends. The most straightforward way to perform this is to count how often does abundance value of an investigated star falls inside a $1\sigma$ (or $2\sigma$ for a more relaxed selection) region around an abundance trend. Before performing such counting, we additionally omitted abundance trends of the following chemical elements: V, Rb, Sr, Y, Zr, Mo, Ru, La, and Sm. Their low number of successful measurements per cluster and uncertain trends were not beneficial to the whole chemical tagging experiment and influenced only a small fraction of stars. \rb{nacelona tega sploh ne zelimo delat, samo eni so vizualno res cudni} A star was counted as chemically similar if it matched to a cluster in at least $68$\% of considered abundances.
+Having an analytical description of an individual abundance behaviour for every cluster, we can estimate how many and how accurately do the identified ejected stars match with cluster abundance patterns and trends. The most straightforward way to perform this is to count how often does abundance value of an investigated star fall inside a $1\sigma$ (or $2\sigma$ for a more relaxed selection) region around an abundance trend. Both regions and fitted trends are visualised in Figures \ref{fig:ct_cluster1}, \ref{fig:ct_cluster2}, \ref{fig:ct_cluster3}, and \ref{fig:ct_cluster4}. Before performing such counting, we additionally omitted abundance trends of the following chemical elements: V, Rb, Sr, Y, Zr, Mo, Ru, La, and Sm. Their low number of successful measurements per cluster and uncertain trends were not beneficial to the whole chemical tagging experiment and influenced only a small fraction of stars. \rb{nacelona tega sploh ne zelimo delat, samo eni so vizualno res cudni} A star was counted as chemically similar if it matched (e.g. fell inside selected $\sigma$ region around the fitted trend line) to a cluster in at least $68$\% of considered abundances.
 
 \subsection{Tagging remaining field stars}
 \label{sec:chem_fi_tag}
@@ -169,7 +197,7 @@ Among randomly acquired The \Gh\ spectra, we observed some stars that where iden
 
 For a tidal tail chemical tagging procedure, we used the same selection principle as previously described in Section \ref{sec:chem_ej_tag}. The result of the tagging experiment is presented in Table \ref{tab:cluster_stats_tails}.
 
-\begin{table*}
+\begin{table}
 	\centering
 	\caption{Opis te tabele. Tabela se v delu.}
 	\begin{tabular}{l | c | c | c | c | c | r }
@@ -187,38 +215,10 @@ For a tidal tail chemical tagging procedure, we used the same selection principl
 		\hline
 	\end{tabular}
 	\label{tab:cluster_stats_tails}
-\end{table*}
+\end{table}
 
 \section{Summary}
 \label{sec:clusters_summary}
 
 \section{Conclusions}
 \label{sec:clusters_conclusions}
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{p_teff_abundances_NGC_2682_orbits_DR3_flag0.png}
-	\caption{NGC 2632 abundance scatter plots as a function of stellar effective temperature. The blue solid line represent the best fit on cluster population. The 1$\sigma$ and 2$\sigma$ abundance deviations from the fit are given by dashed lines of decreasing intensity. Coloured dots represent \ldots}
-	\label{fig:ct_cluster1}
-\end{figure*}
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{p_teff_abundances_Blanco_1_orbits_DR3_flag0.png}
-	\caption{Blanco 1.}
-	\label{fig:ct_cluster2}
-\end{figure*}
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{p_teff_abundances_NGC_2632_orbits_DR3_flag0.png}
-	\caption{NGC 2632.}
-	\label{fig:ct_cluster3}
-\end{figure*}
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{p_teff_abundances_Ruprecht_147_orbits_DR3_flag0.png}
-	\caption{Ruprecht 147.}
-	\label{fig:ct_cluster4}
-\end{figure*}
