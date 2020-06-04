@@ -21,7 +21,9 @@ Among the dedicated HERMES cluster observations and other surveys, such as the \
 
 \subsection{Gaia}
 \label{sec:gaia_clusters}
-For a complete 6D positional and kinematics stellar information, we augmented the \Gh\ data with proper motion, parallax and radial velocity from the \Gs\ data-set. As all of the investigated open cluster stars are located close to the Sun, their distances can be inferred by inversion of a parallax value as $1 / \varpi$. The current release of the \G\ data contains magnitude limited range of recovered radial velocities, that are, whenever possible, supplemented or substituted with the \Gh\ measurements of higher accuracy \cite{2018arXiv180406344Z}. Supplemented are mostly stars fainter than currently adopted \G\ RVS \cite{2018A&A...616A...5C} analysis threshold as the GALAH targets are much fainter stars than the RVS limit. The synergy, therefore, increases the set of useful stars in our case.
+For a complete 6D positional and kinematics stellar information, we augmented the \Gh\ data with proper motion, parallax and radial velocity from the \Gs\ data-set. As all of the investigated open cluster stars are located close to the Sun, their distances can be inferred by inversion of a parallax value as $1 / \varpi$. Of course we could at this point use a bit more accurate distances that were determined using distance priors based on a Galaxy model \cite{2018AJ....156...58B}. The second approach does give more reliable and symmetric distance uncertainties, but does not reduce elongated shape of stellar clusters (radially away from our location in the Galaxy) as distance to every star is determined individually.
+
+The current release of the \G\ data contains magnitude limited range of recovered radial velocities, that are, whenever possible, supplemented or substituted with the \Gh\ measurements of higher accuracy \cite{2018arXiv180406344Z}. Supplemented are mostly stars fainter than currently adopted \G\ RVS \cite{2018A&A...616A...5C} analysis threshold as the GALAH targets are much fainter stars than the RVS limit. The synergy, therefore, increases the set of useful stars in our case.
 
 \section{Cluster membership}
 \label{sec:membership_v2}
@@ -135,26 +137,26 @@ One of the first things we noticed on the shown abundance scatter plots is their
 
 If we presume that observed trends are artificially induced and considered cluster members should have a homogeneous chemical composition that is independent of stellar type, a differential chemical tagging analysis can be used \cite{2019arXiv191208539C}. Such analysis considers only comparisons among stars with a similar set of stellar parameters. To describe observed trends, we independently fitted a 3$^{rd}$ degree polynomial function using $2.5\sigma$ clipping algorithm in 2 steps to every abundance versus \Teff\ diagram. By subtracting fitted trends, we estimated degree of intracluster scatter for every element. Because of limitations of measuring certain abundances, the fit was not performed if the number of valid abundance measurements was lower or equal to a used polynomial degree $+1$.
 
-%Nekam lahko morda pride se primerjava razprsenosti zastopanosti med posameznimi elementi in posameznimi kopicami.
+In the ideal case, all of the trends for the same element observed in different open clusters would have the same shape, and would be distinguished only by their abundance offsets that result from their distinct chemical pattern. Looking at our fitted trends, everything is not so simple and easy as the fitted curves can have significantly different shapes. For example, trend of element Ba is in general represented by the shapes similar to letter U or its inverted version \rotU. Therefore the highest or lowest abundance values are present in the middle of the \Teff\ region.
 
-\subsection{Chemical membership}
+\subsection{Determining chemical similarity}
 \label{sec:chem_ej_tag}
 %Pogledamo trende in fite, ter koliko moznih izvzenih zvezd se poraja in sklada s temi kemicnimi trendi. Morda nek threshold koliko je dobrih oziroma skladnih s samo kopico, saj ima tudi ta le kar nekaj razpona v izmerjenih/izracunanih vrednostih parametrov.
-Having an analytical description of an individual abundance behaviour for every cluster, we can estimate how many and how accurately do the identified ejected stars match with cluster abundance patterns and trends. The most straightforward way to perform this is to count how often does abundance value of an investigated star fall inside a $1\sigma$ (or $2\sigma$ for a more relaxed selection) region around an abundance trend. Both regions and fitted trends are visualised in Figures \ref{fig:ct_cluster1}, \ref{fig:ct_cluster2}, \ref{fig:ct_cluster3}, and \ref{fig:ct_cluster4}. Before performing such counting, we additionally omitted abundance trends of the following chemical elements: V, Rb, Sr, Y, Zr, Mo, Ru, La, and Sm. Their low number of successful measurements per cluster and uncertain trends were not beneficial to the whole chemical tagging experiment and influenced only a small fraction of stars. \rb{nacelona tega sploh ne zelimo delat, samo eni so vizualno res cudni} A star was counted as chemically similar if it matched (e.g. fell inside selected $\sigma$ region around the fitted trend line) to a cluster in at least $68$\% of considered abundances.
+Having an analytical description of an individual abundance behaviour for every cluster, we can estimate how many and how accurately do the identified ejected stars match with cluster abundance patterns and trends. The most straightforward way to perform this is to count how often does abundance value of an investigated star fall inside a $1\sigma$ (or $2\sigma$ for a more relaxed selection) region around an abundance trend. Both regions and fitted trends are visualised in Figures \ref{fig:ct_cluster1}, \ref{fig:ct_cluster2}, \ref{fig:ct_cluster3}, and \ref{fig:ct_cluster4}. Before performing such counting, we additionally omitted abundance trends of the following chemical elements: V, Rb, Sr, Y, Zr, Mo, Ru, La, and Sm. Their low number of successful measurements per cluster and uncertain trends were not beneficial to the whole chemical tagging experiment and influenced only a small fraction of stars. In general it is not advised to reduced dimension of a chemical space for greater differentiation between chemical signatures, but this was one of the first experiments analysing if the \Gh\ abundances could be usable for global blind tagging. In our case, an individual star was counted as chemically similar if it matched (e.g. fell inside selected $\sigma$ region around the fitted trend line) to a cluster in at least $68$\% of the considered abundances with valid trend fit. Chemically similarity of ejected stars, given as percentage of tagged stars, is presented in Table \ref{tab:cluster_stats_abundtag}.
 
 \subsection{Tagging remaining field stars}
 \label{sec:chem_fi_tag}
 %Kaj se zgodi ce iste kemicne informacije in thresholde uporabimo se za ostale analizirane zvezde v bljizini. Dobimo sploh kaj zvezd ven iz tega in kaksen bi bil v tem primeru njihov kinematicni vektor.
-The same principle can also be applied to remaining nearby field stars. As clearly evident from Figures \ref{fig:ct_cluster1}, \ref{fig:ct_cluster2}, \ref{fig:ct_cluster3}, and \ref{fig:ct_cluster4}, the cluster abundances are mostly similar to field stars and lie close to their densest regions in a scatter plot. Therefore, we were interested into the probability of a field star being chemically similar to a nearby cluster. In contrast, some of the investigated clusters, especially Blanco 1, showed evident signs of being chemically separable from neighboring populations in few abundances that are commonly used as chemical tracers of galactic evolution and stellar age \citep{2003A&A...410..527B, 2018MNRAS.474.2580S, 2020MNRAS.491.2043L}.
+The same principle can also be applied to remaining nearby field stars. As clearly evident from Figures \ref{fig:ct_cluster1}, \ref{fig:ct_cluster2}, \ref{fig:ct_cluster3}, and \ref{fig:ct_cluster4}, the cluster abundances are mostly similar to field stars and lie close to their densest regions in shown abundance scatter plots. Therefore, we were interested in the probability of a random field star being chemically similar to a nearby open cluster. In contrast, some of the investigated clusters, especially Blanco 1, show evident signs of being chemically separable from neighbouring stellar populations. Elements crucial for the populations' separation are commonly used as chemical tracers of galactic evolution and stellar age \citep{2003A&A...410..527B, 2018MNRAS.474.2580S, 2020MNRAS.491.2043L}. Therefore a young cluster, such as Blanco 1, that is located at high galactic latitudes, far from the main galactic plane, can locally be separated from its neighbouring stars. Something that is not common for typical open clusters that can currently be observed in the sky.
 
-For a field chemical tagging procedure, we used the same selection principle as previously described in Section \ref{sec:chem_ej_tag}. The results of both tagging experiments are presented in Table \ref{tab:cluster_stats_abundtag}.
+For the field chemical tagging procedure, we used the same selection principle as previously described in Section \ref{sec:chem_ej_tag}. The results of both tagging experiments are together presented in Table \ref{tab:cluster_stats_abundtag}. Even if the abundance distributions of cluster and field stars are intertwined, the results of the tagging experiment are encouraging, as it was more likely that kinematically tracked stars were chemically similar to open cluster than a random nearby field star.
 
 \begin{table}
 	\centering
-	\caption{Number and percentage of all considered and chemically similar (tagged) stars in the spatial neighborhood around analysed open clusters. Percentages indicate number of stars in different components that are similar to cluster abundance pattern and scatter. Selection algorithm is detailed in Section \ref{sec:chem_ej_tag}. Only spectra with unflagged stellar parameters were used to produce shown statistics.}
+	\caption{Number and percentage of all considered and chemically similar (tagged) stars in the spatial neighbourhood around the analysed open clusters. Percentages indicate the number of stars in different components that are similar to cluster abundance pattern and scatter. Tagging algorithm is detailed in Section \ref{sec:chem_ej_tag}. Only spectra with unflagged stellar parameters were used to produce shown statistics.}
 	\begin{tabular}{l | c | c | c | c }
 		\hline
-		Cluster & \multicolumn{2}{c}{Ejected}  & \multicolumn{2}{c}{Field} \\
+		Cluster & \multicolumn{2}{c}{Ejected stars}  & \multicolumn{2}{c}{Field stars} \\
 		 & All & Tagged & All & Tagged \\
 		\hline
 		Berkeley 32  & 2 & 0 (0.0\%) & 39 & 0 (0.0\%) \\ 
@@ -178,33 +180,28 @@ For a field chemical tagging procedure, we used the same selection principle as 
 	\label{tab:cluster_stats_abundtag}
 \end{table}
 
-\section{Comparison with known remains}
+\section{Comparison with known tidal structures}
 \label{sec:tails_chem}
 %Izvedli bi krajso primerjavo kako v luci nasih dognanj vidimo plimske repe kopic, ki so jih zaznali drugi.
-In the previous section we analysed stars whose orbits indicate that they could be ejected from open clusters sometime in their past. Depending on a mass of involved stars and their proximity during the slingshot mechanism, stars could be thrown out of the cluster into inter-stellar space at various velocities and directions. 
+In the previous section, we analysed stars whose integrated orbits indicate that they could be ejected from neighbouring open clusters sometime in the last 120~\myr. Depending on the mass of involved stars and their proximity during the slingshot mechanism, stars could be thrown out of a cluster into the interstellar space at various velocities and directions. Such a process should form a homogeneously dense sphere of candidates around the main cluster. Such an effect is also visible in Figure \ref{fig:ejected_around_cluster}, where ejection candidates are scattered all around the confirmed cluster members. A bit denser population of candidates is evident alongside the cluster volume, which probably corresponds to nearby initial cluster members that were discarded due to their mismatching radial velocity as described in Section   \ref{sec:membership_v2}.
 
-A less energetic and more gradual mechanism that also influences lifetime of an open cluster is tidal stripping of stars \citep{2006A&A...455L..17L}. It happens during clusters' journey trough more heavily populated regions such as spiral arms. In this section we compare kinematics and chemical composition of known tidal structures \citep[discovered in \Gs\ data by ][]{2019AA...627A...4R, 2019AA...627A.119C, 2019AA...621L...3M, 2019arXiv191206657Z} of a few \Gh\ clusters with other previously analysed structures.
-
-\subsection{Kinematics comparison}
-Ali je njihova kinematika sploh taksna da integracija njihovi orbit kaze nazaj proti volumnu kopice ali pac ne. Ce ne, imamo morda neko potrditev da res isceno izvrzene in ne strukture nekih pocasnih gravitacijskih vplivov??
-
-First we compared their measured kinematics and position to determine if it would be possible to select the same subset only on those properties, without prior knowledge that they might once be a part of a nearby dissolving open cluster. \rb{nisem se kaj veliko tega gledal}
-
-\subsection{Tidal tails chemistry}
-Kaj pa pravi njihova kemicna sestava na povezavo s kopico in ali imajo enake galah podpise? Ce ne, se je treba spomnit kaj pametnega zakaj bi lahko temu bilo tako. Ne deluje teorija, analiza nasih podatkov ali pa pac niso bili formirani ob istem casu.
-
-Among randomly acquired The \Gh\ spectra, we observed some stars that where identified to belong to kinematically discovered tidal structures around open clusters.
-
-For a tidal tail chemical tagging procedure, we used the same selection principle as previously described in Section \ref{sec:chem_ej_tag}. The result of the tagging experiment is presented in Table \ref{tab:cluster_stats_tails}.
-
-\begin{table}
+\begin{figure}
 	\centering
-	\caption{Opis te tabele. Tabela se v delu.}
+	\includegraphics[width=\textwidth]{NGC_2682_possible_ejected-step1.png}
+	\caption{\rb{Pride se lepsa slika} Plots show the spatial distribution of the ejected candidates in red around the definite cluster members in blue. All other stars considered in the analysis are shown as black dots. First three panel shows the Galactic position of described cluster components. The denser circular patches of stars in the bottom right panel are not real stellar overdensities, but indicate regions where combined radial velocities of \G\ and \Gh\ are used. The example is given for the open cluster NGC 2682, which has the highest number of potentially ejected stars. Uncertainty of determined distance is in these panel clearly evident as elongation of the main cluster body in the radial direction, away from the observers' position.}
+	\label{fig:ejected_around_cluster}
+\end{figure}
+
+A less energetic and more gradual mechanism that also influences the lifetime of an open cluster is tidal stripping of stars \cite{2006A&A...455L..17L}. It happens during clusters' journey trough a more densely populated regions such as spiral arms. In this section, we compare the chemical composition of known tidal structures (discovered in \Gs\ data by \citet{2019AA...627A...4R, 2019AA...627A.119C, 2019AA...621L...3M, 2019arXiv191206657Z}) of a few the \Gh\ open clusters with other previously defined and analysed structures. All of the aforementioned tidal structures were identified by different clustering methods of the same \G\ data and should therefore be in a sense similar to results of our orbital classification procedure. From the published tidal structures \cite{2019AA...627A...4R, 2019AA...627A.119C, 2019AA...621L...3M, 2019arXiv191206657Z}, we first removed all cluster members that were already identified by \citet{2018A&A...618A..93C} and consequently used in our procedure for definition of clusters' chemical signature. In that way, our possibly ejected stars and tidal structures can be compared directly. Their overlap is shown in the fourth and fifth column of Table \ref{tab:cluster_stats_tails}.
+
+\begin{sidewaystable}
+	\centering
+	\caption{Statistics of detected stellar tidal structures around some of the clusters that were observed by the \Gh. The columns shown in the following order give information about: name of the analysed cluster, number of all stars found in the surrounding tidal structure, number of stars without cluster members, size of overlap between ejected and tail, number of unflagged the \Gh\ observations among tidal structure, chemical similarity with parent open cluster, and reference source of the used data.}
 	\begin{tabular}{l | c | c | c | c | c | r }
 		\hline
-		Cluster & Stars in & Without used & Common with & \Gh\ unflagged & Chemically & Tail membership\\
-		 & reference & cluster members & ejected & parameters (\% in & tagged & reference\\
-		 &  &  & (\% of ejected) & common with ejected) & (\% of valid) & \\
+		Cluster & Stars in & Without used & Common with & \Gh\ unflagged & Chemically & Membership\\
+		& reference & cluster members & ejected & parameters (\% in & tagged & reference\\
+		&  &  & (\% of ejected) & common with ejected) & (\% of valid) & \\
 		\hline
 		Blanco 1     & 644 & 276 & 4 (27\%) & 2 (100\%) & 0 (0\%) & \citet{2019arXiv191206657Z} \\
 		NGC 2632  & 1393 & 738 & 37 (22\%) & 22 (68\%) & 0 (0\%) & \citet{2019AA...627A...4R} \\
@@ -215,10 +212,16 @@ For a tidal tail chemical tagging procedure, we used the same selection principl
 		\hline
 	\end{tabular}
 	\label{tab:cluster_stats_tails}
-\end{table}
+\end{sidewaystable}
 
-\section{Summary}
-\label{sec:clusters_summary}
+Among randomly acquired The \Gh\ spectra, we observed some stars that where identified to belong to kinematically discovered tidal structures around open clusters.
 
-\section{Conclusions}
-\label{sec:clusters_conclusions}
+For a tidal tail chemical tagging procedure, we used the same selection principle as previously described in Section \ref{sec:chem_ej_tag}. The results of the tagging experiment are presented in Table \ref{tab:cluster_stats_tails}.
+
+\section{Summary and conclusions}
+\label{sec:clusters_summary_conclusions}
+Open clusters, as long known stellar structures, still provide many opportunities for their exploration using new and improved information about their stellar components and neighbouring environment. In this chapter, we explored the latest multidimensional abundance data determined for stars observed in the scope of the \Gh\ survey, whose targets also consisted of stars in multiple open clusters. Combined with the \G\ kinematic information, a precise position, shape, and velocity of the cluster volume can be defined. We used the method of backwards orbit integration to determine if any of the neighbouring stars could be in the past kinematically traced back to the cluster whose chemical signature was determined from abundance data.
+
+Deepened analysis of field and cluster abundance patterns showed improvement in the quality of determined abundances, but at the same time revealed the pitfalls of blindly using massively determined abundances for blind chemical tagging experiments that are desired in the community of galactic archaeology. Identified problems can successfully be overcome by applying differential analysis, which in our case showed some encouraging success of using the \Gh\ abundance data as tracers of stellar signatures of individual stars.
+
+To improve the procedure in this chapter
