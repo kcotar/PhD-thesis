@@ -2,6 +2,8 @@
 %Vključuje naj tudi slike, tabele in enačbe, ki so nujne za razumevanje besedila povzetka.
 
 % -----------------------------------------------------------------------
+% Slovenski daljši uvod s pregledom tematik in obdelanih področij
+% -----------------------------------------------------------------------
 \section{Uvod}
 \label{sec:slo_uvod}
 Galaksija, kot jo lahko občudujemo dandanes na podlagi opazovanj ni nastala v enem trenutku, ampak je rezultat postopnega rojevanja zvezd in dodatnih zunanjih gravitacijskih vplivov. Njena najmlajši razpoznavni sestavni deli so razsute zvezne kopice, ki so nastale iz istega molekularnega oblaka snovi in zaradi tega vse zvezde v njej še vedno ohranjajo določene skupne lastnosti. Najočitnejše lastnosti so njihova zgoščena lokacija na nebu in skupna smer premikanja po Galaksiji. Poleg tega lahko opazujemo še kemično sestavo posameznih zvezd v kopici, ki nam podaja neposredno informacijo o sestavi prvotnega oblaka materiala. Kot vsaka gravitacijsko slabše povezana tvorba tudi razsute kopice sčasoma razpadejo in se pomešajo med okoliške zvezde, trajanje takega procesa pa je odvisen od njene začetne mase. Glavna mehanizma za izgubo zvezd kopice sta izmetavanje članov tekom bližnjih srečanj znotraj kopice ter počasno gravitacijsko odstranjevanje zaradi vpliva zvezd izven kopice. Gravitacijsko trenje in odstranjevanje je najučinkovitejše ko kopica potuje v gosto naseljenem področju. Takrat zvezde kopice vlečejo navidezno stacionarne okoliške zvezde proti sebi. Posledično izgubijo nekaj energije, zvezdam kopice se zmanjša hitrost in posledično orbita potovanja okrog centra Galaksije. Takšne interakcije lahko trajajo dokler se kopica postopoma popolno ne zlije z okoliškimi strukturami.
@@ -35,14 +37,16 @@ Poleg spektroskopskih podatkov je zelo primeren vir podatkov za uporabo metod st
 Naše raziskovanje primarno spektroskopskih podatkov razsutih zvezdnih kopic in posebnih tipov zvezd sestavljajo tri medsebojno povezane teme, ki so v nadaljnjih poglavjih tudi podrobneje predstavljene:
 
 \begin{itemize}
-	\item Pri raziskovanju razsutih kopic smo si v Poglavju \ref{chap:clusters} pomagali s podatki satelita \G, preko katerih smo kopico in njeno okolico razdelili na več komponent, med katerimi so nas najbolje zanimale zvezde, ki bi lahko v preteklosti bile izvržene iz same kopice daleč proč od nje v območje drugih zvezd. Na identificiranih primerih smo s pomočjo metode kemičnih podpisov preizkusili ali njene predpostavke držijo za naše podatke in ali boi lahko metodo tudi aplicirali ne neznane strukture v Galaksiji. 
+	\item Pri raziskovanju razsutih kopic smo si v Poglavju \ref{chap:clusters} pomagali s podatki satelita \G, preko katerih smo kopico in njeno okolico razdelili na več komponent, med katerimi so nas najbolje zanimale zvezde, ki bi lahko v preteklosti bile izvržene iz same kopice daleč proč od nje v območje drugih zvezd. Na identificiranih primerih smo s pomočjo metode kemičnih podpisov preizkusili ali njene predpostavke držijo za naše podatke in ali bi uporabljeno metodo lahko aplicirali tudi za neznane strukture v Galaksiji.
 	
-	\item
-	
-	\item
+	\item V podatkih spektroskopskega pregleda neba \Gh\ se poleg normalnih zvezd nahaja tudi kopica posebnih tipov zvezd, ki jih je potrebno čim učinkoviteje identificirati za natančnejše delovanje metode kemičnih podpisov. Za ta namen smo uporabili več nenadzorovanih in delno nadzorovanih metod strojnega učenja, ki so bile naučene na normaliziranih spektralnih podatkih. Tako smo med pregledom spektrov odkrili 918 zvezd z močno izraženimi molekularnimi ogljikovimi črtami, ki nakazujejo na nadpovprečno vsebnost ogljika v atmosferi zvezde. Odkrili smo tudi 10.364 spektrov z izraženimi vodikovimi emisijskimi črtami, ki so posledica različnih fizikalnih procesov v okolici zvezde. 
+		
+	\item Zanimali so nas tudi spektralni sončevi dvojniki saj je Sonce v astronomiji uporaben kot standardna zvezda za raznorazne kalibracije. S primerjavo spektrov smo določili 329 opazovanih GALAH spektrov, ki so najbolj podobni Soncu in pregledali njihove fizikalne parametre ter absolutni izsev. Nekatere od njih imajo mnogo močnejši izsev od Sonca, kar nakazuje na prisotnost več podobnih zvezd v opazovanem sistemu. Možnost obstoja dvojnih in trojnih zvezd, ki imitirajo spekter Sonca, smo potrdili s simulacijami in združevanjem njihovih opazovalnih podatkov.
 	
 \end{itemize}
 
+% -----------------------------------------------------------------------
+% Kratki opisi uporabljenih podatkovnih setov
 % -----------------------------------------------------------------------
 \section{Pregledi neba}
 \label{sec:slo_pregledi}
@@ -59,12 +63,12 @@ To bo satelit zmogel le z sistematičnem pregledovanjem neba, ki je sestavljeno 
 Teko rotacije satelita, se opazovane zvezde počasi premikajo čez njegovo goriščno ravnino, kjer je nameščenih 106 CCD detektorjev (prikaz na Sliki \ref{fig:gaia_ccd}). Vsaka zvezda, ki jo opazujemo, se tako zapelje čez kompleksen sistem detektorjev ki zaporedoma določijo njeno lokacijo na nebu, spektralno porazdelitev energije in posnamejo njen ozkopasovni spekter srednje ločljivosti.
 
 \subsubsection{Fotometrija in astrometrija}
-Ob prihodu v goriščno ravnino zbrana svetloba zvezde najprej posveti na detektor za določanje izvorov (angl. Sky Mapper - SM), ki samodejno zazna zvezde. Označi zvezde, ki so svetlejše od magnitude 20,7 in temnejše od magnitude 3 saj so preostale presvetle za njegovo delovanje. Po zaznavi se zvezda premakne na površinsko največji del CCD detektorjev imenovan astrometrično polje (angl. Astrometric Field - AF). Ta zabeleži natančno pozicijo, ki bo kasneje uporabna tudi za določitev lastne hitrosti in oddaljenosti, ter svetlost že prej detektiranih zvezd. Zabeležena svetlost zvezde nakazuje njeno sešteto svetlost v širokem spektralnem področju od 3300 do 10.500~\AA. Izbrano področje imenujemo tudi kot \G\ G fotometrični pas.
+Ob prihodu v goriščno ravnino zbrana svetloba zvezde najprej posveti na detektor za določanje izvorov (angl. Sky Mapper - SM), ki samodejno zazna zvezde. Označi zvezde, ki so svetlejše od magnitude 20,7 in temnejše od magnitude 3 saj so preostale presvetle za njegovo delovanje. Po zaznavi se zvezda premakne na površinsko največji del CCD detektorjev imenovan astrometrično polje (angl. Astrometric Field - AF). Ta zabeleži natančno pozicijo, ki bo kasneje uporabna tudi za določitev lastne hitrosti in oddaljenosti, ter svetlost že prej detektiranih zvezd. Zabeležena svetlost zvezde nakazuje njeno sešteto svetlost v širokem spektralnem področju od 3300 do 10.500~\AA. Izbrano območje imenujemo tudi kot \G\ G fotometrični pas.
 
 Zadnjo meritev svetlosti nato opravi še spektrofotometrični sistem, ki z disperzijskim detektorjem izmeri natančne svetlobne tokove v večih ozkopasovnih pod-pasovih prej omenjenega širokega \G\ G pasu. Modri fotometer (angl. Blue Photometer - BP) posname spekter nizke ločljivosti vseh zvezd v območju od 3300 do 6800~\AA. Integrirano magnitudo označimo kot BP ali G$_{BP}$. Podobno rdeči fotometer (angl. Red Photometer - RP) analizira svetlobo v območju od 6300 do 10.500~\AA, kjer je njena integrirana vrednost podajama kot RP ali G$_{RP}$ magnituda. Oba nizko ločljivost spektrometra BP in RP v svojem danem območju posnameta spekter v 12 pod-območjih. Te meritve uporabnikom še niso na voljo in bodo predvidoma objavljene kot del tretjega izida \G\ podatkov.
 
 \subsubsection{Spektroskopija}
-Končna meritev, ki jo \G\ opravi je spektroskopija celotnega opazovanega zvezdnega polja. Vgrajeni spektrometer za radialne hitrost (angl. Radial Velocity Spectrometer - RVS) za zvezde svetlejše od 16. magnitude zbere spektre srednje ločljivosti z resolucijsko močjo R $\sim$11.700 na spektralnem območju od 8450 do 8720~\AA. Področje pokriva območje treh enkrat ioniziranih kalcijevih absorpcijskih črt, ki so primerne za določevanje radialnih hitrost raznovrstnih zvezd na širokem temperaturnem območju.
+Končna meritev, ki jo \G\ opravi je spektroskopija celotnega opazovanega zvezdnega polja. Vgrajeni spektrometer za radialne hitrost (angl. Radial Velocity Spectrometer - RVS) za zvezde svetlejše od 16. magnitude zbere spektre srednje ločljivosti z resolucijsko močjo R $\sim$11.700 na spektralnem območju od 8450 do 8720~\AA. Razpon pokriva območja treh enkrat ioniziranih kalcijevih absorpcijskih črt, ki so primerne za določevanje radialnih hitrost raznovrstnih zvezd na širokem temperaturnem območju.
 
 \subsubsection{\G\ DR2}
 \rb{Morda na hitro kaj o tem, odvisno od že zapolnjenih strani}.
@@ -79,18 +83,36 @@ Vsa hkratna opazovanja zvezd so zbrana na dvodimenzionalni sliki, ki jo je potre
 \label{sec:slo_asiago}
 Tekom študija sem se večkrat odpravil tudi na observatorij Asiago v Italiji, ki ponuja zelo drugačen način opazovanja kot prej omenjena masivna pregleda neba. Uporabljen 1,82~m teleskop Copernico je v času naših obiskov okrog polne Lune prilagojen za spektroskopska opazovanja posameznih zanimivih objektov. Zaradi svojega načina delovanja je sistem primeren za podrobnejšo oziroma časovno zamaknjeno analizo spektrov zanimiv zvezd, ki smo jih prej identificirali v drugih obširnih pregledih neba. Teleskop je iz nadzorne sobe voden preko oddaljene povezave saj se nahaja na bližnji vzpetini Ekar na nadmorski višini 1.366~m. 
 
-Nameščen spektrograf tipa Echelle omogoča zajem spektrov z resolucijsko močjo R $\sim$20.000 na širokem spektralnem področju med 3600 in 7400~\AA. Zajet spekter je razdeljen na 30 interferenčnih redov, ki se medsebojno delno prekrivajo kar omogoča izdelavo neprekinjenega spektra zvezde na tem področju. Sistem omogoča zajem spektrov z visokim razmerjem med signalom in šumom za zvezde z magnitudo V < 10. 
+Nameščen spektrograf tipa Echelle omogoča zajem spektrov z resolucijsko močjo R $\sim$20.000 na širokem spektralnem področju med 3600 in 7400~\AA. Zajet spekter je razdeljen na 30 interferenčnih redov, ki se medsebojno delno prekrivajo kar omogoča izdelavo neprekinjenega spektra zvezde na tem spektralnem področju. Sistem omogoča zajem spektrov z visokim razmerjem med signalom in šumom za zvezde z magnitudo V~<~10. 
 
 Njegova lokacija na nasprotni zemljini polobli kot teleskop AAT zmanjšuje presek z opazovanimi zvezdami pregleda GALAH. Kljub temu smo zbrane podatke podatke uspešno uporabili kot dodatek k analizam v Poglavjih \ref{chap:peculiars_chem} in \ref{chap:twins} ter kot glavni del objavljenega znanstvenega članka \cite{2019MNRAS.488.5536M} in astronomskega telegrama \cite{2019ATel13340....1M}.
 
 % -----------------------------------------------------------------------
+% Opisi posameznih obdelanih tematik
+% -----------------------------------------------------------------------
 \section{Kemično in dinamično raziskovanje razsutih kopic}
 \label{sec:slo_kopice_taziskovanje}
+Med zvezdnimi polji, opazovanimi tekom pregleda \Gh\ najdemo tudi člane razsutih zvezdnih kopic. Z izdajo najnovejšega kataloga \Gs\ je določevanje njihovega članstva po večini dokaj trivialno in tako so že kmalu po izidu podatkov bili objavljeni prvi rezultati. Za naše potrebe raziskovanja razsutih kopic smo pridobili in uporabili rezultate pripadnosti kopic Berkeley 32, NGC 2516, NGC 2112, NGC 6253, Blanco 1, Ruprecht 147, NGC 2632, NGC 2682,  Melotte 22 in Collinder 261, ki jih je objavil \citet{2018A&A...618A..93C}. S podobno analizo smo sami določili še člane kopice Melotte 25, saj ta ni bila vsebovana v prej omenjenem delu.
 
+\subsection{Raziskovanje okolice kopic}
+V našem primeru nas je poleg samih znanih članov kopice, zanima še neposredna okolica kopice saj zaradi dinamičnega dogajanja znotraj kopice le-ta počasi izgublja svoje člane, ki se pomešajo med okoliške zvezde. Izvržene članice nekaj časa še ohranijo kinematične podobnosti z matično kopico, kemična sestava pa na naj bi jih cel njihov življenjski cikel vezala nanjo. 
+
+Za raziskovanje smo zato iz kataloga \Gs\ najprej pridobili vse dostopne informacije o zvezdah v širokem območju okrog središča kopice. Ker temnejše zvezde v tem katalogu nimajo popolne informacije o vektorju gibanja, smo jih dopolnili z radialnimi hitrostmi pridobljenimi v pregledu \Gh. S poznavanjem natančne hitrosti in galaktične lokacije zvezd kopice ter gravitacijskega potenciala Galaksije lahko z integracijo določimo pot posamezne zvezde po Galaksiji. Z uporabo programskega paketa \GP\ \cite{2015ApJS..216...29B} smo tako simulirali preteklo galaktično pot vseh zvezd s kompletnim naborom informacij za 120 milijonov let v preteklost, kar je primerljivo s starostjo najmlajših kopic v našem podatkovnem setu.
+
+S poznavanjem poti trenutnih preostalih članov kopice, smo ob vsakem vmesnem integracijskem koraku na njene najbolj zunanje člane napeli odsekoma ravne ploskve, ki so definirali najmanjši volumen za zajem celotne kopice. Za določitev v preteklosti možnih izvrženih članov smo poti vseh okoliških zvezd ob vsakem integracijskem koraku primerjali s takratnim volumnom kopice. Zaradi nedoločenosti \G\ parametrov smo vsako primerjavo izvedli 250-krat, kjer smo začetne parametre zvezd žrebali iz Gaussove porazdelitve določene s srednjo vrednostjo in nedoločenostjo posameznega parametra. Iz vseh ponovitev smo določili verjetnost da je bila okoliška zvezda nekoč izvržena iz kopice. Verjetnost določata njena pogostost prehoda volumna kopice ter čas tekom katerega se je najdlje zadrževala znotraj nje. V končni seznam potencialnih izvrženih so na koncu prišle le zvezde, ki so volumen kopice prečkale v vsaj $68$\% primerih ponovitve simulacije ter znotraj volumna najdlje ostale vsaj milijon let.
+
+\subsection{Kemična sestava kopic in okolice}
+Raziskano okolje okrog kopic smo tako razdelili na tri skupine zvezd: poznani člani kopice, potencialni v preteklosti izvrženi člani ter naključne okoliške zvezde. 
 
 % -----------------------------------------------------------------------
 \section{Kemično posebne zvezde}
 \label{sec:slo_c_peculiars}
+
+
+\subsection{Nadzorovana klasifikacija}
+
+
+\subsection{Nenadzorovana klasifikacija}
 
 
 % -----------------------------------------------------------------------
@@ -98,11 +120,24 @@ Njegova lokacija na nasprotni zemljini polobli kot teleskop AAT zmanjšuje prese
 \label{sec:slo_emisijske}
 
 
+\subsection{Simulacija spektrov z avtoenkoderjem}
+
+
+\subsection{Določanje emisijskih komponent}
+
+
 % -----------------------------------------------------------------------
 \section{Soncu podobne večkratne zvezde}
 \label{sec:slo_soncevi_veckratniki}
 
 
+\subsection{Izbira Soncu najbolj podobnih zvezd}
+
+
+\subsection{Določanje večkratnosti}
+
+
 % -----------------------------------------------------------------------
 \section{Zaključki in prihodnje študije}
 \label{sec:slo_zakljucek}
+
