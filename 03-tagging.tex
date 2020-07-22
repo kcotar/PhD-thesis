@@ -4,7 +4,7 @@ In this chapter, we present our exploration of abundances for a few open cluster
 
 \section{Introduction}
 \label{sec:intro_tag}
-The latest second release of \G\ data (DR2, \cite{2018A&A...616A...1G}) revolutionized numerous fields of astronomy, including research of galactic open clusters. Its combined information of stellar distance, kinematics, and photometric measurements enables us to go beyond simple methodologies, such as star density counts, to unravel even the faintest and sparsest components of open clusters. So far, many works have been published trying to refine parameters, and membership information of long known open clusters \cite{2017A&A...601A..19G, 2018A&A...618A..93C, 2019A&A...627A..35C} and find new, less numerous or fainter clusters \cite{2019ApJS..245...32L, 2019JKAS...52..145S, 2019A&A...624A.126C, 2020arXiv200107122C}. Such thorough and the improved investigation uncovered that many of the clusters listed in modern catalogues, initially discovered as apparent stellar overdensities, are no more than chance alignments of stars and not true physical clusters \cite{1998A&A...340..402B, 2000A&A...357..145C, 2016AJ....152....7H, 2018MNRAS.480.5242K, 2020A&A...633A..99C}.
+The latest second release of \G\ data (\Gs, \cite{2018A&A...616A...1G}) revolutionized numerous fields of astronomy, including research of galactic open clusters. Its combined information of stellar distance, kinematics, and photometric measurements enables us to go beyond simple methodologies, such as star density counts, to unravel even the faintest and sparsest components of open clusters. So far, many works have been published trying to refine parameters, and membership information of long known open clusters \cite{2017A&A...601A..19G, 2018A&A...618A..93C, 2019A&A...627A..35C} and find new, less numerous or fainter clusters \cite{2019ApJS..245...32L, 2019JKAS...52..145S, 2019A&A...624A.126C, 2020arXiv200107122C}. Such thorough and the improved investigation uncovered that many of the clusters listed in modern catalogues, initially discovered as apparent stellar overdensities, are no more than chance alignments of stars and not true physical clusters \cite{1998A&A...340..402B, 2000A&A...357..145C, 2016AJ....152....7H, 2018MNRAS.480.5242K, 2020A&A...633A..99C}.
 
 Born from the same molecular cloud, open clusters are ideal test structures for different astrophysical principles. Being influenced by external and internal processes, such as tidal stripping and close stellar interactions, their lifetime is limited from about 100 Myr to a few Gyr for the densest structures \cite{1998A&A...337..363P, 2013MNRAS.434.2509M}. This gives us a possibility of observing them at different evolutionary stages \cite{2006BASI...34..153C, 2007A&A...468..139P} before they blend \cite{2001A&A...366..827B} into field stellar population. The most prominent transitional features we can observe are compact cluster tidal tails \cite{2019AA...627A...4R, 2019AJ....157..115Y, 2019AA...621L...3M, 2019arXiv191206657Z} and lose extended halos of evaporated stars. They are observed as a slowly decreasing over-density \cite{2002A&A...385..471C, 2004A&A...427..485B, 2019AA...627A.119C} of stars far from a denser cluster core. Due to close gravitational interactions among members, they can be ejected out of a cluster at high velocities \cite{2009MNRAS.396..570G, 2010MNRAS.402..105G, 2017MNRAS.470.3049R}. Such cluster members can on the sky be found even several degrees away from their main cluster body \cite{2007MNRAS.376L..29G, 2018MNRAS.473.4612K, 2019ApJ...884....6M}. Identification of such stars could be done using a chemical tagging procedure, whose importance and potential problems have already been discuses in Section \ref{sec:open_clustesr_tagging}. 
 
@@ -25,7 +25,9 @@ The current release of the \G\ data contains magnitude limited range of recovere
 
 \section{Cluster and field members}
 \label{sec:membership_v2}
-The first step in our analysis was the acquisition of data relevant for each cluster identified among the \Gh\ observations. Identification of observed clusters was made by matching observed stars with known cluster members published by \citet{2018A&A...618A..93C}. As some of the clusters had a low number of stars or were proved to be chance alignments of stars \cite{2018MNRAS.480.5242K}, they were not considered in the analysis. Sky coordinates and distances of selected open cluster members (see Section \ref{sec:galah_clusters} for the list of considered clusters) were taken from \citet{2018A&A...618A..93C} and served us as anchors around which we queried the \Gs\ data. A cone query with a radius of $6^\circ$ and distance limit of $\pm900$~pc around a cluster centre was performed to download a subset of the whole dataset. This downloaded subset included stars with an incomplete set of \G\ parameters. To complement and improve quality of radial velocity measurements, all available the \Gh\ velocity estimates in a subset were used to override or supplement \G\ measurements. In the case of multiple the \Gh\ observations, a median velocity per star was used.
+The first step in our analysis was the acquisition of data relevant for each cluster identified among the \Gh\ observations. Identification of observed clusters was made by matching observed stars with known cluster members published by \citet{2018A&A...618A..93C}. As some of the clusters had a low number of stars or were proved to be chance alignments of stars \cite{2018MNRAS.480.5242K}, they were not considered in the analysis. Sky coordinates and distances of selected open cluster members (see Section \ref{sec:galah_clusters} for the list of considered clusters) were taken from \citet{2018A&A...618A..93C} and served us as anchors around which we queried the \Gs\ data. A cone query with a radius of $6^\circ$ and distance limit of $\pm900$~pc around a cluster centre was performed to download a subset of the whole dataset. The elongated shape of queried dataset volume is a result of clusters' radial elongated shape. A bit different volume was used for a nearby and visually extensive cluster Melotte 25, for which we used radius of $12^\circ$ and distance limit of $\pm200$~pc around a its centre. 
+
+The downloaded subset included stars with an incomplete set of \G\ parameters. To complement and improve quality of radial velocity measurements, all available the \Gh\ velocity estimates in a subset were used to override or supplement \G\ measurements. In the case of multiple the \Gh\ observations, a median velocity per star was used. 
 
 The initial open cluster memberships were taken from \citet{2018A&A...618A..93C} but needed some refinement before it was suitable for us. To select as many possible cluster members, the employed membership algorithm did not relay on magnitude limited radial velocity information to assign cluster membership. To make cluster volume more compact and retain only the most probable core members, we discarded all member stars whose radial velocity deviated for more than $5$~\kms\ from the cluster median value of all retrieved members. The used threshold was determined empirically by observing velocity distributions to discard only a few of the most dissimilar stars. The reason behind this velocity limitation will be evident in Section \ref{sec:orbit_tracing} where we try to keep the cluster volume as compact as possible during its integration. This thresholding prevents unwanted pollution of a cluster by field stars during comparison of their chemical signatures in Section \ref{sec:chem_cluster}. 
 
@@ -52,7 +54,7 @@ To get a more descriptive crossing probability, we created $250$ incarnations of
 		IC 4665      & 15022 & 10155 & 9823 & 26 & 34 \\
 		Mamajek 4    & 21776 & 11623 & 10513 & 85 & 48 \\
 		Melotte 22   & 9097 & 6335 & 5944 & 105 & 239 \\
-		Melotte 25   & 0 & 0 & 0 & 0 & 0 \\
+		Melotte 25   & \rb{TBD} & 0 & 0 & 0 & 0 \\
 		NGC 1817     & 12826 & 4489 & 4060 & 74 & 54 \\
 		NGC 1901     & 12666 & 7323 & 7204 & 19 & 30 \\
 		NGC 2112     & 13866 & 6665 & 6323 & 38 & 49 \\
@@ -107,22 +109,22 @@ After defining potential members of different cluster components (field, ejected
 		\hline
 		Cluster & Field & Ejected & Members \\
 		\hline
-		Berkeley 32  & 0 & 0 & 0 \\ 
-		Blanco 1     & 0 & 0 & 0 \\
-		IC 4665      & 0 & 0 & 0 \\
-		Mamajek 4    & 0 & 0 & 0 \\
-		Melotte 22   & 0 & 0 & 0 \\
-		Melotte 25   & 0 & 0 & 0 \\
-		NGC 1817     & 0 & 0 & 0 \\
-		NGC 1901     & 0 & 0 & 0 \\
-		NGC 2112     & 0 & 0 & 0 \\
-		NGC 2204     & 0 & 0 & 0 \\
-		NGC 2516     & 0 & 0 & 0 \\
-		NGC 2548     & 0 & 0 & 0 \\
-		NGC 2632     & 0 & 0 & 0 \\
-		NGC 2682     & 0 & 0 & 0 \\
-		NGC 6253     & 0 & 0 & 0 \\
-		Ruprecht 147 & 0 & 0 & 0 \\
+		Berkeley 32  & 42 & 2 & 36 \\ 
+		Blanco 1     & 151 & 10 & 109 \\
+		IC 4665      & 1114 & 6 & 26 \\
+		Mamajek 4    & 2907 & 26 & 13 \\
+		Melotte 22   & 1016 & 21 & 67 \\
+		Melotte 25   & \rb{TBD} & 0 & 0 \\
+		NGC 1817     & 569 & 11 & 36 \\
+		NGC 1901     & 6963 & 19 & 28 \\
+		NGC 2112     & 401 & 4 & 66 \\
+		NGC 2204     & 129 & 23 & 58 \\
+		NGC 2516     & 4604 & 101 & 48 \\
+		NGC 2548     & 767 & 6 & 18 \\
+		NGC 2632     & 2266 & 77 & 116 \\
+		NGC 2682     & 1710 & 147 & 1000 \\
+		NGC 6253     & 825 & 34 & 86 \\
+		Ruprecht 147 & 798 & 14 & 175 \\
 		\hline
 	\end{tabular}
 	\label{tab:cluster_stats_abund}
@@ -163,22 +165,22 @@ For the field chemical tagging procedure, we used the same selection principle a
 		Cluster & \multicolumn{2}{c}{Ejected stars}  & \multicolumn{2}{c}{Field stars} \\
 		 & All & Tagged & All & Tagged \\
 		\hline
-		Berkeley 32  & 2 & 0 (0.0\%) & 39 & 0 (0.0\%) \\ 
-		Blanco 1     & 4 & 2 (50.0\%) & 99 & 3 (3.0\%) \\
-		IC 4665      & 4 & 0 (0.0\%) & 905 & 0 (0.0\%) \\
-		Mamajek 4    & 25 & 7 (28\%) & 2273 & 136 (6.0\%) \\
-		Melotte 22   & 10 & 1 (10\%) & 708 & 76 (10.7\%) \\
-		Melotte 25   & 12 & 4 (33.3\%) & 639 & 4 (10.6\%) \\
-		NGC 1817     & 6 & 0 (0.0\%) & 427 & 6 (1.4\%) \\
-		NGC 1901     & 19 & 4 (21.1\%) & 5510 & 1034 (18.8\%) \\
-		NGC 2112     & 4 & 0 (0.0\%) & 268 & 8 (3.0\%) \\
-		NGC 2204     & 19 & 3 (16.7\%) & 113 & 14 (12.4\%) \\
-		NGC 2516     & 70 & 4 (5.7\%) & 3285 & 72 (2.2\%) \\
-		NGC 2548     & 5 & 0 (0.0\%) & 603 & 6 (1.0\%) \\
-		NGC 2632     & 56 & 7 (12.5\%) & 1523 & 74 (4.9\%) \\
-		NGC 2682     & 85 & 32 (37.6\%) & 1133 & 253 (22.3\%) \\
-		NGC 6253     & 27 & 3 (11.1\%) & 648 & 28 (4.3\%) \\
-		Ruprecht 147 & 9 & 0 (0.0\%) & 559 & 23 (4.1\%) \\
+		Berkeley 32  & 2 & 0 (0.0\%) & 39 & 2 (5.1\%) \\ 
+		Blanco 1     & 4 & 2 (50.0\%) & 150 & 1 (1.0\%) \\
+		IC 4665      & 4 & 0 (0.0\%) & 919 & 0 (0.0\%) \\
+		Mamajek 4    & 25 & 6 (24\%) & 2300 & 82 (3.6\%) \\
+		Melotte 22   & 10 & 1 (10\%) & 724 & 33 (4.6\%) \\
+		Melotte 25   & \rb{TBD} & 0 (0\%) & 0 & 0 (0\%) \\
+		NGC 1817     & 6 & 0 (0.0\%) & 432 & 4 (0.9\%) \\
+		NGC 1901     & 19 & 4 (21.1\%) & 5582 & 5824 (14.8\%) \\
+		NGC 2112     & 4 & 0 (0.0\%) & 268 & 7 (2.6\%) \\
+		NGC 2204     & 18 & 2 (16.7\%) & 113 & 14 (12.4\%) \\
+		NGC 2516     & 71 & 4 (5.6\%) & 3330 & 90 (2.7\%) \\
+		NGC 2548     & 5 & 0 (0.0\%) & 605 & 5 (0.8\%) \\
+		NGC 2632     & 56 & 13 (22.8\%) & 1544 & 126 (8.2\%) \\
+		NGC 2682     & 87 & 33 (37.6\%) & 1150 & 218 (19.0\%) \\
+		NGC 6253     & 27 & 3 (11.1\%) & 653 & 21 (3.2\%) \\
+		Ruprecht 147 & 9 & 0 (0.0\%) & 565 & 19 (3.4\%) \\
 		\hline
 	\end{tabular}
 	\label{tab:cluster_stats_abundtag}
@@ -192,7 +194,7 @@ In the previous section, we analysed stars whose integrated orbits indicate that
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{NGC_2682_possible_ejected-step1.png}
-	\caption{\rb{Pride se lepsa slika} Plots show the spatial distribution of the ejected candidates in red around the definite cluster members in blue. All other stars considered in the analysis are shown as black dots. First three panel shows the Galactic position of described cluster components. The denser circular patches of stars in the bottom right panel are not real stellar overdensities, but indicate regions where combined radial velocities of \G\ and \Gh\ are used. The example is given for the open cluster NGC 2682, which has the highest number of potentially ejected stars. Uncertainty of determined stellar distance is in these panel clearly evident as elongation of the main cluster body in the radial direction, away from the observers' position.}
+	\caption{Plots show the spatial distribution of the ejected candidates in red around the definite cluster members in blue. All other stars considered in the analysis are shown as black dots. First three panel shows the Galactic position of described cluster components. The denser circular patches of stars in the bottom right panel are not real stellar overdensities, but indicate regions where combined radial velocities of \G\ and \Gh\ are used. The example is given for the open cluster NGC 2682, which has the highest number of potentially ejected stars. Uncertainty of determined stellar distance is in these panel clearly evident as elongation of the main cluster body in the radial direction, away from the observers' position.}
 	\label{fig:ejected_around_cluster}
 \end{figure}
 
@@ -200,25 +202,25 @@ A much less energetic and more gradual mechanism that also influences the lifeti
 
 \begin{sidewaystable}
 	\centering
-	\caption{\rb{Manjkajo cifre} Statistics of detected stellar tidal structures around some of the clusters that were observed by the \Gh. The columns shown in the following order give information about: name of the analysed cluster, number of all stars found in the surrounding tidal structure, number of stars without cluster members, size of overlap between ejected and tail, number of unflagged the \Gh\ observations among tidal structure, chemical similarity with parent open cluster, and reference source of the used data.}
+	\caption{Statistics of detected stellar tidal structures around some of the clusters that were observed by the \Gh. The columns shown in the following order give information about: name of the analysed cluster, number of all stars found in the surrounding tidal structure, number of stars without cluster members, size of overlap between ejected and tail, number of unflagged the \Gh\ observations among tidal structure, chemical similarity with parent open cluster, and reference source of the used data.}
 	\begin{tabular}{l | c | c | c | c | c | r }
 		\hline
 		Cluster & Stars in & Without used & Common with & \Gh\ unflagged & Chemically & Membership\\
 		& reference & cluster members & ejected & parameters (\% in & tagged & reference\\
 		&  &  & (\% of ejected) & common with ejected) & (\% of valid) & \\
 		\hline
-		Blanco 1   & 644 & 276 & 4 (27\%) & 2 (100\%) & 0 (0\%) & \citet{2019arXiv191206657Z} \\
-		NGC 2632   & 1393 & 738 & 37 (22\%) & 22 (68\%) & 0 (0\%) & \citet{2019AA...627A...4R} \\
-		NGC 2682   & 952 & 241 & 20 (9\%) & 16 (81\%) & 0 (0\%) & \citet{2019AA...627A.119C} \\
-		Melotte 25 & 0 & 0 & 0 (0\%) & 0 (0\%) & 0 (0\%) & \citet{2019AA...621L...3M} \\
+		Blanco 1   & 644 & 276 & 3 (50\%) & 7 (42.9\%) & 0 (0.0\%) & \citet{2019arXiv191206657Z} \\
+		NGC 2632   & 1393 & 738 & 17 (22.1\%) & 25 (68\%) & 7 (28.0\%) & \citet{2019AA...627A...4R} \\
+		NGC 2682   & 952 & 241 & 13 (14.4\%) & 18 (72.2\%) & 6 (33.3\%) & \citet{2019AA...627A.119C} \\
+		Melotte 25 & \rb{TBD} & 0 & 0 (0\%) & 0 (0\%) & 0 (0.0\%) & \citet{2019AA...621L...3M} \\
 		\hline
 	\end{tabular}
 	\label{tab:cluster_stats_tails}
 \end{sidewaystable}
 
-Among randomly acquired The \Gh\ spectra, we observed some stars that where identified to belong to the kinematically discovered tidal structures around open clusters. If we consider only stars with unflagged the \Gh\ stellar parameters, the overlap between the sets is quite significant as more than 50\% of unflagged tail stars were also identified as possible ejected for every available cluster. This significant overlap reduces probability of the tails having a completely different chemical signature than our selections. 
+Among randomly acquired The \Gh\ spectra, we observed some stars that where identified to belong to the kinematically discovered tidal structures around open clusters. If we consider only stars with unflagged the \Gh\ stellar parameters, the overlap between the sets is quite significant as more than 50\% of unflagged tail stars were also identified as possible ejected for every available cluster. This significant overlap reduces probability of the tails having a completely different chemical signature than our selections, but at the same time confirms validity of our orbit tracing approach. 
 
-For a tidal tail chemical tagging procedure, we used the same selection principle as previously described in Section \ref{sec:chem_ej_tag}. The results of the tagging experiment are presented in the last column of Table \ref{tab:cluster_stats_tails}. \rb{\ldots se manjka par stavkov }
+For a tidal tail chemical tagging procedure, we used the same selection principle as previously described in Section \ref{sec:chem_ej_tag}. The results of the tagging experiment are presented in the last column of Table \ref{tab:cluster_stats_tails}. Majority of the tails have quite significant probability of being chemically similar to a nearby open cluster. 
 
 \section{Summary and conclusions}
 \label{sec:clusters_summary_conclusions}
@@ -229,5 +231,3 @@ To verify that our orbital integration methodology gives sensible results, they 
 Deepened analysis of field and cluster abundance patterns showed improvement in the quality of determined abundances (in comparison towards older \Gh\ releases), but at the same time revealed the pitfalls of blindly using massively determined abundances for blind chemical tagging experiments that are highly desired in the community of galactic archaeology. Identified problems can successfully be overcome by applying differential analysis, which in our case showed some encouraging success of using the \Gh\ abundance data as tracers of stellar birth signatures of individual stars. It seems that identified stellar parameters versus abundance trends are valid only for the individual cluster as they vary among them.
 
 To improve the parameters used in this chapter, we would have to analyse cluster members as a homogeneous structure that was formed at the same time. This adoption of formation time would force the use of a single isochrone and stellar age for all members, improving their determined \Logg, \Feh, and consequently also stellar surface chemical composition. Our first experiments with the mentioned analysis upgrade already show significant improvements in the stability of the trends and reduction of abundance scatter among cluster members.
-
-% TODO To je tema, ki bi jo imelo smisel malo poglobiti. A lahko vidiš kak vzorec teh kalibracij vs. [Fe/H] ali vs. absolutna kemična zastopanost posameznega elementa? Človek bi upal, da gre za gladko progresijo, saj se pogovarjamo o zvezdi, ki je podobna, le kemija se ji spremeni. Seveda pa je tu treba vzeti recimo le glavno vejo, ne orjakinj, ali vsaj te posebej. Morda bi se splačalo tudi pogledat, ali obstaja kak trend s starostjo kopice (zvezde pri dani temperaturi so bližje MS, če so mlajše). Skratka, za te trende bi bilo fino ugotoviti neko zakonitost. Kopice so idealne, ker (upaš) obstaja vsaj določena kemična  homogenost. Obratno pa potem primerjaš še progresijo za različne elemente v dani kopici. Če se en obnaša čisto čudno, je bil a-priori slabo izmerjen (recimo iz črte, ki je kontaminirana z drugim elementom), ali pa morda ravno to kaže na intrinzično nehomogenost kopice. Skratka, jaz bi te razultate še malo ovrednotil, že zato, ker je to novo in uporabno tudi za druge. 
