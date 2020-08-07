@@ -1,4 +1,4 @@
-This chapter has been adapted from the paper in preparation titled \textit{The GALAH survey: Characterization of emission-line stars with spectral modelling using autoencoders} \cite{2020arXiv200603062C} that was prepared and written by the author of this Doctoral thesis. The used computer code was published on GitHub platform \footnote{\url{https://github.com/kcotar/GALAH-suervey-Emission-lines-and-autoencoders}} and results of the analysis as a catalogue on VizieR service \footnote{\href{http://vizier.u-strasbg.fr/viz-bin/}{exact link to be determined after the paper is published}}.
+This chapter has been adapted from the paper in preparation titled \textit{The GALAH survey: Characterization of emission-line stars with spectral modelling using autoencoders} \cite{2020arXiv200603062C} whose first author is author of this Doctoral thesis. The used computer code is published on GitHub platform \footnote{\url{https://github.com/kcotar/GALAH-suervey-Emission-lines-and-autoencoders}} and results of the analysis as a catalogue on the VizieR service \footnote{\href{http://vizier.u-strasbg.fr/viz-bin/}{exact link to be determined after the paper is published}}.
 
 Among all machine learning approaches, neural network structures are receiving the highest interest in all fields of big data analysis in recent years. Astronomy is no exception in this regard. In previous Chapter \ref{chap:peculiars_chem} we saw that peculiar stars are commonly detected by comparing observed spectra with reference spectra of stars that do not show any peculiarities in them. In this chapter, we explored the autoencoder structure to provide us with the reference spectra for the comparison. Whenever we are interested in the precise elemental abundances (as used in Chapter \ref{chap:clusters}), the first step in their determination of stellar physical parameters that could be based on the strongest hydrogen Balmer lines in stellar spectra. As any deviations in their shape might endanger the analysis, we tried to identify all stars whose spectrum shows emission-lines in the Balmer region. The chapter begins with Section \ref{sec:intro_emis} that gives a detailed description of the problem and presents multiple scenarios of why and how emission-lines can be used and identified. In Section \ref{sec:det_chart} we explain our analysis pipeline whose main components are the generation of reference spectra (Section \ref{sec:ref_modeling}) and identification of multiple emission features (Sections \ref{sec:hahbemis} and \ref{sec:nebularemis}). The temporal variability of detected emissions is analysed in Section \ref{sec:temporal}. The results are summarised and discussed in Section \ref{sec:discussion_emis}.
 
@@ -232,7 +232,7 @@ The emission indices and other computed parameters are collected in Table \ref{t
 	\begin{tabular}{l c l}
 		\hline
 		Column & Unit & Description \\
-		\hline
+		\hline \hline
 		\texttt{source\_id} & & \G\ DR2 star identifier \\
 		\texttt{sobject\_id} & & GALAH internal per-spectrum unique id \\
 		\texttt{ra} & deg & Right ascension coordinate from Two Micron All-Sky Survey (2MASS, \cite{2006AJ....131.1163S})\\
@@ -274,10 +274,10 @@ As we do not perform any quality cuts on our results, a suggested set of limitin
 	\centering
 	\caption{Excerpt of 30 strongest unflagged emitters from the published table presented in detail by Table \ref{tab:results}. The rest of the table can be downloaded in electronic form CDS service and publishers' website.}
 	\label{tab:results_values}
-	\begin{tabular}{c | c | c | c | c | c | c | c | c | c | c}
+	\begin{tabular}{c c c c c c c c c c c}
 		\hline
 		source\_id & Ha\_EW & Ha\_EW\_abs & Ha\_W10 & Ha\_EW\_asym & NII & SII & NII\_EW & rv\_NII & rv\_SII & flag \\
-		\hline
+		\hline \hline
 		3337923100687567872 & 5.37 & 5.37 & 373.63 & 0.36 & 1 & 0 & 0.05 & -30.22 & 23.54 & 0 \\
 		3217769470732793856 & 5.06 & 5.06 & 252.48 & 0.07 & 0 & 1 & 0.01 & -11.32 & 35.71 & 0 \\
 		4660266122976778240 & 4.51 & 4.51 & 199.66 & 0.15 & 0 & 0 & 0.02 & -310.50 & -231.18 & 0 \\
@@ -313,7 +313,7 @@ The above described pipeline runs blindly on every successfully reduced spectrum
 	\begin{tabular}{r l}
 		\hline
 		Flag & Description \\
-		\hline
+		\hline \hline
 		128 & Reference spectrum for the H$\alpha$ range does not exist.\\
 		64 & Reference spectrum for the H$\beta$ range does not exist.\\
 		32 & Large difference between reference and observed spectrum in the red arm\\

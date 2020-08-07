@@ -1,4 +1,4 @@
-This chapter has been partially adapted from the published paper titled \textit{The GALAH survey: unresolved triple Sun-like stars discovered by the \G\ mission} \cite{2019MNRAS.487.2474C} that was prepared and written by the author of this Doctoral thesis. The used computer code was published on GitHub platform  \footnote{\url{https://github.com/kcotar/GALAH-survey-Solar-like-triple-stars} and \url{https://github.com/kcotar/Solar-spectral-siblings}} and results of the analysis as a catalogue on VizieR service  \footnote{\url{http://vizier.u-strasbg.fr/viz-bin/VizieR?-source=J/MNRAS/487/2474}}.
+This chapter has been partially adapted from the published paper titled \textit{The GALAH survey: unresolved triple Sun-like stars discovered by the \G\ mission} \cite{2019MNRAS.487.2474C} whose first author is author of this Doctoral thesis. The used computer code is published on GitHub platform  \footnote{\url{https://github.com/kcotar/GALAH-survey-Solar-like-triple-stars} and \url{https://github.com/kcotar/Solar-spectral-siblings}} and results of the analysis as a catalogue on the VizieR service  \footnote{\url{http://vizier.u-strasbg.fr/viz-bin/VizieR?-source=J/MNRAS/487/2474}}.
 
 So far, we dealt with spectral peculiarities that are directly observable from the acquired spectra. In the case of multiple stellar systems, that might not always be true. As all of the stars in a given system contribute to light received by the observer, the object must be treated as multiple to determine physical properties and abundances of an individual component properly. However, to get the identification that an object must be treated as multiple, a single spectrum might not be enough as it does not reveal the dynamics of the components. In this chapter, we show a possible way to identify and characterise multiple objects using data-driven machine learning approaches. We first focused on solar twin stars whose importance is given in Section \ref{sec:intro_solar} and their selection among the \Gh\ spectra described in Section \ref{sec:05_selection}. Their homogeneity of chemical composition (important for chemical tagging) is presented in Section \ref{sec:05_chem_compos}. As some of the sources seem to be too bright to consist of only one star, their photometric and spectroscopic signature was further analysed using single star models explained in Section \ref{sec:models_all}. Modelling revealed that some of the stars in our selection could consist of two or more very similar stars, whose orbital and physical properties are summarised in Section \ref{sec:concl}.
  
@@ -45,7 +45,7 @@ As the number of spectra in our set is quite large (more than $600,000$) and som
 	\begin{tabular}{r c c c}
 		\hline
 		Object & \Teff\ [K] & \Logg\ [dex] & \Feh\ [dex] \\ 
-		\hline
+		\hline \hline
 		Sun & $5771$ & $4.44$ & $0.02$ \\ 
 		Twilight flats & $5605 \pm 40$ & $4.21 \pm 0.06$ & $-0.14 \pm 0.03$ \\ 
 		\hline
@@ -98,9 +98,9 @@ We used the above-described relation between similarity distance and SNR (Equati
 	\centering
 	\caption{Number of absorption lines for different chemical elements that were used to measure similarity between observed spectra and reference spectrum. Elements marked with * are problematic for precise abundance determination in solar twins because of their shallow or rarely noticeable absorption features. Total number of used absorption lines is 180.}
 	\begin{tabular}{l l c | c l l }
-		\hline
+		\hline 
 		Element & Lines & & & Element & Lines\\ 
-		\hline
+		\hline \hline
 		Al & 4 & & & Na & 3\\ 
 		Ba & 2 & & & Nd* & 5\\ 
 		C* & 1 & & & Ni & 7\\ 
@@ -344,7 +344,7 @@ As the photometric and spectroscopic fits do not always agree on the best config
 	\begin{tabular}{c c}
 		\hline
 		Configuration classification & Number of systems \\ 
-		\hline
+		\hline \hline
 		1 star & 2 \\
 		$\geq$ 1 star & 14 \\
 		2 stars & 27 \\
@@ -388,7 +388,7 @@ In additional to our final classification, we also provide an additional quality
 	\begin{tabular}{c l}
 		\hline
 		Raised bit & Description \\ 
-		\hline
+		\hline \hline
 		0 & None of the flags was raised \\
 		1$^{\text{st}}$ bit & High astrometric uncertainty (RUWE~>~1.4)\\
 		2$^{\text{nd}}$ bit & Deviating photometric fit (\texttt{sX\_sim\_p} > \texttt{m\_sim\_p})\\
@@ -415,7 +415,7 @@ The obtained results were analysed and classified using the same set of rules in
 	\centering
 	\caption{Number of different systems discovered by the fitting procedure performed on stars that do not exhibit excess luminosity. Classes and their description is the same as used in Table \ref{tab:res_multiples}. In addition, number of stars without parallactic measurements is added for completeness.}
 	\begin{tabular}{c c}
-		\hline
+		\hline \hline
 		Configuration classification & Number of systems \\ 
 		\hline
 		1 star & 230 \\
@@ -482,10 +482,10 @@ The distribution of velocity separations ($\Delta v = v_2 - v_1$) for synthetic 
 \begin{table}
 	\centering
 	\caption{Ranges of the orbital parameters used for the prediction of observable radial velocity separation between stars in an outer binary pair. The range of the semi-major axis length $a$ is set between the \G\ separability limit for the closest and farthest triple candidate. The uniform distribution of $a$ is a good approximation of the real periodicity distribution published by \citet{2010ApJS..190....1R} as we are sampling a narrow range of it. Use of the real observed distribution would in our case introduce insignificant changes in radial velocity separation as we are simulating wide, slowly rotating systems.}
-	\begin{tabular}{c | c}
+	\begin{tabular}{c c}
 		\hline
 		Parameter & Considered range \\ 
-		\hline
+		\hline \hline
 		$M_1$ & 2 M$_{\odot}$ \\
 		$a$ & 100 \ldots 350 AU \\
 		$q$ & 0.45 \ldots 0.55 \\
@@ -523,10 +523,10 @@ Considering the minimal ratio between outer and inner binary period, we can dedu
 \begin{table}
 	\centering
 	\caption{Same as Table \ref{tab:mc_gaia}, but for an inner binary of a hierarchical triple stellar system.}
-	\begin{tabular}{c | c}
+	\begin{tabular}{c c}
 		\hline
 		Parameter & Considered range \\ 
-		\hline
+		\hline \hline
 		$M_1$ & M$_{\odot}$ \\
 		$P_S$ & $P_L$ / 5, used for calculation of $a$ \\
 		$q$ & 0.9 \ldots 1.0 \\
@@ -659,7 +659,7 @@ In the Table \ref{tab:out_table_triple} we provide a list of metadata available 
 	\begin{tabular}{l c l}
 		\hline
 		Field & Unit & Description \\ 
-		\hline
+		\hline \hline
 		\texttt{source\_id} & & {\it Gaia} DR2 source identifier \\
 		\texttt{sobject\_id} & & Unique internal per-observation star ID \\
 		\texttt{ra} & deg & Right ascension from {\it Gaia} DR2 \\
@@ -701,10 +701,10 @@ In the Table \ref{tab:out_table_triple} we provide a list of metadata available 
 	\centering
 	\caption{Subset of results for definitive and probable solar-like triple candidates detected by our selection and fitting procedure. The complete table is given as a supplementary material to this chapter in a form of the textual CSV file. It is also available in the electronic form at the CDS portal.}
 	\label{tab:out_triple}
-	\begin{tabular}{ccccccccccc}
+	\begin{tabular}{c c c c c c c c c c c}
 		\hline
 		source\_id & ruwe & s2\_teff1 & s2\_teff2 & s2\_feh & s3\_teff1 & s3\_teff2 & s3\_teff3 & s3\_feh & class & flag \\
-		\hline
+		\hline \hline
 		6157059919188478720 & 11.1 & 6002 & 6000 & 0.24 & 5825 & 5787 & 5780 & 0.03 & 3 & 1 \\
 		6777339306532222080 & 8.0 & 5875 & 5819 & 0.10 & 5642 & 5636 & 5631 & -0.06 & 3 & 1 \\
 		6412815502155127808 & 1.1 & 5880 & 5316 & -0.02 & 5922 & 4703 & 4701 & 0.03 & >2 & 4 \\
